@@ -186,3 +186,29 @@ test('collapsed keep-an-eye-on mixes kinds: at most 3 of a kind before filling',
   assert.equal(titles.length, 8);
   assert.deepEqual(titles.slice(0, 5).filter((t) => !t.startsWith('Crit')), ['OpenIssue', 'VmwareThing']);
 });
+
+test('tiles are buttons that filter to their group', () => {
+  const html = V.renderTiles(vmWith([]), { products: [] });
+  for (const g of ['windows', 'vmware', 'azure', 'agents']) assert.match(html, new RegExp(`data-action="tile" data-group="${g}"`));
+  assert.ok(!html.includes('tile on'));
+});
+
+test('the tile matching the current filter is highlighted', () => {
+  const html = V.renderTiles(vmWith([]), { products: [...V.GROUP_FILTERS.windows] });
+  assert.match(html, /class="tile [^"]*\bon\b[^"]*" data-action="tile" data-group="windows"/);
+  assert.equal((html.match(/\bon\b"/g) || []).length + (html.match(/ on /g) || []).length > 0, true);
+});
+
+test('group filters cover the right products', () => {
+  assert.deepEqual(V.GROUP_FILTERS.windows, ['ws2019', 'ws2022', 'ws2025']);
+  assert.deepEqual(V.GROUP_FILTERS.vmware, ['vmware']);
+  assert.deepEqual(V.GROUP_FILTERS.azure, ['gov']);
+  assert.deepEqual(V.GROUP_FILTERS.agents, ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf']);
+});
+
+test('a tile filter shows a banner with Show everything', () => {
+  const html = V.renderFilters(vmWith([]), { products: [...V.GROUP_FILTERS.vmware] });
+  assert.match(html, /Showing only VMware/);
+  assert.match(html, /data-action="clear-filters"/);
+  assert.ok(!V.renderFilters(vmWith([]), { products: [] }).includes('clear-filters'));
+});

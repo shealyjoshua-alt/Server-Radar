@@ -22,6 +22,14 @@
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
     splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
   };
+  // Tile -> filter chips it selects (a tile click shows just that area).
+  const GROUP_FILTERS = {
+    windows: ['ws2019', 'ws2022', 'ws2025'],
+    vmware: ['vmware'],
+    azure: ['gov'],
+    agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'],
+  };
+  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents']];
   const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
   const DAY = 86400000;
   const RECENT_DAYS = 30;
@@ -110,14 +118,21 @@
     const sel = (filters && filters.products) || [];
     const chips = FILTERS.map((f) => `<button class="filter${sel.includes(f) ? ' on' : ''}" data-action="filter" data-filter="${f}">${escapeHtml(PRODUCT_LABELS[f])}</button>`).join('');
     const note = sel.includes('crowdstrike') ? `<p class="note">${escapeHtml(vm.configNote.crowdstrike)}</p>` : '';
-    return `<div class="filters">${chips}</div>${note}`;
+    const group = activeGroup(filters);
+    const banner = sel.length
+      ? `<div class="banner"><span>Showing only ${escapeHtml(group ? TILES.find(([k]) => k === group)[1] : sel.map((f) => PRODUCT_LABELS[f]).join(', '))}</span><button data-action="clear-filters">Show everything</button></div>`
+      : '';
+    return `${banner}<div class="filters">${chips}</div>${note}`;
   }
 
-  function renderTiles(vm) {
-    const tiles = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents']];
-    return tiles.map(([k, label]) => {
+  const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x));
+  const activeGroup = (filters) => Object.keys(GROUP_FILTERS).find((g) => sameSet((filters && filters.products) || [], GROUP_FILTERS[g]));
+
+  function renderTiles(vm, filters) {
+    const active = activeGroup(filters);
+    return TILES.map(([k, label]) => {
       const t = vm.tiles[k];
-      return `<div class="tile c-${escapeHtml(t.color)}"><h4>${label}</h4><div class="big">${t.unread || '✓'}</div><span class="sub">${t.unread ? 'unread' : 'nothing new'}</span></div>`;
+      return `<button class="tile c-${escapeHtml(t.color)}${active === k ? ' on' : ''}" data-action="tile" data-group="${k}"><h4>${label}</h4><div class="big">${t.unread || '✓'}</div><span class="sub">${t.unread ? 'unread' : 'nothing new'}</span></button>`;
     }).join('');
   }
 
@@ -157,7 +172,7 @@
     }).join('');
   }
 
-  const api = { escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
+  const api = { GROUP_FILTERS, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RadarView = api;
 })(typeof window !== 'undefined' ? window : globalThis);
