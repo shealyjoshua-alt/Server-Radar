@@ -1,0 +1,22 @@
+{
+  "name": "server-radar",
+  "version": "1.0.0",
+  "description": "Personal menu bar radar for Windows Server, VMware, Azure and agent issues",
+  "main": "src/main/main.js",
+  "private": true,
+  "scripts": {
+    "test": "node --test 'test/**/*.test.js'",
+    "start": "electron .",
+    "icons": "node scripts/make-icons.js",
+    "package": "bash scripts/build-app.sh"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "fast-xml-parser": "^5.11.2"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^44.7.0",
+    "pngjs": "^7.0.0"
+  }
+}

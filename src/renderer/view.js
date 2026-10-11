@@ -1,0 +1,133 @@
+// Pure HTML-string renderers for the dashboard. Loaded by Node tests (module.exports)
+// and by the renderer page (window.RadarView). All feed text goes through escapeHtml.
+(function (root) {
+  const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  const escapeHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ESC[c]);
+
+  function safeUrl(u) {
+    try {
+      const url = new URL(String(u).trim());
+      return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '#';
+    } catch {
+      return '#';
+    }
+  }
+
+  const PRODUCT_LABELS = {
+    ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
+    gov: 'Azure Gov', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF',
+  };
+  const FILTERS = ['ws2019', 'ws2022', 'ws2025', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+  const SOURCE_LABELS = {
+    'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
+    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
+  };
+  const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
+  const DAY = 86400000;
+  const READ_LIMIT = 20;
+
+  function tagFor(it) {
+    if (it.exploited) return ['EXPLOITED', 'red'];
+    if (it.tier === 'act') return ['CRITICAL', 'red'];
+    if (it.kind === 'known-issue') return it.status === 'resolved' ? ['FIXED', 'green'] : ['KNOWN ISSUE', 'amber'];
+    if (it.kind === 'incident') return it.gov ? ['AZURE GOV', 'amber'] : ['INCIDENT', 'amber'];
+    if (it.kind === 'maintenance') return ['MAINTENANCE', 'amber'];
+    if (it.kind === 'retirement') return ['RETIRING', 'blue'];
+    if (it.tier === 'interest') return ['NEW TECH', 'blue'];
+    return ['VULN', 'amber'];
+  }
+
+  const fmtDate = (iso) => (iso ? String(iso).slice(0, 10) : '');
+  const tag = ([text, color]) => `<span class="tag t-${color}">${escapeHtml(text)}</span>`;
+  const link = (it) => `<a class="title" href="#" data-url="${escapeHtml(safeUrl(it.url))}">${escapeHtml(it.title)}</a>`;
+
+  function matchesFilters(it, filters) {
+    const sel = (filters && filters.products) || [];
+    if (!sel.length) return true;
+    return sel.some((f) => (f === 'gov' ? it.gov : it.products.includes(f)));
+  }
+
+  function renderItem(it) {
+    const chips = it.products.map((p) => `<span class="chip">${escapeHtml(PRODUCT_LABELS[p] || p)}</span>`).join('');
+    const sources = (it.sources || [it.source]).map((s) => escapeHtml(SOURCE_LABELS[s] || s)).join(', ');
+    const extra = [
+      it.cvss != null ? `CVSS ${escapeHtml(it.cvss)}` : '',
+      it.fixedBy && it.fixedBy !== 'resolved' ? `Fixed in ${escapeHtml(it.fixedBy)}` : '',
+    ].filter(Boolean).join(' · ');
+    return `<article class="item tier-${escapeHtml(it.tier)}${it.read ? '' : ' unread'}" id="item-${escapeHtml(it.key)}" data-key="${escapeHtml(it.key)}">
+  <div class="item-head">${tag(tagFor(it))}${link(it)}</div>
+  ${it.summary ? `<p class="summary">${escapeHtml(it.summary)}</p>` : ''}
+  <div class="meta"><span>${sources}</span><span>${escapeHtml(fmtDate(it.published))}</span>${extra ? `<span>${extra}</span>` : ''}${chips}
+  ${it.read ? '' : `<button class="mark-read" data-action="mark-read" data-key="${escapeHtml(it.key)}">Mark read</button>`}</div>
+</article>`;
+  }
+
+  function renderFeed(vm, filters) {
+    const items = vm.snapshot.items.filter((it) => matchesFilters(it, filters));
+    const expanded = (filters && filters.expanded) || [];
+    return TIERS.map(([tier, heading]) => {
+      const mine = items.filter((it) => it.tier === tier);
+      const unread = mine.filter((it) => !it.read);
+      // Unread first, then the newest read items; long tiers collapse behind "Show all".
+      const shown = expanded.includes(tier) ? mine : [...unread, ...mine.filter((it) => it.read).slice(0, READ_LIMIT)];
+      const more = shown.length < mine.length
+        ? `<button class="show-all" data-action="show-all" data-tier="${tier}">Show all ${mine.length}</button>` : '';
+      const body = mine.length ? shown.map(renderItem).join('\n') + more : '<p class="empty">Nothing here.</p>';
+      return `<section class="tier tier-${tier}"><h2>${heading}<span class="count">${unread.length ? `${unread.length} unread` : ''}</span></h2>${body}</section>`;
+    }).join('\n');
+  }
+
+  function renderFilters(vm, filters) {
+    const sel = (filters && filters.products) || [];
+    const chips = FILTERS.map((f) => `<button class="filter${sel.includes(f) ? ' on' : ''}" data-action="filter" data-filter="${f}">${escapeHtml(PRODUCT_LABELS[f])}</button>`).join('');
+    const note = sel.includes('crowdstrike') ? `<p class="note">${escapeHtml(vm.configNote.crowdstrike)}</p>` : '';
+    return `<div class="filters">${chips}</div>${note}`;
+  }
+
+  function renderTiles(vm) {
+    const tiles = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure'], ['agents', 'Agents']];
+    return tiles.map(([k, label]) => {
+      const t = vm.tiles[k];
+      return `<div class="tile c-${escapeHtml(t.color)}"><h4>${label}</h4><div class="big">${t.unread || '✓'}</div><span class="sub">${t.unread ? 'unread' : 'nothing new'}</span></div>`;
+    }).join('');
+  }
+
+  function daysUntil(isoTarget, today) {
+    const t = new Date(isoTarget);
+    const a = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+    const b = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return Math.round((a - b) / DAY);
+  }
+
+  function renderPatchBar(vm, today) {
+    const d = daysUntil(vm.patchTuesday, today);
+    const when = d <= 0 ? 'today' : d === 1 ? 'tomorrow' : `in ${d} days`;
+    const pt = new Date(vm.patchTuesday);
+    const ptDate = `${pt.getFullYear()}-${String(pt.getMonth() + 1).padStart(2, '0')}-${String(pt.getDate()).padStart(2, '0')}`;
+    const items = vm.snapshot.items;
+    const maint = items.filter((i) => i.kind === 'maintenance').slice(0, 3);
+    const vmware = items.filter((i) => i.products.includes('vmware')).slice(0, 3);
+    const safe = vm.safe.map((s) => `<span class="safe s-${s.status}">${escapeHtml(PRODUCT_LABELS[s.version])}: ${s.status === 'caution' ? `Caution — ${s.openIssues} known issue${s.openIssues === 1 ? '' : 's'}` : 'Clean'}${s.resolved ? ` · ${s.resolved} fixed` : ''}</span>`).join('');
+    const list = (title, arr) => `<div class="pc-col"><h4>${title}</h4>${arr.length ? arr.map((i) => `<div class="pc-row">${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('') : '<div class="pc-row empty">None</div>'}</div>`;
+    return `<div class="pc-head"><div class="pt"><span class="pt-label">Patch Tuesday</span><span class="pt-when">${when}</span><span class="date">${escapeHtml(ptDate)}</span></div><div class="safe-list"><h4>Safe to deploy?</h4>${safe}</div></div>
+<div class="pc-cols">${list('Azure maintenance', maint)}${list('Recent VMware', vmware)}</div>`;
+  }
+
+  function renderAzure(vm) {
+    const items = vm.snapshot.items.filter((i) => (i.sources || [i.source]).some((s) => s === 'azure-updates' || s === 'azure-status')).slice(0, 150);
+    if (!items.length) return '<p class="empty">Nothing here.</p>';
+    return items.map((i) => `<div class="az-row">${i.gov ? tag(['GOV', 'amber']) : ''}${i.kind === 'retirement' ? tag(['RETIRING', 'blue']) : ''}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('');
+  }
+
+  function renderSources(vm) {
+    return vm.snapshot.sources.map((s) => {
+      const bad = s.consecutiveFailures > 0;
+      const status = bad ? `failed ${s.consecutiveFailures}× — ${escapeHtml(s.lastError || 'error')}` : `ok ${escapeHtml(s.lastOk ? new Date(s.lastOk).toLocaleString() : '')}`;
+      return `<span class="src-health${bad ? ' bad' : ''}" title="${escapeHtml(s.lastError || '')}">${escapeHtml(s.label)}: ${status}</span>`;
+    }).join('');
+  }
+
+  const api = { escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.RadarView = api;
+})(typeof window !== 'undefined' ? window : globalThis);

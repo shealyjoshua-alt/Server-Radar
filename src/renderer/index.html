@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server Radar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span id="status-dot" class="dot c-green"></span><h1>Server Radar</h1><span id="updated" class="muted"></span></div>
+    <div class="actions">
+      <button id="btn-refresh" data-action="refresh">Refresh now</button>
+      <button id="btn-all-read" data-action="mark-all-read">Mark all read</button>
+    </div>
+  </header>
+  <main>
+    <section id="tiles" class="tiles" aria-label="Summary"></section>
+    <section id="patchbar" class="patchbar panel" aria-label="Patch cycle"></section>
+    <div class="columns">
+      <div class="feed-col">
+        <div id="filters"></div>
+        <div id="feed"></div>
+      </div>
+      <aside class="side-col panel">
+        <h2>Azure</h2>
+        <div id="azure"></div>
+      </aside>
+    </div>
+  </main>
+  <footer id="sources" class="sources"></footer>
+  <script src="view.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

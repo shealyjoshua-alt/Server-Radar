@@ -1,0 +1,107 @@
+{
+ "success": true,
+ "data": {
+  "list": [
+   {
+    "affectedCve": "",
+    "alertType": "S",
+    "documentId": "SYMSA36591",
+    "notificationId": 36591,
+    "notificationUrl": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/36591",
+    "published": "10 December 2025",
+    "severity": "MEDIUM",
+    "status": "CLOSED",
+    "supportProducts": "Carbon Black Cloud Worklo...",
+    "title": "Carbon Black Cloud Workload Protection Security Advisory for CVE-2025-2834",
+    "totalRecords": null,
+    "updated": "2025-12-10T20:53:49.885",
+    "workAround": ""
+   },
+   {
+    "affectedCve": "",
+    "alertType": "S",
+    "documentId": "SYMSA36251",
+    "notificationId": 36251,
+    "notificationUrl": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/36251",
+    "published": "29 October 2025",
+    "severity": "CRITICAL",
+    "status": "CLOSED",
+    "supportProducts": "Carbon Black EDR",
+    "title": "Carbon Black EDR Server Security Advisory for CVE-2025-49844",
+    "totalRecords": null,
+    "updated": "2025-10-29T15:43:40.387",
+    "workAround": ""
+   },
+   {
+    "affectedCve": "",
+    "alertType": "S",
+    "documentId": "SYMSA25472",
+    "notificationId": 25472,
+    "notificationUrl": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25472",
+    "published": "05 March 2025",
+    "severity": "LOW",
+    "status": "CLOSED",
+    "supportProducts": "Carbon Black Cloud Endpoi...",
+    "title": "Carbon Black Cloud Windows Sensor Security Update",
+    "totalRecords": null,
+    "updated": "2025-03-05T16:43:53.957",
+    "workAround": ""
+   },
+   {
+    "affectedCve": "CVE-2026-15379, CVE-2026-15380",
+    "alertType": "S",
+    "documentId": "SYMSA37995",
+    "notificationId": 37995,
+    "notificationUrl": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/37995",
+    "published": "17 July 2026",
+    "severity": "MEDIUM",
+    "status": "CLOSED",
+    "supportProducts": "IT Management Suite",
+    "title": "Arbitrary File Read as SYSTEM & Local privilege escalation in Symantec IT Management Suite",
+    "totalRecords": null,
+    "updated": "2026-09-03T17:48:53.406752",
+    "workAround": ""
+   },
+   {
+    "affectedCve": "",
+    "alertType": "S",
+    "documentId": "SYMSA37724",
+    "notificationId": 37724,
+    "notificationUrl": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/37724",
+    "published": "19 June 2026",
+    "severity": "HIGH",
+    "status": "CLOSED",
+    "supportProducts": "ISG Proxy",
+    "title": "Security Updates included in Edge SWG (ProxySG) 7.3.29 and 7.4.16",
+    "totalRecords": null,
+    "updated": "2026-06-19T20:22:28.848508",
+    "workAround": ""
+   },
+   {
+    "affectedCve": "",
+    "alertType": "S",
+    "documentId": "SYMSA37625",
+    "notificationId": 37625,
+    "notificationUrl": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/37625",
+    "published": "10 June 2026",
+    "severity": "MEDIUM",
+    "status": "CLOSED",
+    "supportProducts": "Endpoint Protection",
+    "title": "Symantec Endpoint Protection macOS CleanWipe Removal Tool Security Update",
+    "totalRecords": null,
+    "updated": "2026-06-10T18:27:42.292306",
+    "workAround": ""
+   }
+  ],
+  "pageInfo": {
+   "totalCount": 479,
+   "currentPage": 0,
+   "sortBy": "UNSORTED",
+   "pageSize": 50,
+   "nextPage": 1,
+   "lastPage": 9,
+   "firstPage": 0
+  }
+ },
+ "correlationId": "8b8f91e3-45c3-40a1-9942-994d0a333295"
+}

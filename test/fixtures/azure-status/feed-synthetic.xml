@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Synthetic: the live feed (rssfeed.azure.status.microsoft) had no active incidents on 2026-10-10.
+     Item shape copied from the real feed's channel; contents invented for tests. -->
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Azure Status</title>
+    <link>https://azure.status.microsoft/en-us/status/</link>
+    <description>Azure Status</description>
+    <item>
+      <guid isPermaLink="false">TEST-GOV-1</guid>
+      <link>https://azure.status.microsoft/en-us/status/</link>
+      <title>Active - Virtual Machines - US Gov Virginia - Connectivity issues</title>
+      <description>Starting at 14:00 UTC customers in US Gov Virginia may experience connectivity issues.</description>
+      <pubDate>Sat, 10 Oct 2026 14:30:00 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">TEST-COM-1</guid>
+      <link>https://azure.status.microsoft/en-us/status/</link>
+      <title>Active - Azure Storage - East US 2 - Degraded performance</title>
+      <description>Customers in East US 2 may see increased latency.</description>
+      <pubDate>Sat, 10 Oct 2026 12:00:00 Z</pubDate>
+    </item>
+    <item>
+      <guid isPermaLink="false">TEST-MAINT-1</guid>
+      <link>https://azure.status.microsoft/en-us/status/</link>
+      <title>Planned maintenance - Azure SQL Database - US Gov Texas</title>
+      <description>Planned maintenance window Thursday 02:00 UTC.</description>
+      <pubDate>Fri, 09 Oct 2026 18:00:00 Z</pubDate>
+    </item>
+  </channel>
+</rss>

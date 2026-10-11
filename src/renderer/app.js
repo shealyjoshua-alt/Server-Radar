@@ -1,0 +1,68 @@
+// Wires the pure renderers (view.js) to the preload bridge (window.radar).
+(function () {
+  const V = window.RadarView;
+  const FILTER_KEY = 'radar.filters';
+  let vm = null;
+  let filters = { products: [] };
+  try { filters = JSON.parse(localStorage.getItem(FILTER_KEY)) || filters; } catch { /* storage unavailable */ }
+
+  const $ = (id) => document.getElementById(id);
+
+  function render() {
+    if (!vm) return;
+    $('status-dot').className = `dot c-${vm.icon.color}`;
+    $('status-dot').title = vm.icon.tooltip;
+    $('updated').textContent = vm.snapshot.updatedAt ? `Updated ${new Date(vm.snapshot.updatedAt).toLocaleString()}` : 'Waiting for first refresh…';
+    $('tiles').innerHTML = V.renderTiles(vm);
+    $('patchbar').innerHTML = V.renderPatchBar(vm, new Date());
+    $('filters').innerHTML = V.renderFilters(vm, filters);
+    $('feed').innerHTML = V.renderFeed(vm, filters);
+    $('azure').innerHTML = V.renderAzure(vm);
+    $('sources').innerHTML = V.renderSources(vm);
+  }
+
+  async function load() {
+    vm = await window.radar.getViewModel();
+    render();
+  }
+
+  function focusItem(key) {
+    const el = document.getElementById(`item-${key}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('focus');
+    setTimeout(() => el.classList.remove('focus'), 4000);
+  }
+
+  document.addEventListener('click', async (e) => {
+    const linkEl = e.target.closest('a[data-url]');
+    if (linkEl) {
+      e.preventDefault();
+      if (linkEl.dataset.url !== '#') window.radar.openUrl(linkEl.dataset.url);
+      return;
+    }
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action === 'mark-read') { vm = await window.radar.markRead(btn.dataset.key); render(); }
+    if (action === 'mark-all-read') { vm = await window.radar.markAllRead(); render(); }
+    if (action === 'refresh') {
+      btn.disabled = true; btn.textContent = 'Refreshing…';
+      try { vm = await window.radar.refresh(); render(); } finally { btn.disabled = false; btn.textContent = 'Refresh now'; }
+    }
+    if (action === 'show-all') {
+      filters.expanded = [...(filters.expanded || []), btn.dataset.tier];
+      render();
+    }
+    if (action === 'filter') {
+      const f = btn.dataset.filter;
+      filters.products = filters.products.includes(f) ? filters.products.filter((x) => x !== f) : [...filters.products, f];
+      try { localStorage.setItem(FILTER_KEY, JSON.stringify({ products: filters.products })); } catch { /* ignore */ }
+      render();
+    }
+  });
+
+  window.radar.onUpdate((next) => { vm = next; render(); });
+  window.radar.onFocusItem((key) => { render(); focusItem(key); });
+  load();
+})();

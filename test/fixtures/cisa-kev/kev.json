@@ -1,0 +1,480 @@
+{
+ "title": "CISA Catalog of Known Exploited Vulnerabilities",
+ "catalogVersion": "2026.10.08",
+ "dateReleased": "2026-10-08T20:09:18.9833Z",
+ "count": 30,
+ "vulnerabilities": [
+  {
+   "cveID": "CVE-2017-0143",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Server Message Block (SMBv1) Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Server Message Block 1.0 (SMBv1) contains an unspecified vulnerability that allows for remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2017-0143",
+   "cwes": [
+    "CWE-20"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-1464",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Spoofing Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows contains a spoofing vulnerability when Windows incorrectly validates file signatures, allowing an attacker to bypass security features and load improperly signed files.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-1464",
+   "cwes": [
+    "CWE-347"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-34527",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Print Spooler Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Print Spooler contains an unspecified vulnerability due to the Windows Print Spooler service improperly performing privileged file operations. Successful exploitation allows an attacker to perform remote code execution with SYSTEM privileges. The vulnerability is also known under the moniker of PrintNightmare.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "Reference CISA's ED 21-04 (https://www.cisa.gov/news-events/directives/ed-21-04-mitigate-windows-print-spooler-service-vulnerability) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 21-04. https://nvd.nist.gov/vuln/detail/CVE-2021-34527",
+   "cwes": [
+    "CWE-269"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-1350",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows DNS Server Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows DNS Servers fail to properly handle requests, allowing an attacker to perform remote code execution in the context of the Local System Account. The vulnerability is also known under the moniker of SIGRed.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "Reference CISA's ED 20-03 (https://www.cisa.gov/news-events/directives/ed-20-03-mitigate-windows-dns-server-remote-code-execution-vulnerability-july-2020-patch-tuesday) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 20-03. https://nvd.nist.gov/vuln/detail/CVE-2020-1350",
+   "cwes": []
+  },
+  {
+   "cveID": "CVE-2021-36942",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Local Security Authority (LSA) Spoofing Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Local Security Authority (LSA) contains a spoofing vulnerability allowing an unauthenticated attacker to call a method on the LSARPC interface and coerce the domain controller to authenticate against another server using NTLM.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-36942",
+   "cwes": [
+    "CWE-749"
+   ]
+  },
+  {
+   "cveID": "CVE-2019-1215",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Privilege Escalation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows contains an unspecified vulnerability due to the way ws2ifsl.sys (Winsock) handles objects in memory, allowing for privilege escalation. Successful exploitation allows an attacker to execute code with elevated privileges.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2019-1215",
+   "cwes": []
+  },
+  {
+   "cveID": "CVE-2021-1675",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Print Spooler Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Print Spooler contains an unspecified vulnerability that allows for remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-1675",
+   "cwes": [
+    "CWE-285"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-34448",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Scripting Engine Memory Corruption Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Scripting Engine contains an unspecified vulnerability that allows for memory corruption.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-34448",
+   "cwes": [
+    "CWE-787"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-0601",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows CryptoAPI Spoofing Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows CryptoAPI (Crypt32.dll) contains a spoofing vulnerability in the way it validates Elliptic Curve Cryptography (ECC) certificates. An attacker could exploit the vulnerability by using a spoofed code-signing certificate to sign a malicious executable, making it appear the file was from a trusted, legitimate source. A successful exploit could also allow the attacker to conduct man-in-the-middle attacks and decrypt confidential information on user connections to the affected software. The vulnerability is also known under the moniker of CurveBall.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "Reference CISA's ED 20-02 (https://www.cisa.gov/news-events/directives/ed-20-02-mitigate-windows-vulnerabilities-january-2020-patch-tuesday) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 20-02. https://nvd.nist.gov/vuln/detail/CVE-2020-0601",
+   "cwes": [
+    "CWE-295"
+   ]
+  },
+  {
+   "cveID": "CVE-2019-1214",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Privilege Common Log File System (CLFS) Escalation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Common Log File System (CLFS) driver improperly handles objects in memory which can allow for privilege escalation.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2019-1214",
+   "cwes": []
+  },
+  {
+   "cveID": "CVE-2019-0863",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Error Reporting (WER) Privilege Escalation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Error Reporting (WER) contains a privilege escalation vulnerability due to the way it handles files, allowing for code execution in kernel mode.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2019-0863",
+   "cwes": []
+  },
+  {
+   "cveID": "CVE-2021-36955",
+   "vendorProject": "Microsoft",
+   "product": "Windows",
+   "vulnerabilityName": "Microsoft Windows Common Log File System (CLFS) Driver Privilege Escalation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Windows Common Log File System (CLFS) driver contains an unspecified vulnerability that allows for privilege escalation.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-36955",
+   "cwes": []
+  },
+  {
+   "cveID": "CVE-2020-3950",
+   "vendorProject": "VMware",
+   "product": "Multiple Products",
+   "vulnerabilityName": "VMware Multiple Products Privilege Escalation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "VMware Fusion, Remote Console (VMRC) for Mac, and Horizon Client for Mac contain a privilege escalation vulnerability due to improper use of setuid binaries that allows attackers to escalate privileges to root.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-3950",
+   "cwes": [
+    "CWE-269"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-22005",
+   "vendorProject": "VMware",
+   "product": "vCenter Server",
+   "vulnerabilityName": "VMware vCenter Server File Upload Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "VMware vCenter Server contains a file upload vulnerability in the Analytics service that allows a user with network access to port 443 to execute code.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-22005",
+   "cwes": [
+    "CWE-23"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-3952",
+   "vendorProject": "VMware",
+   "product": "vCenter Server",
+   "vulnerabilityName": "VMware vCenter Server Information Disclosure Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "VMware vCenter Server contains an information disclosure vulnerability in the VMware Directory Service (vmdir) when the Platform Services Controller (PSC) does not correctly implement access controls. Successful exploitation allows an attacker with network access to port 389 to extract sensitive information.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-3952",
+   "cwes": [
+    "CWE-306"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-21972",
+   "vendorProject": "VMware",
+   "product": "vCenter Server",
+   "vulnerabilityName": "VMware vCenter Server Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "VMware vCenter Server vSphere Client contains a remote code execution vulnerability in a vCenter Server plugin which allows an attacker with network access to port 443 to execute commands with unrestricted privileges on the underlying operating system.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-21972",
+   "cwes": [
+    "CWE-23"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-21985",
+   "vendorProject": "VMware",
+   "product": "vCenter Server",
+   "vulnerabilityName": "VMware vCenter Server Improper Input Validation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "VMware vSphere Client contains an improper input validation vulnerability in the Virtual SAN Health Check plug-in, which is enabled by default in vCenter Server, which allows for remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-21985",
+   "cwes": [
+    "CWE-20",
+    "CWE-470",
+    "CWE-918"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-4006",
+   "vendorProject": "VMware",
+   "product": "Multiple Products",
+   "vulnerabilityName": "Multiple VMware Products Command Injection Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "VMware Workspace One Access, Access Connector, Identity Manager, and Identity Manager Connector contain a command injection vulnerability. An attacker with network access to the administrative configurator on port 8443 and a valid password for the configurator administrator account can execute commands with unrestricted privileges on the underlying operating system.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-4006",
+   "cwes": [
+    "CWE-78"
+   ]
+  },
+  {
+   "cveID": "CVE-2019-16759",
+   "vendorProject": "vBulletin",
+   "product": "vBulletin",
+   "vulnerabilityName": "vBulletin PHP Module Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "The PHP module within vBulletin contains an unspecified vulnerability that allows for remote code execution via the widgetConfig[code] parameter in an ajax/render/widget_php routestring request.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2019-16759",
+   "cwes": [
+    "CWE-94"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-17496",
+   "vendorProject": "vBulletin",
+   "product": "vBulletin",
+   "vulnerabilityName": "vBulletin PHP Module Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "The PHP module within vBulletin contains an unspecified vulnerability that allows for remote code execution via crafted subWidgets data in an ajax/render/widget_tabbedcontainer_tab_panel request. This CVE ID resolves an incomplete patch for CVE-2019-16759.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-17496",
+   "cwes": [
+    "CWE-74"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-25213",
+   "vendorProject": "WordPress",
+   "product": "File Manager Plugin",
+   "vulnerabilityName": "WordPress File Manager Plugin Remote Code Execution Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "WordPress File Manager plugin contains a remote code execution vulnerability that allows unauthenticated users to execute PHP code and upload malicious files on a target site.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-25213",
+   "cwes": [
+    "CWE-434"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-11738",
+   "vendorProject": "WordPress",
+   "product": "Snap Creek Duplicator Plugin",
+   "vulnerabilityName": "WordPress Snap Creek Duplicator Plugin File Download Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "WordPress Snap Creek Duplicator plugin contains a file download vulnerability when an administrator creates a new copy of their site that allows an attacker to download the generated files from their Wordpress dashboard. This vulnerability affects Duplicator and Dulplicator Pro.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-11738",
+   "cwes": [
+    "CWE-22"
+   ]
+  },
+  {
+   "cveID": "CVE-2019-9978",
+   "vendorProject": "WordPress",
+   "product": "Social Warfare Plugin",
+   "vulnerabilityName": "WordPress Social Warfare Plugin Cross-Site Scripting (XSS) Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "WordPress Social Warfare plugin contains a cross-site scripting (XSS) vulnerability that allows for remote code execution. This vulnerability affects Social Warfare and Social Warfare Pro.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2019-9978",
+   "cwes": [
+    "CWE-79"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-27561",
+   "vendorProject": "Yealink",
+   "product": "Device Management",
+   "vulnerabilityName": "Yealink Device Management Server-Side Request Forgery (SSRF) Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Yealink Device Management contains a server-side request forgery (SSRF) vulnerability that allows for unauthenticated remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-27561",
+   "cwes": [
+    "CWE-78"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-40539",
+   "vendorProject": "Zoho",
+   "product": "ManageEngine",
+   "vulnerabilityName": "Zoho ManageEngine ADSelfService Plus Authentication Bypass Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Zoho ManageEngine ADSelfService Plus contains an authentication bypass vulnerability affecting the REST API URLs which allow for remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Known",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-40539",
+   "cwes": [
+    "CWE-55"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-10189",
+   "vendorProject": "Zoho",
+   "product": "ManageEngine",
+   "vulnerabilityName": "Zoho ManageEngine Desktop Central File Upload Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Zoho ManageEngine Desktop Central contains a file upload vulnerability that allows for unauthenticated remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-10189",
+   "cwes": [
+    "CWE-502"
+   ]
+  },
+  {
+   "cveID": "CVE-2019-8394",
+   "vendorProject": "Zoho",
+   "product": "ManageEngine",
+   "vulnerabilityName": "Zoho ManageEngine ServiceDesk Plus (SDP) File Upload Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Zoho ManageEngine ServiceDesk Plus (SDP) contains an unspecified vulnerability that allows remote users to upload files via login page customization.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2019-8394",
+   "cwes": [
+    "CWE-434"
+   ]
+  },
+  {
+   "cveID": "CVE-2020-29583",
+   "vendorProject": "Zyxel",
+   "product": "Multiple Products",
+   "vulnerabilityName": "Zyxel Multiple Products Use of Hard-Coded Credentials Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Zyxel firewalls (ATP, USG, VM) and AP Controllers (NXC2500 and NXC5500) contain a use of hard-coded credentials vulnerability in an undocumented account (\"zyfwp\") with an unchangeable password.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2020-29583",
+   "cwes": [
+    "CWE-522"
+   ]
+  },
+  {
+   "cveID": "CVE-2016-3235",
+   "vendorProject": "Microsoft",
+   "product": "Office",
+   "vulnerabilityName": "Microsoft Office OLE DLL Side Loading Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Office Object Linking & Embedding (OLE) dynamic link library (DLL) contains a side loading vulnerability due to it improperly validating input before loading libraries. Successful exploitation allows for remote code execution.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2022-05-03",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2016-3235",
+   "cwes": [
+    "CWE-264"
+   ]
+  },
+  {
+   "cveID": "CVE-2021-38648",
+   "vendorProject": "Microsoft",
+   "product": "Open Management Infrastructure (OMI)",
+   "vulnerabilityName": "Microsoft Open Management Infrastructure (OMI) Privilege Escalation Vulnerability",
+   "dateAdded": "2021-11-03",
+   "shortDescription": "Microsoft Open Management Infrastructure (OMI) within Azure VM Management Extensions contains an unspecified vulnerability allowing privilege escalation.",
+   "requiredAction": "Apply updates per vendor instructions.",
+   "dueDate": "2021-11-17",
+   "knownRansomwareCampaignUse": "Unknown",
+   "forensicTriage": "No",
+   "notes": "https://nvd.nist.gov/vuln/detail/CVE-2021-38648",
+   "cwes": [
+    "CWE-1390"
+   ]
+  }
+ ]
+}

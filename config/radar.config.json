@@ -1,0 +1,68 @@
+{
+  "refreshMinutes": 60,
+  "greyAfterFailures": 3,
+  "products": {
+    "ws2019": [
+      "Windows Server 2019"
+    ],
+    "ws2022": [
+      "Windows Server 2022",
+      "Windows Server, version 23H2"
+    ],
+    "ws2025": [
+      "Windows Server 2025"
+    ],
+    "vmware": [
+      "VMware ESXi",
+      "ESXi",
+      "vCenter",
+      "vSphere",
+      "VMware Tools",
+      "VMware Cloud Foundation"
+    ],
+    "azure": [
+      "Azure"
+    ],
+    "crowdstrike": [
+      "CrowdStrike",
+      "Falcon sensor",
+      "Falcon Sensor"
+    ],
+    "carbonblack": [
+      "Carbon Black"
+    ],
+    "nagios": [
+      "NCPA",
+      "NSClient++",
+      "Nagios Cross-Platform Agent"
+    ],
+    "splunkuf": [
+      "Universal Forwarder"
+    ]
+  },
+  "exclude": [
+    "Windows Server 2012",
+    "Windows Server 2016",
+    "Windows Server 2008",
+    "VMware Workstation",
+    "VMware Fusion",
+    "Azure Linux",
+    "CBL Mariner",
+    "CBL-Mariner"
+  ],
+  "interestKeywords": [
+    "Windows Server 2025",
+    "hotpatch",
+    "Azure Arc",
+    "Azure Local",
+    "Azure Government",
+    "FedRAMP"
+  ],
+  "govMarkers": [
+    "Azure Government",
+    "US Gov",
+    "USGov",
+    "DoD",
+    "US DoD"
+  ]
+}

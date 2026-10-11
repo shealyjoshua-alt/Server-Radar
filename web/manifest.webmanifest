@@ -1,0 +1,1 @@
+{ "name": "Server Radar", "short_name": "Radar", "start_url": "./", "display": "standalone", "background_color": "#12161f", "theme_color": "#12161f", "icons": [{ "src": "icon.png", "sizes": "180x180", "type": "image/png" }] }

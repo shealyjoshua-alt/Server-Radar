@@ -1,0 +1,443 @@
+<rss version="2.0">  
+	<channel>  
+		<title>Splunk Security Announcements</title>  
+		<link>https://advisory.splunk.com/feed.xml</link>  
+		<description>Splunk Security Announcements</description>  
+		<language>en</language>  
+		<copyright>2023 Splunk</copyright>  
+		
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-1005: Third-Party Package Updates in Splunk Add-on for Amazon Web Services - September 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in third-party packages in Splunk Add-on for Amazon Web Services version 8.2.2 and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-1005</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-1004: Security Vulnerability in Splunk MCP Server - September/October 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk MCP Server versions below 1.2.1, Splunk MCP Server could send the Splunk platform authentication token of a user who runs a custom Application Programming Interface (API) tool to the URL configured for that tool. If another user controls that URL, they could capture the token and use it to access data and perform actions as the user who ran the tool. Successful exploitation requires a user who holds a role that contains the mcp_tool_execute capability to run a custom API tool configured by another user.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-1004</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-1003: Third-Party Package Updates in Splunk Enterprise - September/October 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in third-party packages in Splunk Enterprise versions 10.4.3, 10.2.7, 10.0.10, and 9.4.15 or higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-1003</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-1002: Security Hardening in Splunk Enterprise - September/October 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple internally identified vulnerabilities in Splunk Enterprise versions 10.4.3, 10.2.7, 10.0.10, and 9.4.15. The vulnerabilities are grouped by Common Weakness Enumeration (CWE), with one Common Vulnerabilities and Exposures (CVE) identifier assigned to each group. See Details for more information.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-1002</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-1001: Security Vulnerabilities in Splunk Enterprise - September/October 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple vulnerabilities in Splunk Enterprise versions 10.4.3, 10.2.7, 10.0.10, and 9.4.15. See CVE Details for vulnerability-specific affected versions, additional remediation, acknowledgments, and workarounds.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-1001</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0901: Advance Notice of Publication of Splunk Security Advisories - September 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>On October 7, 2026, Splunk PSIRT will publish advisories to disclose security vulnerabilities for Splunk Enterprise and Splunk Apps and Add-ons.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 09 Sep 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0901</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0808: Security Vulnerabilities in Splunk Apps and Add-ons - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple vulnerabilities in Splunk apps and add-ons. See CVE Details for vulnerability and product specific information.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0808</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0807: Security Vulnerabilities in Splunk Enterprise Security - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple vulnerabilities in Splunk Enterprise Security 8.6.1. See CVE Details for vulnerability-specific information.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0807</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0806: Security Vulnerabilities in Splunk SOAR Connectors - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple vulnerabilities in Splunk SOAR Connectors. See CVE Details for vulnerability-specific and product-specific information.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0806</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0805: Third-Party Package Updates in Splunk SOAR - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk SOAR version 8.6.0, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0805</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0804: Security Vulnerabilities in Splunk SOAR - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple vulnerabilities in Splunk SOAR 8.6.0. See CVE Details for vulnerability-specific information.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0804</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0803: Third-Party Package Updates in Splunk Universal Forwarder - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk Universal Forwarder versions 10.4.2, 10.2.6, 10.0.9, 9.4.14, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0803</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0802: Third-Party Package Updates in Splunk Enterprise - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk Enterprise versions 10.4.2, 10.2.6, 10.0.9, 9.4.14, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0802</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0801: Security Vulnerabilities in Splunk Enterprise - August 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk addressed multiple vulnerabilities in Splunk Enterprise versions 10.4.2, 10.2.6, 10.0.9, and 9.4.14. See CVE Details for vulnerability-specific information.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 19 Aug 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0801</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0706: Third-Party Package Updates in Splunk Universal Forwarder - July 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk Universal Forwarder versions 10.4.1, 10.2.5, 10.0.8, 9.4.13, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0706</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0705: Third-Party Package Updates in Splunk Enterprise - July 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk Enterprise versions 10.4.1, 10.2.5, 10.0.8, 9.4.13, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0705</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0704: Sensitive Information Disclosure through the storage/passwords REST Endpoint in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.4.1, 10.2.5, 10.0.8, and 9.4.13, and Splunk Cloud Platform versions below 10.5.2605.0, 10.4.2604.6, 10.3.2512.15, 10.2.2510.18, and 10.1.2507.24, a low-privileged user that does not hold the ‘admin’ or ‘power’ Splunk roles could view stored credential hashes when they access the <code class="language-plaintext highlighter-rouge">/servicesNS/-/-/storage/passwords</code> REST endpoint through the <code class="language-plaintext highlighter-rouge">|rest</code> Search Processing Language (SPL) command.<br /><br />The exposure happens because the <code class="language-plaintext highlighter-rouge">|rest</code> SPL command returns the <code class="language-plaintext highlighter-rouge">encr_password</code> field in the results of the <code class="language-plaintext highlighter-rouge">/servicesNS/-/-/storage/passwords</code> REST endpoint.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0704</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0703: Path Traversal through 'explicit_appname' in the App Install REST Endpoint in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.4.1, 10.2.5, 10.0.8, 9.4.13, and 9.3.14, and Splunk Cloud Platform versions below 10.5.2605.0, 10.4.2604.6, 10.2.2510.18, and 10.1.2507.24, a user who holds a role that contains the <code class="language-plaintext highlighter-rouge">edit_local_apps</code> and <code class="language-plaintext highlighter-rouge">install_apps</code> capabilities could cause a legitimate app installation to write files outside the intended app directory, into <code class="language-plaintext highlighter-rouge">$SPLUNK_HOME/etc/</code> and its subdirectories.<br /><br />The vulnerability is caused by a path traversal in the app installation workflow, which does not restrict the installation path to the intended app directory.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0703</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0702: SPL Command Safeguards Bypass through Cross-Site Request Forgery (CSRF) in Deployment Server in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.4.1, 10.2.5, 10.0.8, and 9.4.13, and Splunk Cloud Platform versions below 10.5.2605.0, 10.4.2604.7, 10.3.2512.16, 10.2.2510.18, and 10.1.2507.24, an attacker could trick a user that holds a role with the <code class="language-plaintext highlighter-rouge">list_deployment_server</code> capability into running arbitrary Search Processing Language (SPL) searches on their behalf as <code class="language-plaintext highlighter-rouge">splunk-system-user</code>, allowing for access to stored credentials and indexed data.<br /><br />The vulnerability is possible because Deployment Server endpoints in Splunk Web do not validate Cross-Site Request Forgery (CSRF) tokens on GET requests, and caller-supplied input is not correctly neutralized before it is placed into an SPL search.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 15 Jul 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0702</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0701: Third-Party Package Updates in Python for Scientific Computing - July 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Python for Scientific Computing version 4.3.2 and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 01 Jul 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0701</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0614: OS Command Injection in the btool Configuration Helper in Splunk AI Toolkit]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk AI Toolkit versions below 5.7.4, a user who holds the “admin” Splunk role could execute arbitrary OS commands on the host running the Splunk Enterprise instance.</p>
+
+<p>The vulnerability is possible because of an unsafe shell execution pattern in the btool configuration helper, which constructs OS command strings from dynamic parameters without disabling shell interpretation.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0614</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0613: Insecure Default Domain Allowlist in Splunk AI Toolkit]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk AI Toolkit versions below 5.7.4, a low-privileged user that does not hold the “admin” or “power” Splunk roles could cause the Splunk AI Toolkit to make outbound requests over HTTP to a server that an attacker controls, which could allow for data exfiltration.</p>
+
+<p>The vulnerability exists because of an insecure default domain allowlist in the Splunk AI Toolkit, which does not restrict outbound AI agent  requests to approved external domains.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 17 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0613</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0612: Third-Party Package Updates in Splunk SOAR - June 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk SOAR version 8.5.0, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0612</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0611: Log Injection through HTTP Request Paths in Splunk SOAR]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk SOAR (Security Orchestration, Automation, and Response) versions below 8.5.0, an unauthenticated attacker could inject American National Standards Institute (ANSI) escape codes into SOAR application log files through specially crafted HTTP request paths, which a terminal emulator might interpret when an administrator views the logs.<br /><br />The injection is possible because SOAR does not strip control characters from HTTP request paths before writing them to application logs.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0611</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0610: Third-Party Package Updates in Splunk Enterprise - June 2026]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>Splunk remedied common vulnerabilities and exposures (CVEs) in Third Party Packages in Splunk Enterprise versions 10.4.0, 10.2.4, 10.0.7, 9.4.12, 9.3.13, and higher.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0610</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0609: Improper Access Control in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.2.4 and 10.0.7, and Splunk Cloud Platform versions below 10.4.2604.0, 10.3.2512.12, 10.2.2510.15, 10.1.2507.23, 10.0.2503.14, and 9.3.2411.131, a user who holds a Splunk role that contains the high-privilege capability <code class="language-plaintext highlighter-rouge">edit_saved_search_owner</code> could reassign saved search ownership to users outside their authorized scope. The ownership reassignment endpoint lacks access control.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0609</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0608: Stored Cross-Site Scripting (XSS) through Classic Dashboard in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.2.4, 10.0.7, 9.4.12, and 9.3.13, and Splunk Cloud Platform versions below 10.3.2512.11, 10.2.2510.15, 10.1.2507.23, and 9.3.2411.132, a low-privileged user that does not hold the “admin” or “power” Splunk roles could store a malicious script in a classic dashboard HTML panel, causing unauthorized JavaScript code to execute in the browser of another user.</p>
+
+<p>The vulnerability requires the attacker to phish the victim by tricking them into initiating a request within their browser. The low-privileged user should not be able to exploit the vulnerability at will.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0608</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0607: Improper Input Validation through Classic Dashboard CSS in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.2.4, 10.0.7, 9.4.12, and 9.3.13, and Splunk Cloud Platform versions below 10.3.2512.13, 10.2.2510.15, 10.1.2507.23, and 9.3.2411.132, a low-privileged user that does not hold the “admin” or “power” Splunk roles could craft a classic dashboard that exfiltrates sensitive data from the browser of a higher-privileged user who views it.</p>
+
+<p>The exfiltration is possible because classic dashboard panels do not fully validate style attribute values, which can allow for requests to reach external domains outside the configured Trusted Domains List.</p>
+
+<p>The vulnerability requires the attacker to phish the victim by tricking them into initiating a request within their browser. The low-privileged user should not be able to exploit the vulnerability at will.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0607</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0606: Improper Input Validation through Protocol-Relative URL in Classic Dashboards in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.2.4, 10.0.7, 9.4.12, and 9.3.13, and Splunk Cloud Platform versions below 10.3.2512.13, 10.2.2510.15, 10.1.2507.23, and 9.3.2411.132, a low-privileged user that does not hold the ‘admin’ or ‘power’ Splunk roles could cause data exfiltration through classic dashboards by redirecting a victim to an external site using a protocol-relative URL in a drill-down link.<br /><br />The vulnerability exists because the URL classifier in classic dashboards only recognizes <code class="language-plaintext highlighter-rouge">http://</code> and <code class="language-plaintext highlighter-rouge">https://</code> schemes when checking for external URLs. Protocol-relative URLs such as <code class="language-plaintext highlighter-rouge">//attacker.com</code> bypass this check entirely, and Splunk Web does not show the external-navigation warning dialog to the victim.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0606</link>
+				<category>Security Advisory</category>  
+			</item>  
+		
+			<item>  
+				<title>  
+					<![CDATA[SVD-2026-0605: Improper Input Validation through Classic Dashboards in Splunk Enterprise]]>  
+				</title>  
+				<description>  
+					<![CDATA[<p>In Splunk Enterprise versions below 10.2.4, 10.0.7, 9.4.12, and 9.3.13, and Splunk Cloud Platform versions below 10.3.2512.13, 10.2.2510.15, 10.1.2507.23, and 9.3.2411.132, a low-privileged user that does not hold the “admin” or “power” Splunk roles could craft a malicious classic dashboard that exfiltrates sensitive data to an external server.</p>
+
+<p>The vulnerability exists because URL validation on the external content dialog is incomplete, which can allow for requests to untrusted domains when a user interacts with a crafted dashboard.</p>
+]]>  
+				</description> 
+				<pubDate>Wed, 10 Jun 2026 00:00:00 +0000</pubDate>  
+				   
+				<link>https://advisory.splunk.com/advisories/SVD-2026-0605</link>
+				<category>Security Advisory</category>  
+			</item>  
+		 
+	</channel>  
+</rss>   
