@@ -10,9 +10,12 @@ const COPY = [
   ['web/bridge.js', 'bridge.js'], ['web/index.html', 'index.html'], ['web/manifest.webmanifest', 'manifest.webmanifest'], ['web/icon.png', 'icon.png'],
 ];
 
-function writeSite(outDir, vm) {
+// version: stamps asset URLs so phones (which cache Pages files) pick up new code at once.
+function writeSite(outDir, vm, version = String(Date.now())) {
   fs.mkdirSync(outDir, { recursive: true });
   for (const [from, to] of COPY) fs.copyFileSync(path.join(ROOT, from), path.join(outDir, to));
+  const index = path.join(outDir, 'index.html');
+  fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace(/(src|href)="(bridge\.js|view\.js|app\.js|styles\.css)"/g, `$1="$2?v=${version}"`));
   fs.writeFileSync(path.join(outDir, 'viewmodel.json'), JSON.stringify(vm));
 }
 
