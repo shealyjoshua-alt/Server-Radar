@@ -29,3 +29,14 @@ test('keyword with plus sign matches', () => {
 test('keyword must be a whole word', () => {
   assert.deepEqual(matchProducts('Azurerite mineral', cfg), []);
 });
+
+test('domain controller topics tag dc', () => {
+  for (const t of ['Windows Kerberos Elevation of Privilege Vulnerability', 'Windows Netlogon spoofing', 'Active Directory Domain Services flaw',
+    'Windows LDAP Remote Code Execution', 'Domain controllers might fail to authenticate', 'NTLM hash disclosure', 'Group Policy processing fails', 'Active Directory Certificate Services']) {
+    assert.ok(matchProducts(t, cfg).includes('dc'), t);
+  }
+});
+
+test('Azure Active Directory / Entra is not a domain controller topic', () => {
+  assert.ok(!matchProducts('Azure Active Directory B2C update', cfg).includes('dc'));
+});

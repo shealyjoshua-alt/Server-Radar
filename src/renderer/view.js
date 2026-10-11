@@ -15,9 +15,9 @@
 
   const PRODUCT_LABELS = {
     ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
-    gov: 'Azure Gov', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF',
+    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF',
   };
-  const FILTERS = ['ws2019', 'ws2022', 'ws2025', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+  const FILTERS = ['ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
   const SOURCE_LABELS = {
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
     splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
@@ -28,8 +28,9 @@
     vmware: ['vmware'],
     azure: ['gov'],
     agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'],
+    dc: ['dc'],
   };
-  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents']];
+  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers']];
   const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
   const DAY = 86400000;
   const RECENT_DAYS = 30;
@@ -131,7 +132,7 @@
   function renderTiles(vm, filters) {
     const active = activeGroup(filters);
     return TILES.map(([k, label]) => {
-      const t = vm.tiles[k];
+      const t = vm.tiles[k] || { unread: 0, color: 'green' };
       return `<button class="tile c-${escapeHtml(t.color)}${active === k ? ' on' : ''}" data-action="tile" data-group="${k}"><h4>${label}</h4><div class="big">${t.unread || '✓'}</div><span class="sub">${t.unread ? 'unread' : 'nothing new'}</span></button>`;
     }).join('');
   }

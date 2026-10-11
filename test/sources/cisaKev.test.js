@@ -55,11 +55,16 @@ test('non-json throws ParseError', () => {
 test('microsoft windows component products map to all servers', () => {
   const doc = { vulnerabilities: ['Win32k', 'Netlogon', 'SMBv1', 'Internet Explorer', 'DirectX'].map((product, i) => ({
     cveID: `CVE-2026-90${i}`, vendorProject: 'Microsoft', product, vulnerabilityName: `${product} bug`, dateAdded: '2026-10-01', shortDescription: 'Microsoft component vulnerability.', requiredAction: 'Patch.' })) };
-  for (const it of kev.parse([JSON.stringify(doc)], cfg)) assert.deepEqual(it.products, ['ws2019', 'ws2022', 'ws2025'], it.title);
+  for (const it of kev.parse([JSON.stringify(doc)], cfg)) assert.deepEqual(it.products.filter((p) => p.startsWith('ws')), ['ws2019', 'ws2022', 'ws2025'], it.title);
 });
 
 test('microsoft non-windows products stay out of scope', () => {
   const doc = { vulnerabilities: ['Office', 'Exchange Server', 'SharePoint', 'Edge'].map((product, i) => ({
     cveID: `CVE-2026-91${i}`, vendorProject: 'Microsoft', product, vulnerabilityName: `${product} bug`, dateAdded: '2026-10-01', shortDescription: 'Microsoft product vulnerability.', requiredAction: 'Patch.' })) };
   for (const it of kev.parse([JSON.stringify(doc)], cfg)) assert.deepEqual(it.products, [], it.title);
+});
+
+test('KEV Netlogon entry is a domain controller item on all servers', () => {
+  const doc = { vulnerabilities: [{ cveID: 'CVE-2020-1472', vendorProject: 'Microsoft', product: 'Netlogon', vulnerabilityName: 'Microsoft Netlogon Privilege Escalation', dateAdded: '2026-10-01', shortDescription: 'Netlogon elevation of privilege.', requiredAction: 'Patch.' }] };
+  assert.deepEqual(kev.parse([JSON.stringify(doc)], cfg)[0].products, ['dc', 'ws2019', 'ws2022', 'ws2025']);
 });

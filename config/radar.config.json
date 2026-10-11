@@ -38,6 +38,23 @@
     ],
     "splunkuf": [
       "Universal Forwarder"
+    ],
+    "dc": [
+      "domain controller",
+      "domain controllers",
+      "Active Directory",
+      "AD DS",
+      "Kerberos",
+      "Netlogon",
+      "LDAP",
+      "NTLM",
+      "LSASS",
+      "Local Security Authority",
+      "Group Policy",
+      "SYSVOL",
+      "DFS Replication",
+      "Certificate Services",
+      "AD CS"
     ]
   },
   "exclude": [
@@ -48,7 +65,9 @@
     "VMware Fusion",
     "Azure Linux",
     "CBL Mariner",
-    "CBL-Mariner"
+    "CBL-Mariner",
+    "Azure Active Directory",
+    "Microsoft Entra"
   ],
   "interestKeywords": [
     "Windows Server 2025",

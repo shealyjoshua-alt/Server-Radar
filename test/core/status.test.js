@@ -56,3 +56,8 @@ test('azure tile counts only government items', () => {
   const t = tileCounts(snap([gov, item('azure', ['azure']), item('interest', ['azure'])]));
   assert.deepEqual(t.azure, { unread: 1, color: 'amber' });
 });
+
+test('domain controllers tile counts dc items', () => {
+  const t = tileCounts(snap([item('watch', ['dc', 'ws2022']), item('watch', ['ws2019'])]));
+  assert.deepEqual(t.dc, { unread: 1, color: 'amber' });
+});

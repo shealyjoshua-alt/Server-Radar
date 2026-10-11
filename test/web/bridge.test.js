@@ -31,3 +31,8 @@ test('azure tile on the phone counts only government items', () => {
   const v = { snapshot: { items: [{ key: 'g', tier: 'watch', products: ['azure'], gov: true }, { key: 'c', tier: 'azure', products: ['azure'], gov: false }], sources: [] } };
   assert.deepEqual(applyReadState(v, new Set(), 3).tiles.azure, { unread: 1, color: 'amber' });
 });
+
+test('phone tiles include domain controllers', () => {
+  const v = { snapshot: { items: [{ key: 'd', tier: 'act', products: ['dc', 'ws2022'] }], sources: [] } };
+  assert.deepEqual(applyReadState(v, new Set(), 3).tiles.dc, { unread: 1, color: 'red' });
+});

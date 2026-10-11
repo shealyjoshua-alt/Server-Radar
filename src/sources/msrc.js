@@ -31,7 +31,7 @@ function parseDoc(doc, config) {
       cvss: scores.length ? Math.max(...scores) : null,
       severity: severity ? severity.toLowerCase() : null,
       exploited: threatText(v, 1).some((d) => d.includes('Exploited:Yes')),
-      products: matchProducts([...new Set(productNames)].join(' | '), config),
+      products: matchProducts(`${[...new Set(productNames)].join(' | ')} | ${(v.Title && v.Title.Value) || ''}`, config),
       published: released,
       url: `https://msrc.microsoft.com/update-guide/vulnerability/${v.CVE}`,
     });

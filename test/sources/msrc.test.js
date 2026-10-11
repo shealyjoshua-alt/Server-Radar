@@ -68,3 +68,10 @@ test('document without Vulnerability throws ParseError', () => {
 test('document with zero vulnerabilities throws ParseError', () => {
   assert.throws(() => msrc.parse(['{"Vulnerability":[]}', null], cfg), ParseError);
 });
+
+test('vulnerability titles are matched too (domain controller topics)', () => {
+  const doc = { ProductTree: { FullProductName: [{ ProductID: '1', Value: 'Windows Server 2022' }] }, DocumentTracking: { CurrentReleaseDate: '2026-10-13' },
+    Vulnerability: [{ CVE: 'CVE-2026-7777', Title: { Value: 'Windows Kerberos Elevation of Privilege Vulnerability' }, ProductStatuses: [{ ProductID: ['1'] }], Threats: [], CVSSScoreSets: [{ BaseScore: 8.1 }] }] };
+  const [it] = msrc.parse([JSON.stringify(doc)], cfg);
+  assert.deepEqual(it.products, ['dc', 'ws2022']);
+});

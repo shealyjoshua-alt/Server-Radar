@@ -102,3 +102,7 @@ test('first sync never notifies', () => {
   const a = mk({ exploited: true, cves: ['CVE-2026-2'], products: ['ws2019'] });
   assert.equal(shouldNotify(a, ctx({ firstSync: true }), cfg), false);
 });
+
+test('important domain controller CVE is kept in keep an eye on', () => {
+  assert.equal(tierFor(mk({ severity: 'important', cvss: 8.1, products: ['dc', 'ws2022'] }), cfg), 'watch');
+});

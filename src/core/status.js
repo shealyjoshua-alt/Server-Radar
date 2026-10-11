@@ -21,6 +21,7 @@ const GROUPS = {
   vmware: (i) => i.products.includes('vmware'),
   azure: (i) => i.gov, // owner only cares about the Azure Government tenant
   agents: (i) => i.products.some((p) => AGENTS.includes(p)),
+  dc: (i) => i.products.includes('dc'),
 };
 
 function tileCounts(snapshot) {

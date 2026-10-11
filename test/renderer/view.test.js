@@ -212,3 +212,12 @@ test('a tile filter shows a banner with Show everything', () => {
   assert.match(html, /data-action="clear-filters"/);
   assert.ok(!V.renderFilters(vmWith([]), { products: [] }).includes('clear-filters'));
 });
+
+test('domain controllers tile and filter exist', () => {
+  const vm = vmWith([]);
+  vm.tiles.dc = { unread: 2, color: 'amber' };
+  assert.match(V.renderTiles(vm, { products: [] }), /data-group="dc"><h4>Domain Controllers/);
+  assert.deepEqual(V.GROUP_FILTERS.dc, ['dc']);
+  assert.ok(V.renderFilters(vm, { products: [] }).includes('data-filter="dc">Domain Controllers'));
+  assert.match(V.renderFilters(vm, { products: ['dc'] }), /Showing only Domain Controllers/);
+});

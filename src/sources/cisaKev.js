@@ -10,7 +10,8 @@ function productsFor(v, config) {
   // KEV names Windows components ("Windows", "Win32k", "Netlogon", "SMBv1", "Internet Explorer")
   // without Server versions; err toward alerting for any Microsoft product that is not a
   // clearly separate application.
-  if (v.vendorProject === 'Microsoft' && !NON_WINDOWS.test(v.product) && products.size === 0) {
+  const onlyRoleTopics = [...products].every((p) => p === 'dc');
+  if (v.vendorProject === 'Microsoft' && !NON_WINDOWS.test(v.product) && onlyRoleTopics) {
     ALL_SERVERS.forEach((p) => products.add(p));
   }
   if (/^(VMware|Broadcom)$/i.test(v.vendorProject) && !/Workstation|Fusion/i.test(v.product)
