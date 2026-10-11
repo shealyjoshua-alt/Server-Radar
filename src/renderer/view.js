@@ -114,7 +114,7 @@
   }
 
   function renderTiles(vm) {
-    const tiles = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure'], ['agents', 'Agents']];
+    const tiles = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents']];
     return tiles.map(([k, label]) => {
       const t = vm.tiles[k];
       return `<div class="tile c-${escapeHtml(t.color)}"><h4>${label}</h4><div class="big">${t.unread || '✓'}</div><span class="sub">${t.unread ? 'unread' : 'nothing new'}</span></div>`;
@@ -143,9 +143,10 @@
   }
 
   function renderAzure(vm) {
-    const items = vm.snapshot.items.filter((i) => (i.sources || [i.source]).some((s) => s === 'azure-updates' || s === 'azure-status')).slice(0, 150);
-    if (!items.length) return '<p class="empty">Nothing here.</p>';
-    return items.map((i) => `<div class="az-row">${i.gov ? tag(['GOV', 'amber']) : ''}${i.kind === 'retirement' ? tag(['RETIRING', 'blue']) : ''}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('');
+    // Only what touches the Azure Government tenant.
+    const items = vm.snapshot.items.filter((i) => i.gov).slice(0, 150);
+    if (!items.length) return '<p class="empty">No Azure Government items right now.</p>';
+    return items.map((i) => `<div class="az-row">${i.kind === 'incident' ? tag(['INCIDENT', 'amber']) : ''}${i.kind === 'retirement' ? tag(['RETIRING', 'blue']) : ''}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('');
   }
 
   function renderSources(vm) {

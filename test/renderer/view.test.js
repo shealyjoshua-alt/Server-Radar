@@ -110,10 +110,15 @@ test('tiles show four groups', () => {
   for (const label of ['Windows Server', 'VMware', 'Azure', 'Agents']) assert.ok(html.includes(label));
 });
 
-test('azure section lists azure items of any tier, gov tagged', () => {
-  const html = V.renderAzure(vmWith([base({ sources: ['azure-updates'], tier: 'azure', title: 'Plain' }), base({ sources: ['azure-updates'], tier: 'watch', gov: true, title: 'GovRet' }), base({ title: 'NotAzure' })]));
-  assert.ok(html.includes('Plain') && html.includes('GovRet') && html.includes('GOV'));
+test('azure section lists only azure government items', () => {
+  const html = V.renderAzure(vmWith([base({ sources: ['azure-updates'], tier: 'azure', title: 'Plain' }), base({ sources: ['azure-updates'], tier: 'watch', gov: true, title: 'GovRet' }), base({ sources: ['azure-status'], kind: 'incident', gov: true, title: 'GovIncident' }), base({ title: 'NotAzure' })]));
+  assert.ok(html.includes('GovRet') && html.includes('GovIncident'));
+  assert.ok(!html.includes('Plain'));
   assert.ok(!html.includes('NotAzure'));
+});
+
+test('azure section empty state mentions government', () => {
+  assert.match(V.renderAzure(vmWith([base({ sources: ['azure-updates'], title: 'Plain' })])), /No Azure Government items/);
 });
 
 test('source footer shows failing source error text escaped', () => {

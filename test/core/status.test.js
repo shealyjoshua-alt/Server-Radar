@@ -47,6 +47,12 @@ test('tile counts group by product family with worst unread tier', () => {
   ]));
   assert.deepEqual(t.windows, { unread: 3, color: 'red' });
   assert.deepEqual(t.vmware, { unread: 1, color: 'amber' });
-  assert.deepEqual(t.azure, { unread: 1, color: 'green' });
+  assert.deepEqual(t.azure, { unread: 0, color: 'green' });
   assert.deepEqual(t.agents, { unread: 1, color: 'amber' });
+});
+
+test('azure tile counts only government items', () => {
+  const gov = { ...item('watch', ['azure']), gov: true };
+  const t = tileCounts(snap([gov, item('azure', ['azure']), item('interest', ['azure'])]));
+  assert.deepEqual(t.azure, { unread: 1, color: 'amber' });
 });

@@ -4,10 +4,10 @@
   // Mirrors classify.AGENTS and status.js counting so the badge reflects this phone's read marks.
   const AGENTS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
   const GROUPS = {
-    windows: (p) => p.startsWith('ws'),
-    vmware: (p) => p === 'vmware',
-    azure: (p) => p === 'azure',
-    agents: (p) => AGENTS.includes(p),
+    windows: (i) => i.products.some((p) => p.startsWith('ws')),
+    vmware: (i) => i.products.includes('vmware'),
+    azure: (i) => i.gov, // owner only cares about the Azure Government tenant
+    agents: (i) => i.products.some((p) => AGENTS.includes(p)),
   };
 
   function applyReadState(vm, readKeys, greyAfter) {
@@ -23,7 +23,7 @@
     failing.forEach((s) => parts.push(`${s.label} not updating`));
     const tiles = {};
     for (const [name, inGroup] of Object.entries(GROUPS)) {
-      const mine = unread.filter((i) => i.products.some(inGroup));
+      const mine = unread.filter((i) => inGroup(i));
       tiles[name] = { unread: mine.length, color: mine.some((i) => i.tier === 'act') ? 'red' : mine.some((i) => i.tier === 'watch') ? 'amber' : 'green' };
     }
     return { ...vm, snapshot: { ...vm.snapshot, items }, icon: { color, count: act, tooltip: parts.join(' · ') || 'All clear' }, tiles };

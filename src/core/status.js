@@ -17,16 +17,16 @@ function iconState(snapshot, config) {
 }
 
 const GROUPS = {
-  windows: (p) => p.startsWith('ws'),
-  vmware: (p) => p === 'vmware',
-  azure: (p) => p === 'azure',
-  agents: (p) => AGENTS.includes(p),
+  windows: (i) => i.products.some((p) => p.startsWith('ws')),
+  vmware: (i) => i.products.includes('vmware'),
+  azure: (i) => i.gov, // owner only cares about the Azure Government tenant
+  agents: (i) => i.products.some((p) => AGENTS.includes(p)),
 };
 
 function tileCounts(snapshot) {
   const out = {};
-  for (const [name, test] of Object.entries(GROUPS)) {
-    const mine = snapshot.items.filter((i) => !i.read && i.products.some(test));
+  for (const [name, inGroup] of Object.entries(GROUPS)) {
+    const mine = snapshot.items.filter((i) => !i.read && inGroup(i));
     const color = mine.some((i) => i.tier === 'act') ? 'red' : mine.some((i) => i.tier === 'watch') ? 'amber' : 'green';
     out[name] = { unread: mine.length, color };
   }
