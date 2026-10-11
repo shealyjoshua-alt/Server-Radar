@@ -18,9 +18,9 @@ module.exports = {
         title: r.title,
         summary,
         cves: [...new Set(`${r.title} ${r.description}`.match(/CVE-\d{4}-\d{4,}/g) || [])],
-        // The feed carries no severity; a vendor security advisory for an agent the
-        // owner runs is treated as Important so it reaches "Keep an eye on".
-        severity: /\bcritical\b/i.test(summary) ? 'critical' : 'important',
+        // The feed has no severity field; use the advisory's own words, else unknown
+        // (unknown-severity advisories are hidden; NVD supplies scored UF CVEs).
+        severity: /\bcritical\b/i.test(summary) ? 'critical' : /\bhigh\b/i.test(summary) ? 'important' : null,
         products: matchProducts(`${r.title} ${summary}`, config),
         published: r.pubDate,
         url: r.link,

@@ -106,3 +106,21 @@ test('first sync never notifies', () => {
 test('important domain controller CVE is kept in keep an eye on', () => {
   assert.equal(tierFor(mk({ severity: 'important', cvss: 8.1, products: ['dc', 'ws2022'] }), cfg), 'watch');
 });
+
+test('only critical or high vulnerabilities are shown', () => {
+  // scored: CVSS 7.0+ only
+  assert.equal(tierFor(mk({ severity: 'important', cvss: 6.5, products: ['dc', 'ws2022'] }), cfg), null);
+  assert.equal(tierFor(mk({ severity: 'important', cvss: 7.0, products: ['dc', 'ws2022'] }), cfg), 'watch');
+  assert.equal(tierFor(mk({ severity: 'critical', cvss: 5.9, products: ['ws2022'] }), cfg), null);
+  // unscored: needs a vendor critical/high rating
+  assert.equal(tierFor(mk({ severity: null, products: ['splunkuf'] }), cfg), null);
+  assert.equal(tierFor(mk({ severity: 'important', products: ['vmware'] }), cfg), 'watch');
+  // a scored exploited item below 7 is hidden too
+  assert.equal(tierFor(mk({ exploited: true, cvss: 5.5, products: ['ws2022'] }), cfg), null);
+  // unscored CISA KEV entries (actively exploited) still show
+  assert.equal(tierFor(mk({ exploited: true, severity: 'critical', products: ['ws2022'] }), cfg), 'act');
+});
+
+test('non-vulnerability items are not affected by the severity rule', () => {
+  assert.equal(tierFor(mk({ kind: 'known-issue', products: ['ws2022'] }), cfg), 'watch');
+});

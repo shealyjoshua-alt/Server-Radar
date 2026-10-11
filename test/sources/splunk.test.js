@@ -20,10 +20,10 @@ test('parses all rss items with SVD ids', () => {
   assert.ok(items.every((i) => /^splunk:SVD-\d{4}-\d{4}$/.test(i.id) && i.kind === 'vuln'));
 });
 
-test('universal forwarder advisory is splunkuf and important', () => {
+test('universal forwarder advisory is splunkuf; severity only from the text', () => {
   const uf = items.filter((i) => /Universal Forwarder/.test(i.title));
   assert.ok(uf.length > 0);
-  assert.ok(uf.every((i) => i.products.includes('splunkuf') && i.severity === 'important'));
+  assert.ok(uf.every((i) => i.products.includes('splunkuf') && [null, 'critical', 'important'].includes(i.severity)));
   assert.match(uf[0].published, /^\d{4}-\d{2}-\d{2}T/);
 });
 
@@ -38,4 +38,11 @@ test('rss without channel throws ParseError', () => {
 
 test('channel with no items throws ParseError', () => {
   assert.throws(() => splunk.parse(['<rss version="2.0"><channel><title>x</title></channel></rss>'], cfg), ParseError);
+});
+
+test('severity read from advisory text', () => {
+  const rss = (d) => `<rss version="2.0"><channel><item><title>SVD-2026-0001: x Universal Forwarder</title><description>${d}</description><pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate><link>https://a/1</link></item></channel></rss>`;
+  assert.equal(splunk.parse([rss('A High severity vulnerability')], cfg)[0].severity, 'important');
+  assert.equal(splunk.parse([rss('A critical issue')], cfg)[0].severity, 'critical');
+  assert.equal(splunk.parse([rss('Third-party package updates')], cfg)[0].severity, null);
 });

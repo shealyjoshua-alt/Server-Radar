@@ -19,7 +19,16 @@ function recentlyExploited(item) {
 // Rules are ordered; first match wins (spec "How items are sorted", as quieted by the
 // owner on 2026-10-10: Act now = exploited in the last 90 days; CVSS 9+ alone is amber;
 // Azure-cloud-only CVEs go to the Azure section; routine Important Windows CVEs dropped).
+// Owner rule (2026-10-11): only Critical or High vulnerabilities are shown. Scored items
+// need CVSS 7.0+; unscored ones need a vendor Critical/High rating (CISA KEV entries
+// carry 'critical' because they are actively exploited).
+function highEnough(item) {
+  if (item.cvss !== null) return item.cvss >= 7.0;
+  return item.exploited || item.severity === 'critical' || item.severity === 'important';
+}
+
 function tierFor(item, config) {
+  if (item.kind === 'vuln' && !highEnough(item)) return null;
   const inScope = item.products.length > 0;
   const azureOnly = inScope && item.products.every((p) => p === 'azure');
   if (inScope && item.exploited) return recentlyExploited(item) ? 'act' : null;

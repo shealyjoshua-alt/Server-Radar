@@ -20,7 +20,7 @@ test('each disclosure becomes an in-scope nagios vuln', () => {
   const it = items.find((i) => i.title === 'NCPA 3.1.4');
   assert.deepEqual(it.products, ['nagios']);
   assert.equal(it.kind, 'vuln');
-  assert.equal(it.severity, 'important');
+  assert.equal(it.severity, null); // Nagios gives no rating
   assert.match(it.summary, /bundled Python/);
   assert.equal(it.url, 'https://www.nagios.com/security-disclosures/ncpa/ncpa-3-1-4/');
   assert.equal(it.id, 'nagios:ncpa-3-1-4');

@@ -23,7 +23,7 @@ module.exports = {
         title,
         summary,
         cves: [...new Set(cveText.match(/CVE-\d{4}-\d{4,}/g) || [])],
-        severity: 'important',
+        severity: null, // Nagios publishes no rating
         products: [...new Set(['nagios', ...matchProducts(`${title} ${summary}`, config)])].sort(),
         published: p.date_gmt ? `${p.date_gmt}Z` : p.date || '',
         url: p.link,
