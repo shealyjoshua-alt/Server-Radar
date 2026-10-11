@@ -122,14 +122,62 @@ test('source footer shows failing source error text escaped', () => {
   assert.ok(html.includes('Microsoft'));
 });
 
-test('each tier shows all unread plus at most 20 read items, with a show-all control', () => {
+const daysAgoIso = (n) => new Date(Date.now() - n * 86400000).toISOString();
+
+test('keep an eye on shows the 8 most important recent items, then See more', () => {
   const items = [];
-  for (let i = 0; i < 5; i++) items.push(base({ key: `u${i}`, title: `Unread${i}` }));
-  for (let i = 0; i < 30; i++) items.push(base({ key: `r${i}`, title: `Read${i}`, read: true }));
+  for (let i = 0; i < 12; i++) items.push(base({ key: `ret${i}`, kind: 'retirement', products: ['azure'], title: `Retire${i}`, published: daysAgoIso(1) }));
+  items.push(base({ key: 'ki', kind: 'known-issue', status: 'open', title: 'OpenIssue', published: daysAgoIso(5) }));
+  items.push(base({ key: 'cv', cvss: 9.8, title: 'HighScore', published: daysAgoIso(10) }));
+  items.push(base({ key: 'old', cvss: 9.8, title: 'OldHighScore', published: daysAgoIso(60) }));
   const html = V.renderFeed(vmWith(items), { products: [] });
-  assert.equal((html.match(/class="item /g) || []).length, 25);
-  assert.match(html, /data-action="show-all" data-tier="watch">Show all 35/);
-  const all = V.renderFeed(vmWith(items), { products: [], expanded: ['watch'] });
-  assert.equal((all.match(/class="item /g) || []).length, 35);
-  assert.ok(!all.includes('data-action="show-all" data-tier="watch"'));
+  const watch = html.slice(html.indexOf('Keep an eye on'), html.indexOf('Might interest you'));
+  assert.equal((watch.match(/class="item /g) || []).length, 8);
+  assert.ok(watch.indexOf('HighScore') < watch.indexOf('OpenIssue'));
+  assert.ok(watch.indexOf('OpenIssue') < watch.indexOf('Retire'));
+  assert.ok(!watch.includes('OldHighScore'));
+  assert.match(watch, /data-action="show-all" data-tier="watch">See more \(15\)/);
+});
+
+test('see more expands a tier to everything', () => {
+  const items = [];
+  for (let i = 0; i < 12; i++) items.push(base({ key: `r${i}`, kind: 'retirement', products: ['azure'], published: daysAgoIso(i) }));
+  const html = V.renderFeed(vmWith(items), { products: [], expanded: ['watch'] });
+  assert.equal((html.match(/class="item /g) || []).length, 12);
+  assert.ok(!html.includes('data-tier="watch">See more'));
+});
+
+test('might interest you shows the 5 newest', () => {
+  const items = [];
+  for (let i = 0; i < 9; i++) items.push(base({ key: `n${i}`, tier: 'interest', kind: 'update', products: ['azure'], title: `New${i}x`, published: daysAgoIso(i) }));
+  const html = V.renderFeed(vmWith(items), { products: [] });
+  const interest = html.slice(html.indexOf('Might interest you'));
+  assert.equal((interest.match(/class="item /g) || []).length, 5);
+  assert.ok(interest.includes('New0x') && !interest.includes('New5x'));
+  assert.match(interest, /See more \(9\)/);
+});
+
+test('act now is never capped', () => {
+  const items = [];
+  for (let i = 0; i < 15; i++) items.push(base({ key: `a${i}`, tier: 'act', exploited: true, published: daysAgoIso(i) }));
+  const html = V.renderFeed(vmWith(items), { products: [] });
+  assert.equal((html.match(/class="item /g) || []).length, 15);
+});
+
+test('a quiet month says so but still offers See more', () => {
+  const html = V.renderFeed(vmWith([base({ key: 'o', kind: 'retirement', products: ['azure'], published: daysAgoIso(90) })]), { products: [] });
+  const watch = html.slice(html.indexOf('Keep an eye on'), html.indexOf('Might interest you'));
+  assert.match(watch, /Nothing new in the last 30 days/);
+  assert.match(watch, /See more \(1\)/);
+});
+
+test('collapsed keep-an-eye-on mixes kinds: at most 3 of a kind before filling', () => {
+  const items = [];
+  for (let i = 0; i < 10; i++) items.push(base({ key: `c${i}`, cvss: 9.8, title: `Crit${i}x`, published: daysAgoIso(1) }));
+  items.push(base({ key: 'ki', kind: 'known-issue', status: 'open', title: 'OpenIssue', published: daysAgoIso(3) }));
+  items.push(base({ key: 'vm', severity: 'important', products: ['vmware'], title: 'VmwareThing', published: daysAgoIso(4) }));
+  const html = V.renderFeed(vmWith(items), { products: [] });
+  const titles = [...html.slice(html.indexOf('Keep an eye on'), html.indexOf('Might interest you')).matchAll(/data-url="[^"]*">([^<]+)</g)].map((m) => m[1]);
+  assert.equal(titles.length, 8);
+  assert.deepEqual(titles.slice(0, 5).filter((t) => !t.startsWith('Crit')), ['OpenIssue', 'VmwareThing']);
 });

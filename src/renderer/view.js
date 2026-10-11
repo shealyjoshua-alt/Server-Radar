@@ -24,7 +24,23 @@
   };
   const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
   const DAY = 86400000;
-  const READ_LIMIT = 20;
+  const RECENT_DAYS = 30;
+  // Act now (zero-days) is never capped.
+  const TIER_CAP = { watch: 8, interest: 5 };
+  const PER_KIND = 3;
+  const AGENT_IDS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+
+  // Lower is more important (Keep an eye on ranking).
+  function importance(it) {
+    if (it.cvss != null && it.cvss >= 9) return 0;
+    if (it.kind === 'known-issue' && it.status !== 'resolved') return 1;
+    if (it.kind === 'vuln' && it.products.some((p) => p === 'vmware' || AGENT_IDS.includes(p))) return 2;
+    if (it.kind === 'vuln' && it.severity === 'critical') return 3;
+    if (it.kind === 'incident' || it.kind === 'maintenance') return 4;
+    if (it.kind === 'retirement') return 5;
+    if (it.kind === 'known-issue') return 6;
+    return 7;
+  }
 
   function tagFor(it) {
     if (it.exploited) return ['EXPLOITED', 'red'];
@@ -67,13 +83,26 @@
     const expanded = (filters && filters.expanded) || [];
     return TIERS.map(([tier, heading]) => {
       const mine = items.filter((it) => it.tier === tier);
-      const unread = mine.filter((it) => !it.read);
-      // Unread first, then the newest read items; long tiers collapse behind "Show all".
-      const shown = expanded.includes(tier) ? mine : [...unread, ...mine.filter((it) => it.read).slice(0, READ_LIMIT)];
+      const unread = mine.filter((it) => !it.read).length;
+      const cap = TIER_CAP[tier];
+      let shown = mine;
+      if (cap && !expanded.includes(tier)) {
+        // Collapsed view: the most important items from the last 30 days only.
+        const cutoff = new Date(Date.now() - RECENT_DAYS * DAY).toISOString();
+        const ranked = mine.filter((it) => (it.published || '') >= cutoff)
+          .sort((a, b) => importance(a) - importance(b) || (b.published || '').localeCompare(a.published || ''));
+        // Mix kinds: up to PER_KIND of each importance level first, then fill by rank.
+        const perKind = {};
+        const first = ranked.filter((it) => (perKind[importance(it)] = (perKind[importance(it)] || 0) + 1) <= PER_KIND);
+        shown = [...first, ...ranked.filter((it) => !first.includes(it))].slice(0, cap);
+      }
       const more = shown.length < mine.length
-        ? `<button class="show-all" data-action="show-all" data-tier="${tier}">Show all ${mine.length}</button>` : '';
-      const body = mine.length ? shown.map(renderItem).join('\n') + more : '<p class="empty">Nothing here.</p>';
-      return `<section class="tier tier-${tier}"><h2>${heading}<span class="count">${unread.length ? `${unread.length} unread` : ''}</span></h2>${body}</section>`;
+        ? `<button class="show-all" data-action="show-all" data-tier="${tier}">See more (${mine.length})</button>` : '';
+      let body;
+      if (!mine.length) body = '<p class="empty">Nothing here.</p>';
+      else if (!shown.length) body = `<p class="empty">Nothing new in the last ${RECENT_DAYS} days.</p>${more}`;
+      else body = shown.map(renderItem).join('\n') + more;
+      return `<section class="tier tier-${tier}"><h2>${heading}<span class="count">${unread ? `${unread} unread` : ''}</span></h2>${body}</section>`;
     }).join('\n');
   }
 
