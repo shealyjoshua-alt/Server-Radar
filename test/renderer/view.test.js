@@ -238,8 +238,10 @@ test('patch bar on the day itself says today', () => {
 
 const sepBulletin = { month: '2026-09', label: 'September 2026', url: 'https://msrc.microsoft.com/update-guide/releaseNote/2026-Sep',
   serverCves: 120, critical: 9, exploited: 2, disclosed: 1, kbs: { ws2019: 'KB5122876', ws2022: 'KB5122882', ws2025: 'KB5122871' },
+  patches: { ws2022: [{ kb: 'KB5122882', label: 'Monthly cumulative update', cves: 641, url: 'https://catalog.update.microsoft.com/a' }] },
   top: [{ cve: 'CVE-2026-85880', title: 'ALPC <b>EoP</b>', cvss: 7.8, exploited: true, disclosed: false, url: 'https://msrc.microsoft.com/x' }] };
-const octBulletin = { ...sepBulletin, month: '2026-10', label: 'October 2026', kbs: { ws2022: 'KB5130001' }, top: [] };
+const octBulletin = { ...sepBulletin, month: '2026-10', label: 'October 2026', kbs: { ws2022: 'KB5130001' }, top: [],
+  patches: { ws2022: [{ kb: 'KB5130001', label: 'Monthly cumulative update', cves: 50, url: 'https://catalog.update.microsoft.com/b' }] } };
 
 test('before patch tuesday: says when the bulletin publishes and shows last month', () => {
   const vm = { ...vmWith([]), bulletins: [sepBulletin], patchedThrough: '2026-09' };
@@ -268,4 +270,16 @@ test('patch tuesday passed but not posted yet', () => {
 
 test('no bulletin data renders nothing', () => {
   assert.equal(V.renderBulletin({ ...vmWith([]), bulletins: [] }, new Date(2026, 9, 12)), '');
+});
+
+test('bulletin lists every patch per version with catalog links', () => {
+  const b = { ...sepBulletin, patches: { ws2019: [{ kb: 'KB5122876', label: 'Monthly cumulative update', cves: 616, url: 'https://catalog.update.microsoft.com/x' },
+    { kb: 'KB5126048', label: '.NET Framework 3.5 and 4.8 cumulative update', cves: 1, url: 'https://catalog.update.microsoft.com/y' }],
+    ws2022: [{ kb: null, label: 'HEVC <Store>', cves: 2, url: 'https://apps.microsoft.com/z' }] } };
+  const html = V.renderBulletin({ ...vmWith([]), bulletins: [b], patchedThrough: null }, new Date(2026, 9, 12));
+  assert.match(html, /Server 2019/);
+  assert.match(html, /KB5122876[\s\S]*Monthly cumulative update[\s\S]*616 CVEs/);
+  assert.match(html, /KB5126048[\s\S]*\.NET Framework 3\.5 and 4\.8 cumulative update[\s\S]*1 CVE\b/);
+  assert.ok(html.includes('HEVC &lt;Store&gt;'));
+  assert.match(html, /data-url="https:\/\/catalog\.update\.microsoft\.com\/x"/);
 });

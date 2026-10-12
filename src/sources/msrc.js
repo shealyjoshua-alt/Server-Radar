@@ -49,6 +49,22 @@ const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'Ju
 const SERVER_VERSIONS = ['ws2019', 'ws2022', 'ws2025'];
 const TOP_LIMIT = 6;
 
+// Human label for one Vendor Fix: the OS cumulative update, a hotpatch, a .NET Framework
+// cumulative update, or a component such as a Microsoft Store extension.
+function patchLabel(productName, subType, url) {
+  const family = productName.replace(/\s*\(Server Core installation\)/, '').replace(/ on Windows Server 20\d\d.*$/, '');
+  if (/^Windows Server 20\d\d/.test(family)) {
+    if (/hotpatch/i.test(subType || '')) return 'Hotpatch update';
+    if (/monthly rollup/i.test(subType || '')) return 'Monthly rollup';
+    if (/security only/i.test(subType || '')) return 'Security-only update';
+    return 'Monthly cumulative update';
+  }
+  const net = /^Microsoft \.NET Framework (.+)$/.exec(family);
+  if (net) return `.NET Framework ${net[1].replace(/ AND /g, ' and ')} cumulative update`;
+  if (/apps\.microsoft\.com/.test(url || '')) return `${family} (Microsoft Store)`;
+  return `${family} update`;
+}
+
 // One Patch Tuesday release, seen from Windows Server: the cumulative update KB per
 // version (the most common Vendor Fix), counts, and the top Critical/High CVEs.
 function summarizeDoc(doc, config) {
@@ -56,18 +72,28 @@ function summarizeDoc(doc, config) {
     && doc.DocumentTracking.Identification.ID.Value;
   const month = monthFromRelease(release);
   if (!month) return null;
-  const versionOf = new Map(((doc.ProductTree && doc.ProductTree.FullProductName) || [])
-    .map((p) => [p.ProductID, matchProducts(p.Value, config).find((x) => SERVER_VERSIONS.includes(x))]));
+  const products = (doc.ProductTree && doc.ProductTree.FullProductName) || [];
+  const nameOf = new Map(products.map((p) => [p.ProductID, p.Value]));
+  const versionOf = new Map(products.map((p) => [p.ProductID, matchProducts(p.Value, config).find((x) => SERVER_VERSIONS.includes(x))]));
   const kbCounts = Object.fromEntries(SERVER_VERSIONS.map((v) => [v, new Map()]));
+  // version -> patch key -> { kb, label, cves:Set, url }
+  const patchMaps = Object.fromEntries(SERVER_VERSIONS.map((v) => [v, new Map()]));
   const server = [];
   for (const v of doc.Vulnerability) {
     const versions = new Set((v.ProductStatuses || []).flatMap((s) => s.ProductID || []).map((id) => versionOf.get(id)).filter(Boolean));
     if (!versions.size) continue;
     for (const r of v.Remediations || []) {
-      if (r.Type !== 2 || !r.Description || !/^\d{6,8}$/.test(r.Description.Value)) continue;
+      if (r.Type !== 2 || !r.Description) continue;
+      const numeric = /^\d{6,8}$/.test(r.Description.Value);
       for (const id of r.ProductID || []) {
         const ver = versionOf.get(id);
-        if (ver) kbCounts[ver].set(r.Description.Value, (kbCounts[ver].get(r.Description.Value) || 0) + 1);
+        if (!ver) continue;
+        if (numeric) kbCounts[ver].set(r.Description.Value, (kbCounts[ver].get(r.Description.Value) || 0) + 1);
+        const label = patchLabel(nameOf.get(id) || '', r.SubType, r.URL);
+        const key = numeric ? r.Description.Value : label;
+        const entry = patchMaps[ver].get(key) || { kb: numeric ? `KB${r.Description.Value}` : null, label, cves: new Set(), url: r.URL || null };
+        entry.cves.add(v.CVE);
+        patchMaps[ver].set(key, entry);
       }
     }
     const t1 = threatText(v, 1).join(';');
@@ -89,6 +115,11 @@ function summarizeDoc(doc, config) {
     const best = [...kbCounts[ver].entries()].sort((a, b) => b[1] - a[1])[0];
     if (best) kbs[ver] = `KB${best[0]}`;
   }
+  const patches = {};
+  for (const ver of SERVER_VERSIONS) {
+    const rows = [...patchMaps[ver].values()].map((e) => ({ kb: e.kb, label: e.label, cves: e.cves.size, url: e.url }));
+    if (rows.length) patches[ver] = rows.sort((a, b) => b.cves - a.cves); // stable: ties keep publish order
+  }
   const high = (c) => (c.cvss !== null ? c.cvss >= 7 : c.exploited || c.severity === 'critical' || c.severity === 'important');
   const top = server.filter(high).sort((a, b) => (b.exploited - a.exploited) || (b.disclosed - a.disclosed)
     || ((b.severity === 'critical') - (a.severity === 'critical')) || ((b.cvss || 0) - (a.cvss || 0))).slice(0, TOP_LIMIT);
@@ -102,6 +133,7 @@ function summarizeDoc(doc, config) {
     exploited: server.filter((c) => c.exploited).length,
     disclosed: server.filter((c) => c.disclosed).length,
     kbs,
+    patches,
     top,
   };
 }

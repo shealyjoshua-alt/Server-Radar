@@ -162,15 +162,18 @@
 
   function bulletinBody(m, patchedThrough) {
     const applied = patchedThrough && m.month <= patchedThrough ? `<span class="tag t-green">APPLIED</span>` : '';
-    const kbs = ['ws2019', 'ws2022', 'ws2025'].filter((v) => m.kbs[v])
-      .map((v) => `<span class="safe s-kb">${escapeHtml(PRODUCT_LABELS[v])}: ${escapeHtml(m.kbs[v])}</span>`).join('');
+    const patches = m.patches || {};
+    const kbs = ['ws2019', 'ws2022', 'ws2025'].filter((v) => (patches[v] || []).length).map((v) => {
+      const rows = patches[v].map((p) => `<div class="patch-row"><a class="title" href="#" data-url="${escapeHtml(safeUrl(p.url))}">${escapeHtml(p.kb || 'Store update')}</a> <span>${escapeHtml(p.label)}</span> <span class="date">${p.cves} CVE${p.cves === 1 ? '' : 's'}</span></div>`).join('');
+      return `<div class="patch-ver"><h4>${escapeHtml(PRODUCT_LABELS[v])}</h4>${rows}</div>`;
+    }).join('');
     const counts = [`${m.serverCves} Server CVEs`, `${m.critical} critical`, `${m.exploited} exploited`, `${m.disclosed} publicly disclosed`].map(escapeHtml).join(' · ');
     const top = (m.top || []).map((c) => {
       const t = c.exploited ? ['EXPLOITED', 'red'] : c.disclosed ? ['DISCLOSED', 'amber'] : c.severity === 'critical' ? ['CRITICAL', 'red'] : ['HIGH', 'amber'];
       return `<div class="pc-row">${tag(t)}<a class="title" href="#" data-url="${escapeHtml(safeUrl(c.url))}">${escapeHtml(c.title)}</a> <span class="date">${escapeHtml(c.cve)}${c.cvss != null ? ` · CVSS ${escapeHtml(c.cvss)}` : ''}</span></div>`;
     }).join('');
     return `<div class="b-head">${applied}<a class="title" href="#" data-url="${escapeHtml(safeUrl(m.url))}">Release notes</a></div>
-<div class="safe-list">${kbs}</div><p class="muted b-counts">${counts}</p>${top}`;
+<div class="patch-list">${kbs}</div><p class="muted b-counts">${counts}</p>${top}`;
   }
 
   // Security bulletin box under the countdown. Microsoft publishes nothing in advance, so

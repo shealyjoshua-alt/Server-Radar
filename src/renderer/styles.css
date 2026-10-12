@@ -50,7 +50,10 @@ button.tile:hover { border-color: var(--muted); }
 .b-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .b-status { margin: 0 0 6px; font-weight: 600; }
 .b-counts { margin: 6px 0; }
-.s-kb { background: var(--panel-2); color: var(--ink); }
+.patch-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 16px; margin: 6px 0; }
+.patch-ver h4 { margin-bottom: 4px; }
+.patch-row { font-size: 13px; padding: 2px 0; display: flex; flex-wrap: wrap; gap: 0 6px; }
+@media (max-width: 900px) { .patch-list { grid-template-columns: 1fr; } }
 
 .columns { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap: 14px; align-items: start; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
