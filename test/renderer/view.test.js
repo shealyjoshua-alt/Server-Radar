@@ -235,3 +235,37 @@ test('patch bar uses the viewer\'s own calendar, not the server\'s UTC date', ()
 test('patch bar on the day itself says today', () => {
   assert.match(V.renderPatchBar(vmWith([]), new Date(2026, 9, 13, 23, 30)), />Today</);
 });
+
+const sepBulletin = { month: '2026-09', label: 'September 2026', url: 'https://msrc.microsoft.com/update-guide/releaseNote/2026-Sep',
+  serverCves: 120, critical: 9, exploited: 2, disclosed: 1, kbs: { ws2019: 'KB5122876', ws2022: 'KB5122882', ws2025: 'KB5122871' },
+  top: [{ cve: 'CVE-2026-85880', title: 'ALPC <b>EoP</b>', cvss: 7.8, exploited: true, disclosed: false, url: 'https://msrc.microsoft.com/x' }] };
+const octBulletin = { ...sepBulletin, month: '2026-10', label: 'October 2026', kbs: { ws2022: 'KB5130001' }, top: [] };
+
+test('before patch tuesday: says when the bulletin publishes and shows last month', () => {
+  const vm = { ...vmWith([]), bulletins: [sepBulletin], patchedThrough: '2026-09' };
+  const html = V.renderBulletin(vm, new Date(2026, 9, 12, 9, 0));
+  assert.match(html, /October 2026 bulletin publishes Tue Oct 13, 10:00 AM PT/);
+  assert.match(html, /Last release: September 2026/);
+  assert.match(html, /KB5122882/);
+  assert.match(html, /APPLIED/);
+  assert.ok(html.includes('ALPC &lt;b&gt;EoP&lt;/b&gt;'));
+  assert.match(html, /EXPLOITED/);
+});
+
+test('after release: shows the new month', () => {
+  const vm = { ...vmWith([]), bulletins: [octBulletin, sepBulletin], patchedThrough: '2026-09' };
+  const html = V.renderBulletin(vm, new Date(2026, 9, 13, 15, 0));
+  assert.match(html, /October 2026 security release/);
+  assert.match(html, /KB5130001/);
+  assert.ok(!html.includes('APPLIED'));
+  assert.ok(!html.includes('Last release'));
+});
+
+test('patch tuesday passed but not posted yet', () => {
+  const vm = { ...vmWith([]), bulletins: [sepBulletin], patchedThrough: '2026-09' };
+  assert.match(V.renderBulletin(vm, new Date(2026, 9, 13, 9, 0)), /not posted yet/);
+});
+
+test('no bulletin data renders nothing', () => {
+  assert.equal(V.renderBulletin({ ...vmWith([]), bulletins: [] }, new Date(2026, 9, 12)), '');
+});

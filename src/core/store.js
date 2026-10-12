@@ -6,7 +6,7 @@ const PRUNE_DAYS = 180;
 const STATUS_RANK = { open: 1, resolved: 2 };
 
 function emptyState() {
-  return { version: 1, synced: false, syncedSources: [], items: {}, seen: [], notified: [], sources: {}, updatedAt: null };
+  return { version: 1, synced: false, syncedSources: [], meta: {}, items: {}, seen: [], notified: [], sources: {}, updatedAt: null };
 }
 
 function load(file) {
@@ -93,6 +93,8 @@ function createStore(file, config) {
       retier(it);
     },
 
+    setMeta(id, value) { state.meta = { ...(state.meta || {}), [id]: value }; },
+
     isSourceSynced: (id) => syncedSources.has(id),
     markSourceSynced(id) { syncedSources.add(id); state.synced = true; },
     // First successful fetch of a source: show its backlog as read and never notify for it.
@@ -145,6 +147,7 @@ function createStore(file, config) {
         sources: Object.values(state.sources).map((s) => ({ ...s })),
         firstSync: !state.synced,
         updatedAt: state.updatedAt,
+        meta: { ...(state.meta || {}) },
       };
     },
 

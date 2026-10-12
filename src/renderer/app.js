@@ -15,7 +15,7 @@
     $('status-dot').title = vm.icon.tooltip;
     $('updated').textContent = vm.snapshot.updatedAt ? `Updated ${new Date(vm.snapshot.updatedAt).toLocaleString()}` : 'Waiting for first refresh…';
     $('tiles').innerHTML = V.renderTiles(vm, filters);
-    $('patchbar').innerHTML = V.renderPatchBar(vm, new Date());
+    $('patchbar').innerHTML = V.renderPatchBar(vm, new Date()) + V.renderBulletin(vm, new Date());
     $('filters').innerHTML = V.renderFilters(vm, filters);
     $('feed').innerHTML = V.renderFeed(vm, filters);
     $('azure').innerHTML = V.renderAzure(vm);

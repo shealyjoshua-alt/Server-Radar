@@ -11,6 +11,8 @@ function buildViewModel(snapshot, config, now = new Date()) {
     patchTuesday: nextPatchTuesday(now).toISOString(),
     safe: safeToDeploy(snapshot, now),
     configNote: { crowdstrike: CROWDSTRIKE_NOTE },
+    bulletins: (snapshot.meta && snapshot.meta.msrc && snapshot.meta.msrc.months) || [],
+    patchedThrough: config.patchedThrough || null,
   };
 }
 

@@ -25,7 +25,7 @@ function safeToDeploy(snapshot, now) {
   });
 }
 
-const api = { nextPatchTuesday, safeToDeploy };
+const api = { nextPatchTuesday, secondTuesday, safeToDeploy };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 else root.RadarPatchCycle = api;
 })(typeof window !== 'undefined' ? window : globalThis);

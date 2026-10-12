@@ -16,3 +16,10 @@ test('builds the dashboard view model from a snapshot', () => {
   assert.equal(CROWDSTRIKE_NOTE, 'CrowdStrike tech alerts are behind the customer portal; coverage here is public CVEs, Microsoft notes and community reports.');
   assert.equal(vm.snapshot, snapshot);
 });
+
+test('view model carries the bulletin and the patched-through month', () => {
+  const snapshot = { items: [], sources: [], meta: { msrc: { months: [{ month: '2026-09' }] } } };
+  const vm = buildViewModel(snapshot, { ...cfg, patchedThrough: '2026-09' }, new Date(2026, 9, 10));
+  assert.deepEqual(vm.bulletins, [{ month: '2026-09' }]);
+  assert.equal(vm.patchedThrough, '2026-09');
+});

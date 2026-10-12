@@ -156,6 +156,48 @@
     return `<div class="pc-head"><div class="pt"><span class="pt-label">Patch Tuesday</span><span class="pt-when">${when}</span><span class="date">${escapeHtml(ptDate)}</span></div><div class="safe-list"><h4>Safe to deploy?</h4>${safe}</div></div>`;
   }
 
+  const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const ymKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+
+  function bulletinBody(m, patchedThrough) {
+    const applied = patchedThrough && m.month <= patchedThrough ? `<span class="tag t-green">APPLIED</span>` : '';
+    const kbs = ['ws2019', 'ws2022', 'ws2025'].filter((v) => m.kbs[v])
+      .map((v) => `<span class="safe s-kb">${escapeHtml(PRODUCT_LABELS[v])}: ${escapeHtml(m.kbs[v])}</span>`).join('');
+    const counts = [`${m.serverCves} Server CVEs`, `${m.critical} critical`, `${m.exploited} exploited`, `${m.disclosed} publicly disclosed`].map(escapeHtml).join(' · ');
+    const top = (m.top || []).map((c) => {
+      const t = c.exploited ? ['EXPLOITED', 'red'] : c.disclosed ? ['DISCLOSED', 'amber'] : c.severity === 'critical' ? ['CRITICAL', 'red'] : ['HIGH', 'amber'];
+      return `<div class="pc-row">${tag(t)}<a class="title" href="#" data-url="${escapeHtml(safeUrl(c.url))}">${escapeHtml(c.title)}</a> <span class="date">${escapeHtml(c.cve)}${c.cvss != null ? ` · CVSS ${escapeHtml(c.cvss)}` : ''}</span></div>`;
+    }).join('');
+    return `<div class="b-head">${applied}<a class="title" href="#" data-url="${escapeHtml(safeUrl(m.url))}">Release notes</a></div>
+<div class="safe-list">${kbs}</div><p class="muted b-counts">${counts}</p>${top}`;
+  }
+
+  // Security bulletin box under the countdown. Microsoft publishes nothing in advance, so
+  // before Patch Tuesday it says when the next one lands and shows the latest release.
+  function renderBulletin(vm, today) {
+    const months = [...(vm.bulletins || [])].sort((a, b) => b.month.localeCompare(a.month));
+    if (!months.length) return '';
+    const cur = ymKey(today);
+    const pt = PatchCycle.secondTuesday(today.getFullYear(), today.getMonth());
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const curLabel = `${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}`;
+    const due = `${DAY_SHORT[pt.getDay()]} ${MONTH_NAMES[pt.getMonth()].slice(0, 3)} ${pt.getDate()}, 10:00 AM PT`;
+    const released = months.find((m) => m.month === cur);
+    const last = months.find((m) => m.month < cur);
+    let html;
+    if (startOfToday >= pt && released) {
+      html = `<h4>${escapeHtml(released.label)} security release</h4>${bulletinBody(released, vm.patchedThrough)}`;
+    } else {
+      const status = startOfToday < pt
+        ? `${escapeHtml(curLabel)} bulletin publishes ${escapeHtml(due)}`
+        : `${escapeHtml(curLabel)} bulletin not posted yet (due ${escapeHtml(due)})`;
+      html = `<h4>Security bulletin</h4><p class="b-status">${status}</p>`
+        + (last ? `<p class="muted">Last release: ${escapeHtml(last.label)}</p>${bulletinBody(last, vm.patchedThrough)}` : '');
+    }
+    return `<div class="bulletin">${html}</div>`;
+  }
+
   function renderAzure(vm) {
     // Only what touches the Azure Government tenant.
     const items = vm.snapshot.items.filter((i) => i.gov).slice(0, 150);
@@ -171,7 +213,7 @@
     }).join('');
   }
 
-  const api = { GROUP_FILTERS, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
+  const api = { GROUP_FILTERS, renderBulletin, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RadarView = api;
 })(typeof window !== 'undefined' ? window : globalThis);

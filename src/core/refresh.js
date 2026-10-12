@@ -37,7 +37,10 @@ async function fetchSource(source, httpGet, sleep) {
 async function runRefresh({ sources, store, config, httpGet, now = () => new Date(), sleep = defaultSleep }) {
   const results = await Promise.allSettled(sources.map(async (source) => {
     const bodies = await fetchSource(source, httpGet, sleep);
-    return source.parse(bodies, config);
+    const items = source.parse(bodies, config);
+    let meta;
+    try { meta = source.summarize ? source.summarize(bodies, config) : undefined; } catch { meta = undefined; }
+    return { items, meta };
   }));
 
   const all = [];
@@ -46,9 +49,10 @@ async function runRefresh({ sources, store, config, httpGet, now = () => new Dat
     const s = sources[i];
     const at = now().toISOString();
     if (r.status === 'fulfilled') {
-      all.push(...r.value.map((it) => ({ ...it, via: s.id })));
+      all.push(...r.value.items.map((it) => ({ ...it, via: s.id })));
+      if (r.value.meta !== undefined) store.setMeta(s.id, r.value.meta);
       okSources.push(s.id);
-      store.recordSource(s.id, s.label, { ok: true, count: r.value.length }, at);
+      store.recordSource(s.id, s.label, { ok: true, count: r.value.items.length }, at);
     } else {
       store.recordSource(s.id, s.label, { ok: false, error: String((r.reason && r.reason.message) || r.reason) }, at);
     }

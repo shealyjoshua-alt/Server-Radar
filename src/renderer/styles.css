@@ -46,6 +46,11 @@ button.tile:hover { border-color: var(--muted); }
 .s-clean { background: var(--green-bg); color: var(--green-ink); } .s-caution { background: var(--amber-bg); color: var(--amber-ink); }
 .pc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .pc-row { padding: 3px 0; font-size: 13px; }
+.bulletin { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; }
+.b-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.b-status { margin: 0 0 6px; font-weight: 600; }
+.b-counts { margin: 6px 0; }
+.s-kb { background: var(--panel-2); color: var(--ink); }
 
 .columns { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); gap: 14px; align-items: start; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }

@@ -116,3 +116,10 @@ test('source index lists all nine sources with unique ids', () => {
     assert.ok((s.requests && s.requests.length) || (s.urls && s.urls.length), s.id);
   }
 });
+
+test('a source summary is kept with the snapshot', async () => {
+  const store = tmpStore();
+  const A = { id: 'msrc', label: 'M', urls: ['u'], parse: () => [], summarize: (bodies) => ({ seen: bodies.length }) };
+  await runRefresh({ sources: [A], store, config: cfg, httpGet: async () => 'b', now, sleep: noSleep });
+  assert.deepEqual(store.snapshot().meta.msrc, { seen: 1 });
+});
