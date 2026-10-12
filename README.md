@@ -19,9 +19,10 @@ hour and sorts what matters into **Act now**, **Keep an eye on** and **Might int
 | Microsoft Security Update Guide (CVRF API) | monthly CVEs, severity, exploited flag |
 | Windows release health (2019 / 2022 / 2025) | known issues and fixes per update |
 | Broadcom advisories (VMware + Carbon Black) | VMSAs |
+| VMware Tools release index | latest Tools version vs. `vmwareToolsVersions` in the config |
 | Splunk advisories (RSS) | Universal Forwarder |
 | Nagios disclosures (NCPA) | agent advisories |
-| NVD | CrowdStrike, Carbon Black, NSClient++, NCPA, Splunk UF CVEs |
+| NVD | CrowdStrike, Carbon Black, NSClient++, NCPA, Splunk UF and FileMaker CVEs |
 | Chrome Releases blog (stable updates) | one item per Chrome desktop security release; in-the-wild exploits flagged |
 | Mozilla security advisories | Firefox / Firefox ESR releases with Mozilla's impact rating |
 | Azure status (RSS) | incidents; Azure Government recognised by region name |

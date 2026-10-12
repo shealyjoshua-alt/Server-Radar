@@ -16,12 +16,12 @@
 
   const PRODUCT_LABELS = {
     ws2016: 'Server 2016', ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
-    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox',
+    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox', filemaker: 'FileMaker',
   };
-  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
+  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox', 'filemaker'];
   const SOURCE_LABELS = {
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
-    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
+    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'vmware-tools': 'VMware Tools', 'azure-history': 'Azure status history', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
   };
   // Tile -> filter chips it selects (a tile click shows just that area).
   const GROUP_FILTERS = {
@@ -30,8 +30,9 @@
     azure: ['gov'],
     agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'],
     dc: ['dc'],
+    filemaker: ['filemaker'],
   };
-  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers']];
+  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers'], ['filemaker', 'FileMaker']];
   const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
   const DAY = 86400000;
   const RECENT_DAYS = 30;
@@ -201,6 +202,22 @@
     return `<div class="bulletin">${html}</div>`;
   }
 
+  // VMware Tools versions vs. the latest release, plus recent Tools advisories (VMware view only).
+  function renderVmwareTools(vm, filters) {
+    const t = vm.vmwareTools;
+    if (!t || activeGroup(filters) !== 'vmware') return '';
+    const rows = t.installed.map((i) => {
+      const n = i.newer.length;
+      const status = n ? `${n} release${n === 1 ? '' : 's'} behind (newer: ${i.newer.map(escapeHtml).join(', ')})` : 'Up to date';
+      return `<div class="pc-row"><span class="tag ${n ? 't-amber' : 't-green'}">${escapeHtml(i.version)}</span>${status}</div>`;
+    }).join('');
+    const advisories = vm.snapshot.items.filter((i) => (i.sources || [i.source]).includes('broadcom-vmsa') && /VMware Tools|\bTools\b/.test(i.title)).slice(0, 3);
+    const adv = advisories.length
+      ? advisories.map((i) => `<div class="pc-row">${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('')
+      : '<div class="pc-row empty">No recent VMware Tools advisories.</div>';
+    return `<section class="tier tools-panel"><h2>VMware Tools<span class="count">Latest: ${escapeHtml(t.latest)}</span></h2>${rows}<h4 class="sub-h">Tools security advisories</h4>${adv}</section>`;
+  }
+
   // Azure Government outages: active ones (in the status feed right now) and the last 30 days.
   function renderGovOutages(vm, today) {
     const active = new Set(vm.activeGovOutages || []);
@@ -229,7 +246,7 @@
     }).join('');
   }
 
-  const api = { GROUP_FILTERS, renderBulletin, renderGovOutages, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
+  const api = { GROUP_FILTERS, renderBulletin, renderGovOutages, renderVmwareTools, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RadarView = api;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -315,3 +315,27 @@ test('gov outages are not repeated in the gov updates list', () => {
   const html = V.renderAzure(vmWith([base({ kind: 'incident', gov: true, products: ['azure'], title: 'GovOutage' }), base({ kind: 'update', gov: true, products: ['azure'], title: 'GovUpdate' })]));
   assert.ok(html.includes('GovUpdate') && !html.includes('GovOutage'));
 });
+
+test('vmware tools panel shows only in the VMware view', () => {
+  const vm = { ...vmWith([base({ source: 'broadcom-vmsa', sources: ['broadcom-vmsa'], products: ['vmware'], title: 'VMSA-2026-0009: VMware Tools update addresses <x>', published: '2026-09-01' })]),
+    vmwareTools: { latest: '13.1.5', installed: [{ version: '13.0.5', newer: ['13.0.10', '13.1.0', '13.1.5'] }, { version: '13.1.0', newer: ['13.1.5'] }] } };
+  assert.equal(V.renderVmwareTools(vm, { products: [] }), '');
+  const html = V.renderVmwareTools(vm, { products: ['vmware'] });
+  assert.match(html, /VMware Tools/);
+  assert.match(html, /Latest: 13\.1\.5/);
+  assert.match(html, /13\.0\.5[\s\S]*3 releases behind/);
+  assert.match(html, /13\.1\.0[\s\S]*1 release behind/);
+  assert.ok(html.includes('VMware Tools update addresses &lt;x&gt;'));
+});
+
+test('vmware tools panel says up to date', () => {
+  const vm = { ...vmWith([]), vmwareTools: { latest: '13.1.5', installed: [{ version: '13.1.5', newer: [] }] } };
+  assert.match(V.renderVmwareTools(vm, { products: ['vmware'] }), /13\.1\.5[\s\S]*Up to date/);
+});
+
+test('FileMaker tile and filter exist', () => {
+  const vm = vmWith([]);
+  assert.match(V.renderTiles(vm, { products: [] }), /data-group="filemaker"><h4>FileMaker/);
+  assert.deepEqual(V.GROUP_FILTERS.filemaker, ['filemaker']);
+  assert.ok(V.renderFilters(vm, { products: [] }).includes('data-filter="filemaker">FileMaker'));
+});

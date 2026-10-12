@@ -2,7 +2,7 @@
 const { makeItem, ParseError } = require('../core/item');
 const { matchProducts } = require('../core/match');
 
-const KEYWORDS = ['CrowdStrike Falcon', 'Carbon Black', 'NSClient++', 'Nagios Cross-Platform Agent', 'Splunk Universal Forwarder'];
+const KEYWORDS = ['CrowdStrike Falcon', 'Carbon Black', 'NSClient++', 'Nagios Cross-Platform Agent', 'Splunk Universal Forwarder', 'FileMaker'];
 const DAY = 86400000;
 const SEVERITY = { CRITICAL: 'critical', HIGH: 'important', MEDIUM: 'moderate', LOW: 'low' };
 
@@ -22,7 +22,7 @@ function bestMetric(metrics = {}) {
 
 module.exports = {
   id: 'nvd',
-  label: 'NVD (agent CVEs)',
+  label: 'NVD (agent and FileMaker CVEs)',
   minIntervalMs: 6500, // keyless NVD clients: 5 requests per 30 s
   nvdUrls,
   get urls() { return nvdUrls(new Date()); },

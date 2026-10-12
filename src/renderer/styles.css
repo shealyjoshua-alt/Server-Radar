@@ -26,7 +26,7 @@ h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing
 .dot.c-red { background: var(--red); } .dot.c-amber { background: var(--amber); } .dot.c-green { background: var(--green); } .dot.c-grey { background: var(--grey); }
 
 main { padding: 16px 20px; display: grid; gap: 14px; max-width: 1500px; margin: 0 auto; }
-.tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.tiles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
 .tile { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: 10px; padding: 10px 14px; }
 .tile.c-red { border-left-color: var(--red); } .tile.c-amber { border-left-color: var(--amber); }
 .tile .big { font-size: 28px; font-weight: 700; }

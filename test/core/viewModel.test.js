@@ -29,3 +29,9 @@ test('view model carries the active Gov outage ids', () => {
   assert.deepEqual(vm.activeGovOutages, ['azstatus:1']);
   assert.deepEqual(buildViewModel({ items: [], sources: [] }, cfg, new Date()).activeGovOutages, []);
 });
+
+test('view model carries VMware Tools status', () => {
+  const vm = buildViewModel({ items: [], sources: [], meta: { 'vmware-tools': { latest: '13.1.5', installed: [] } } }, cfg, new Date());
+  assert.deepEqual(vm.vmwareTools, { latest: '13.1.5', installed: [] });
+  assert.equal(buildViewModel({ items: [], sources: [] }, cfg, new Date()).vmwareTools, null);
+});

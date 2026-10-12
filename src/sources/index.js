@@ -3,6 +3,7 @@ module.exports = [
   require('./msrc'),
   require('./releaseHealth'),
   require('./broadcomVmsa'),
+  require('./vmwareTools'),
   require('./splunk'),
   require('./nagios'),
   require('./nvd'),

@@ -109,8 +109,8 @@ test('state is saved to disk', async () => {
 
 test('source index lists all nine sources with unique ids', () => {
   const sources = require('../../src/sources');
-  assert.equal(sources.length, 12);
-  assert.equal(new Set(sources.map((s) => s.id)).size, 12);
+  assert.equal(sources.length, 13);
+  assert.equal(new Set(sources.map((s) => s.id)).size, 13);
   for (const s of sources) {
     assert.equal(typeof s.parse, 'function');
     assert.ok((s.requests && s.requests.length) || (s.urls && s.urls.length), s.id);

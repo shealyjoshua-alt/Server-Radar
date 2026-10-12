@@ -66,6 +66,10 @@
     ],
     "firefox": [
       "Firefox"
+    ],
+    "filemaker": [
+      "FileMaker",
+      "Claris FileMaker"
     ]
   },
   "exclude": [
@@ -170,5 +174,9 @@
     "Morocco",
     "Turkey",
     "Pakistan"
+  ],
+  "vmwareToolsVersions": [
+    "13.0.5",
+    "13.1.0"
   ]
 }

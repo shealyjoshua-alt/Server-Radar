@@ -12,7 +12,8 @@ const items = nvd.parse([body], cfg);
 
 test('builds one url per agent keyword for the last 30 days', () => {
   const urls = nvd.nvdUrls(new Date('2026-10-10T00:00:00Z'));
-  assert.equal(urls.length, 5);
+  assert.equal(urls.length, 6);
+  assert.ok(urls.some((u) => u.includes('keywordSearch=FileMaker')));
   assert.ok(urls.every((u) => u.startsWith('https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=')));
   assert.ok(urls[0].includes('pubStartDate=2026-09-10T00:00:00.000Z'));
   assert.ok(urls[0].includes('pubEndDate=2026-10-10T00:00:00.000Z'));

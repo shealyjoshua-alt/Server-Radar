@@ -50,3 +50,7 @@ test('chromium and firefox tag the browsers', () => {
   assert.ok(matchProducts('Mozilla Firefox use-after-free', cfg).includes('firefox'));
   assert.ok(!matchProducts('Stable Channel Update for ChromeOS', cfg).includes('chrome'));
 });
+
+test('FileMaker products tag filemaker', () => {
+  assert.ok(matchProducts('Claris FileMaker Server 2025 vulnerability', cfg).includes('filemaker'));
+});
