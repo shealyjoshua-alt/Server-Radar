@@ -1,4 +1,4 @@
-const AGENTS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+const AGENTS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
 
 const hasAny = (list, ids) => list.some((p) => ids.includes(p));
 const isServerOrVmware = (p) => p.startsWith('ws') || p === 'vmware';

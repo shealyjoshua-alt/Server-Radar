@@ -68,3 +68,13 @@ test('KEV Netlogon entry is a domain controller item on all servers', () => {
   const doc = { vulnerabilities: [{ cveID: 'CVE-2020-1472', vendorProject: 'Microsoft', product: 'Netlogon', vulnerabilityName: 'Microsoft Netlogon Privilege Escalation', dateAdded: '2026-10-01', shortDescription: 'Netlogon elevation of privilege.', requiredAction: 'Patch.' }] };
   assert.deepEqual(kev.parse([JSON.stringify(doc)], cfg)[0].products, ['dc', 'ws2019', 'ws2022', 'ws2025']);
 });
+
+test('browser tags only for Google/Mozilla entries', () => {
+  const v = (vendorProject, product, shortDescription) => ({ cveID: `CVE-2026-8${vendorProject.length}${product.length}`, vendorProject, product, vulnerabilityName: `${vendorProject} ${product}`, dateAdded: '2026-10-01', shortDescription, requiredAction: 'Patch.' });
+  const out = kev.parse([JSON.stringify({ vulnerabilities: [
+    v('Ray-Project', 'Ray', 'Code injection reachable from a browser such as Chrome or Firefox.'),
+    v('Google', 'Chromium V8', 'Google Chromium V8 type confusion.'),
+    v('Mozilla', 'Firefox', 'Mozilla Firefox use-after-free.'),
+  ] })], cfg);
+  assert.deepEqual(out.map((i) => i.products), [[], ['chrome'], ['firefox']]);
+});

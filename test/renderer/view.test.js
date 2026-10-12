@@ -84,7 +84,7 @@ test('unread items are marked and carry mark-read buttons', () => {
 test('filter chips include all products and crowdstrike note when selected', () => {
   const vm = vmWith([]);
   const chips = V.renderFilters(vm, { products: [] });
-  for (const label of ['Server 2019', 'Server 2022', 'Server 2025', 'VMware', 'Azure', 'Azure Gov', 'CrowdStrike', 'Carbon Black', 'Nagios', 'Splunk UF']) assert.ok(chips.includes(label), label);
+  for (const label of ['Server 2019', 'Server 2022', 'Server 2025', 'VMware', 'Azure', 'Azure Gov', 'CrowdStrike', 'Carbon Black', 'Nagios', 'Splunk UF', 'Chrome', 'Firefox']) assert.ok(chips.includes(label), label);
   assert.ok(!chips.includes('customer portal'));
   assert.ok(V.renderFilters(vm, { products: ['crowdstrike'] }).includes('customer portal'));
 });
@@ -205,7 +205,7 @@ test('group filters cover the right products', () => {
   assert.deepEqual(V.GROUP_FILTERS.windows, ['ws2019', 'ws2022', 'ws2025']);
   assert.deepEqual(V.GROUP_FILTERS.vmware, ['vmware']);
   assert.deepEqual(V.GROUP_FILTERS.azure, ['gov']);
-  assert.deepEqual(V.GROUP_FILTERS.agents, ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf']);
+  assert.deepEqual(V.GROUP_FILTERS.agents, ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox']);
 });
 
 test('a tile filter shows a banner with Show everything', () => {
@@ -244,7 +244,7 @@ const octBulletin = { ...sepBulletin, month: '2026-10', label: 'October 2026', k
 test('before patch tuesday: says when the bulletin publishes and shows last month', () => {
   const vm = { ...vmWith([]), bulletins: [sepBulletin], patchedThrough: '2026-09' };
   const html = V.renderBulletin(vm, new Date(2026, 9, 12, 9, 0));
-  assert.match(html, /October 2026 bulletin publishes Tue Oct 13, 10:00 AM PT/);
+  assert.match(html, /October 2026 bulletin publishes Tue Oct 13, 1:00 PM ET/);
   assert.match(html, /Last release: September 2026/);
   assert.match(html, /KB5122882/);
   assert.match(html, /APPLIED/);

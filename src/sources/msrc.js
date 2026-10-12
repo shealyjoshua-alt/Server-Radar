@@ -4,6 +4,7 @@ const { matchProducts } = require('../core/match');
 const { monthFromRelease } = require('./msrcLookup');
 
 const BASE = 'https://api.msrc.microsoft.com/cvrf/v3.0/cvrf/';
+const BROWSERS = ['chrome', 'firefox'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function msrcUrls(now) {
@@ -35,7 +36,8 @@ function parseDoc(doc, config) {
       cvss: scores.length ? Math.max(...scores) : null,
       severity: severity ? severity.toLowerCase() : null,
       exploited: threatText(v, 1).some((d) => d.includes('Exploited:Yes')),
-      products: matchProducts(`${[...new Set(productNames)].join(' | ')} | ${(v.Title && v.Title.Value) || ''}`, config),
+      // Microsoft re-publishes Chrome CVEs for Edge; those are Edge items, not Chrome/Firefox.
+      products: matchProducts(`${[...new Set(productNames)].join(' | ')} | ${(v.Title && v.Title.Value) || ''}`, config).filter((p) => !BROWSERS.includes(p)),
       published: released,
       url: `https://msrc.microsoft.com/update-guide/vulnerability/${v.CVE}`,
       patchMonth,

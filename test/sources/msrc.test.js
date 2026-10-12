@@ -79,3 +79,9 @@ test('vulnerability titles are matched too (domain controller topics)', () => {
 test('each CVE records the Patch Tuesday month that fixed it', () => {
   assert.ok(items.every((i) => i.patchMonth === '2026-09'));
 });
+
+test('Microsoft Edge (Chromium) entries are not tagged as Chrome or Firefox', () => {
+  const doc = { DocumentTracking: { Identification: { ID: { Value: '2026-Oct' } } }, ProductTree: { FullProductName: [{ ProductID: '1', Value: 'Microsoft Edge (Chromium-based)' }] },
+    Vulnerability: [{ CVE: 'CVE-2026-93374', Title: { Value: 'Chromium: CVE-2026-93374 Use after free in Dawn' }, ProductStatuses: [{ ProductID: ['1'] }], Threats: [] }] };
+  assert.deepEqual(msrc.parse([JSON.stringify(doc)], cfg)[0].products, []);
+});

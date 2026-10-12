@@ -61,3 +61,8 @@ test('domain controllers tile counts dc items', () => {
   const t = tileCounts(snap([item('watch', ['dc', 'ws2022']), item('watch', ['ws2019'])]));
   assert.deepEqual(t.dc, { unread: 1, color: 'amber' });
 });
+
+test('chrome and firefox count as agents', () => {
+  const t = tileCounts(snap([item('watch', ['chrome']), item('watch', ['firefox'])]));
+  assert.deepEqual(t.agents, { unread: 2, color: 'amber' });
+});

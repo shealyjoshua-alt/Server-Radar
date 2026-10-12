@@ -40,3 +40,9 @@ test('domain controller topics tag dc', () => {
 test('Azure Active Directory / Entra is not a domain controller topic', () => {
   assert.ok(!matchProducts('Azure Active Directory B2C update', cfg).includes('dc'));
 });
+
+test('chromium and firefox tag the browsers', () => {
+  assert.ok(matchProducts('Google Chromium V8 type confusion', cfg).includes('chrome'));
+  assert.ok(matchProducts('Mozilla Firefox use-after-free', cfg).includes('firefox'));
+  assert.ok(!matchProducts('Stable Channel Update for ChromeOS', cfg).includes('chrome'));
+});

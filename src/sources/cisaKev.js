@@ -7,6 +7,9 @@ const NON_WINDOWS = /Office|Exchange|SharePoint|Outlook|Word|Excel|PowerPoint|Ac
 
 function productsFor(v, config) {
   const products = new Set(matchProducts(`${v.vendorProject} ${v.product} ${v.shortDescription}`, config));
+  // Descriptions often mention browsers in passing; only Google/Mozilla entries are browser bugs.
+  if (!/^Google$/i.test(v.vendorProject)) products.delete('chrome');
+  if (!/^Mozilla$/i.test(v.vendorProject)) products.delete('firefox');
   // KEV names Windows components ("Windows", "Win32k", "Netlogon", "SMBv1", "Internet Explorer")
   // without Server versions; err toward alerting for any Microsoft product that is not a
   // clearly separate application.

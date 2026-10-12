@@ -55,6 +55,14 @@
       "DFS Replication",
       "Certificate Services",
       "AD CS"
+    ],
+    "chrome": [
+      "Google Chrome",
+      "Chromium",
+      "Chrome for Desktop"
+    ],
+    "firefox": [
+      "Firefox"
     ]
   },
   "exclude": [

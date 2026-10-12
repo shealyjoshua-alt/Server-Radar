@@ -16,19 +16,19 @@
 
   const PRODUCT_LABELS = {
     ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
-    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF',
+    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox',
   };
-  const FILTERS = ['ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+  const FILTERS = ['ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
   const SOURCE_LABELS = {
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
-    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
+    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
   };
   // Tile -> filter chips it selects (a tile click shows just that area).
   const GROUP_FILTERS = {
     windows: ['ws2019', 'ws2022', 'ws2025'],
     vmware: ['vmware'],
     azure: ['gov'],
-    agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'],
+    agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'],
     dc: ['dc'],
   };
   const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers']];
@@ -38,7 +38,7 @@
   // Act now (zero-days) is never capped.
   const TIER_CAP = { watch: 8, interest: 5 };
   const PER_KIND = 3;
-  const AGENT_IDS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+  const AGENT_IDS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
 
   // Lower is more important (Keep an eye on ranking).
   function importance(it) {
@@ -182,7 +182,7 @@
     const pt = PatchCycle.secondTuesday(today.getFullYear(), today.getMonth());
     const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const curLabel = `${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}`;
-    const due = `${DAY_SHORT[pt.getDay()]} ${MONTH_NAMES[pt.getMonth()].slice(0, 3)} ${pt.getDate()}, 10:00 AM PT`;
+    const due = `${DAY_SHORT[pt.getDay()]} ${MONTH_NAMES[pt.getMonth()].slice(0, 3)} ${pt.getDate()}, 1:00 PM ET`;
     const released = months.find((m) => m.month === cur);
     const last = months.find((m) => m.month < cur);
     let html;

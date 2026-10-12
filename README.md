@@ -22,6 +22,8 @@ hour and sorts what matters into **Act now**, **Keep an eye on** and **Might int
 | Splunk advisories (RSS) | Universal Forwarder |
 | Nagios disclosures (NCPA) | agent advisories |
 | NVD | CrowdStrike, Carbon Black, NSClient++, NCPA, Splunk UF CVEs |
+| Chrome Releases blog (stable updates) | one item per Chrome desktop security release; in-the-wild exploits flagged |
+| Mozilla security advisories | Firefox / Firefox ESR releases with Mozilla's impact rating |
 | Azure status (RSS) | incidents; Azure Government recognised by region name |
 | Azure Updates (RSS) | features, GA/preview, retirements |
 

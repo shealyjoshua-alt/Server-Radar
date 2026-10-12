@@ -2,7 +2,7 @@
 // (rebuilt hourly by the GitHub Action); "read" marks live in this browser's localStorage.
 (function (root) {
   // Mirrors classify.AGENTS and status.js counting so the badge reflects this phone's read marks.
-  const AGENTS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf'];
+  const AGENTS = ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
   const GROUPS = {
     windows: (i) => i.products.some((p) => p.startsWith('ws')),
     vmware: (i) => i.products.includes('vmware'),
