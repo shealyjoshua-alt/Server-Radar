@@ -149,7 +149,7 @@
     // Computed from the viewer's calendar: a server's UTC date can be a day off locally.
     const ptDay = PatchCycle.nextPatchTuesday(today);
     const d = daysUntil(ptDay, today);
-    const when = d <= 0 ? 'today' : d === 1 ? 'tomorrow' : `in ${d} days`;
+    const when = d <= 0 ? 'Today' : d === 1 ? 'Tomorrow' : `In ${d} days`;
     const pt = ptDay;
     const ptDate = `${pt.getFullYear()}-${String(pt.getMonth() + 1).padStart(2, '0')}-${String(pt.getDate()).padStart(2, '0')}`;
     const items = vm.snapshot.items;

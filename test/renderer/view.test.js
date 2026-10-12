@@ -91,7 +91,7 @@ test('filter chips include all products and crowdstrike note when selected', () 
 
 test('patch bar shows days until Patch Tuesday and safe-to-deploy', () => {
   const html = V.renderPatchBar(vmWith([]), new Date(2026, 9, 10, 9, 0));
-  assert.match(html, /3 days/);
+  assert.match(html, />In 3 days</);
   assert.match(html, /Server 2022/);
   assert.match(html, /Caution/);
 });
@@ -226,10 +226,10 @@ test('patch bar uses the viewer\'s own calendar, not the server\'s UTC date', ()
   const vm = vmWith([]);
   vm.patchTuesday = '2026-10-13T00:00:00.000Z'; // what a UTC build server sends
   const html = V.renderPatchBar(vm, new Date(2026, 9, 12, 20, 0)); // Mon Oct 12, 8 PM local
-  assert.match(html, /tomorrow/);
+  assert.match(html, />Tomorrow</);
   assert.match(html, /2026-10-13/);
 });
 
 test('patch bar on the day itself says today', () => {
-  assert.match(V.renderPatchBar(vmWith([]), new Date(2026, 9, 13, 23, 30)), /today/);
+  assert.match(V.renderPatchBar(vmWith([]), new Date(2026, 9, 13, 23, 30)), />Today</);
 });
