@@ -1,6 +1,7 @@
 // Pure HTML-string renderers for the dashboard. Loaded by Node tests (module.exports)
 // and by the renderer page (window.RadarView). All feed text goes through escapeHtml.
 (function (root) {
+  const PatchCycle = typeof module !== 'undefined' && module.exports ? require('../core/patchCycle') : root.RadarPatchCycle;
   const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
   const escapeHtml = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ESC[c]);
 
@@ -137,17 +138,19 @@
     }).join('');
   }
 
-  function daysUntil(isoTarget, today) {
-    const t = new Date(isoTarget);
+  function daysUntil(target, today) {
+    const t = new Date(target);
     const a = new Date(t.getFullYear(), t.getMonth(), t.getDate());
     const b = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     return Math.round((a - b) / DAY);
   }
 
   function renderPatchBar(vm, today) {
-    const d = daysUntil(vm.patchTuesday, today);
+    // Computed from the viewer's calendar: a server's UTC date can be a day off locally.
+    const ptDay = PatchCycle.nextPatchTuesday(today);
+    const d = daysUntil(ptDay, today);
     const when = d <= 0 ? 'today' : d === 1 ? 'tomorrow' : `in ${d} days`;
-    const pt = new Date(vm.patchTuesday);
+    const pt = ptDay;
     const ptDate = `${pt.getFullYear()}-${String(pt.getMonth() + 1).padStart(2, '0')}-${String(pt.getDate()).padStart(2, '0')}`;
     const items = vm.snapshot.items;
     const maint = items.filter((i) => i.kind === 'maintenance').slice(0, 3);

@@ -221,3 +221,15 @@ test('domain controllers tile and filter exist', () => {
   assert.ok(V.renderFilters(vm, { products: [] }).includes('data-filter="dc">Domain Controllers'));
   assert.match(V.renderFilters(vm, { products: ['dc'] }), /Showing only Domain Controllers/);
 });
+
+test('patch bar uses the viewer\'s own calendar, not the server\'s UTC date', () => {
+  const vm = vmWith([]);
+  vm.patchTuesday = '2026-10-13T00:00:00.000Z'; // what a UTC build server sends
+  const html = V.renderPatchBar(vm, new Date(2026, 9, 12, 20, 0)); // Mon Oct 12, 8 PM local
+  assert.match(html, /tomorrow/);
+  assert.match(html, /2026-10-13/);
+});
+
+test('patch bar on the day itself says today', () => {
+  assert.match(V.renderPatchBar(vmWith([]), new Date(2026, 9, 13, 23, 30)), /today/);
+});

@@ -6,7 +6,7 @@ const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..');
 const COPY = [
-  ['src/renderer/view.js', 'view.js'], ['src/renderer/app.js', 'app.js'], ['src/renderer/styles.css', 'styles.css'],
+  ['src/renderer/view.js', 'view.js'], ['src/core/patchCycle.js', 'patchCycle.js'], ['src/renderer/app.js', 'app.js'], ['src/renderer/styles.css', 'styles.css'],
   ['web/bridge.js', 'bridge.js'], ['web/index.html', 'index.html'], ['web/manifest.webmanifest', 'manifest.webmanifest'], ['web/icon.png', 'icon.png'],
 ];
 
@@ -15,7 +15,7 @@ function writeSite(outDir, vm, version = String(Date.now())) {
   fs.mkdirSync(outDir, { recursive: true });
   for (const [from, to] of COPY) fs.copyFileSync(path.join(ROOT, from), path.join(outDir, to));
   const index = path.join(outDir, 'index.html');
-  fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace(/(src|href)="(bridge\.js|view\.js|app\.js|styles\.css)"/g, `$1="$2?v=${version}"`));
+  fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace(/(src|href)="(bridge\.js|patchCycle\.js|view\.js|app\.js|styles\.css)"/g, `$1="$2?v=${version}"`));
   fs.writeFileSync(path.join(outDir, 'viewmodel.json'), JSON.stringify(vm));
 }
 

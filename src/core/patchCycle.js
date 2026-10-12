@@ -1,3 +1,5 @@
+// Shared by Node (main process, tests) and the dashboard pages (window.RadarPatchCycle).
+(function (root) {
 const VERSIONS = ['ws2019', 'ws2022', 'ws2025'];
 const DAY = 86400000;
 
@@ -23,4 +25,7 @@ function safeToDeploy(snapshot, now) {
   });
 }
 
-module.exports = { nextPatchTuesday, safeToDeploy };
+const api = { nextPatchTuesday, safeToDeploy };
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
+else root.RadarPatchCycle = api;
+})(typeof window !== 'undefined' ? window : globalThis);
