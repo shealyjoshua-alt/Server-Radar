@@ -46,7 +46,7 @@ function parseDoc(doc, config) {
 }
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const SERVER_VERSIONS = ['ws2019', 'ws2022', 'ws2025'];
+const SERVER_VERSIONS = ['ws2016', 'ws2019', 'ws2022', 'ws2025'];
 const TOP_LIMIT = 6;
 
 // Human label for one Vendor Fix: the OS cumulative update, a hotpatch, a .NET Framework
@@ -55,6 +55,7 @@ function patchLabel(productName, subType, url) {
   const family = productName.replace(/\s*\(Server Core installation\)/, '').replace(/ on Windows Server 20\d\d.*$/, '');
   if (/^Windows Server 20\d\d/.test(family)) {
     if (/hotpatch/i.test(subType || '')) return 'Hotpatch update';
+    if (/servicing stack/i.test(subType || '')) return 'Servicing stack update';
     if (/monthly rollup/i.test(subType || '')) return 'Monthly rollup';
     if (/security only/i.test(subType || '')) return 'Security-only update';
     return 'Monthly cumulative update';

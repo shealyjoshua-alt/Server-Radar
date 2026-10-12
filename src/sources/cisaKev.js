@@ -2,7 +2,7 @@
 const { makeItem, ParseError } = require('../core/item');
 const { matchProducts } = require('../core/match');
 
-const ALL_SERVERS = ['ws2019', 'ws2022', 'ws2025'];
+const ALL_SERVERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025'];
 const NON_WINDOWS = /Office|Exchange|SharePoint|Outlook|Word|Excel|PowerPoint|Access|Publisher|Visio|Project|Skype|Teams|Lync|Dynamics|Visual Studio|VS Code|Edge|Xbox|Silverlight|Open Management Infrastructure|OMI|Forefront|System Center|SQL Server|Azure|\.NET/i;
 
 function productsFor(v, config) {

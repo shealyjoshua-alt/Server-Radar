@@ -15,17 +15,17 @@
   }
 
   const PRODUCT_LABELS = {
-    ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
+    ws2016: 'Server 2016', ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
     gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox',
   };
-  const FILTERS = ['ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
+  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'];
   const SOURCE_LABELS = {
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
     splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
   };
   // Tile -> filter chips it selects (a tile click shows just that area).
   const GROUP_FILTERS = {
-    windows: ['ws2019', 'ws2022', 'ws2025'],
+    windows: ['ws2016', 'ws2019', 'ws2022', 'ws2025'],
     vmware: ['vmware'],
     azure: ['gov'],
     agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'],
@@ -163,7 +163,7 @@
   function bulletinBody(m, patchedThrough) {
     const applied = patchedThrough && m.month <= patchedThrough ? `<span class="tag t-green">APPLIED</span>` : '';
     const patches = m.patches || {};
-    const kbs = ['ws2019', 'ws2022', 'ws2025'].filter((v) => (patches[v] || []).length).map((v) => {
+    const kbs = ['ws2016', 'ws2019', 'ws2022', 'ws2025'].filter((v) => (patches[v] || []).length).map((v) => {
       const rows = patches[v].map((p) => `<div class="patch-row"><a class="title" href="#" data-url="${escapeHtml(safeUrl(p.url))}">${escapeHtml(p.kb || 'Store update')}</a> <span>${escapeHtml(p.label)}</span> <span class="date">${p.cves} CVE${p.cves === 1 ? '' : 's'}</span></div>`).join('');
       return `<div class="patch-ver"><h4>${escapeHtml(PRODUCT_LABELS[v])}</h4>${rows}</div>`;
     }).join('');

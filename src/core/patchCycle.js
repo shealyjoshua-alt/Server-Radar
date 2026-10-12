@@ -1,6 +1,6 @@
 // Shared by Node (main process, tests) and the dashboard pages (window.RadarPatchCycle).
 (function (root) {
-const VERSIONS = ['ws2019', 'ws2022', 'ws2025'];
+const VERSIONS = ['ws2016', 'ws2019', 'ws2022', 'ws2025'];
 const DAY = 86400000;
 
 function secondTuesday(year, month) {

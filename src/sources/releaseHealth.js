@@ -8,6 +8,7 @@ const { makeItem, ParseError } = require('../core/item');
 const { matchProducts } = require('../core/match');
 
 const PAGES = [
+  ['ws2016', 'https://learn.microsoft.com/en-us/windows/release-health/status-windows-10-1607-and-windows-server-2016'],
   ['ws2019', 'https://learn.microsoft.com/en-us/windows/release-health/status-windows-10-1809-and-windows-server-2019'],
   ['ws2022', 'https://learn.microsoft.com/en-us/windows/release-health/status-windows-server-2022'],
   ['ws2025', 'https://learn.microsoft.com/en-us/windows/release-health/status-windows-server-2025'],

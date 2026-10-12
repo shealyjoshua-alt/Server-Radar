@@ -84,7 +84,7 @@ test('unread items are marked and carry mark-read buttons', () => {
 test('filter chips include all products and crowdstrike note when selected', () => {
   const vm = vmWith([]);
   const chips = V.renderFilters(vm, { products: [] });
-  for (const label of ['Server 2019', 'Server 2022', 'Server 2025', 'VMware', 'Azure', 'Azure Gov', 'CrowdStrike', 'Carbon Black', 'Nagios', 'Splunk UF', 'Chrome', 'Firefox']) assert.ok(chips.includes(label), label);
+  for (const label of ['Server 2016', 'Server 2019', 'Server 2022', 'Server 2025', 'VMware', 'Azure', 'Azure Gov', 'CrowdStrike', 'Carbon Black', 'Nagios', 'Splunk UF', 'Chrome', 'Firefox']) assert.ok(chips.includes(label), label);
   assert.ok(!chips.includes('customer portal'));
   assert.ok(V.renderFilters(vm, { products: ['crowdstrike'] }).includes('customer portal'));
 });
@@ -202,7 +202,7 @@ test('the tile matching the current filter is highlighted', () => {
 });
 
 test('group filters cover the right products', () => {
-  assert.deepEqual(V.GROUP_FILTERS.windows, ['ws2019', 'ws2022', 'ws2025']);
+  assert.deepEqual(V.GROUP_FILTERS.windows, ['ws2016', 'ws2019', 'ws2022', 'ws2025']);
   assert.deepEqual(V.GROUP_FILTERS.vmware, ['vmware']);
   assert.deepEqual(V.GROUP_FILTERS.azure, ['gov']);
   assert.deepEqual(V.GROUP_FILTERS.agents, ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox']);
@@ -282,4 +282,11 @@ test('bulletin lists every patch per version with catalog links', () => {
   assert.match(html, /KB5126048[\s\S]*\.NET Framework 3\.5 and 4\.8 cumulative update[\s\S]*1 CVE\b/);
   assert.ok(html.includes('HEVC &lt;Store&gt;'));
   assert.match(html, /data-url="https:\/\/catalog\.update\.microsoft\.com\/x"/);
+});
+
+test('bulletin lists Server 2016 first', () => {
+  const b = { ...sepBulletin, patches: { ws2016: [{ kb: 'KB5123099', label: 'Monthly cumulative update', cves: 1106, url: 'https://catalog.update.microsoft.com/x' }], ws2019: [{ kb: 'KB5122876', label: 'Monthly cumulative update', cves: 616, url: 'https://catalog.update.microsoft.com/y' }] } };
+  const html = V.renderBulletin({ ...vmWith([]), bulletins: [b] }, new Date(2026, 9, 12));
+  assert.ok(html.indexOf('Server 2016') >= 0 && html.indexOf('Server 2016') < html.indexOf('Server 2019'));
+  assert.match(html, /KB5123099/);
 });

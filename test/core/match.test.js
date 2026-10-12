@@ -8,6 +8,10 @@ test('matches each server version', () => {
   assert.deepEqual(matchProducts('Security update for Windows Server 2022 and Windows Server 2025', cfg), ['ws2022', 'ws2025']);
 });
 
+test('server 2016 is supported', () => {
+  assert.deepEqual(matchProducts('Windows Server 2016 (Server Core installation)', cfg), ['ws2016']);
+});
+
 test('excluded look-alikes do not match', () => {
   assert.deepEqual(matchProducts('Windows Server 2012 R2 and Windows 11 23H2', cfg), []);
   assert.deepEqual(matchProducts('VMware Workstation Pro update', cfg), []);

@@ -58,3 +58,13 @@ test('september fixture lists the cumulative update first for each version', () 
   assert.equal(m.patches.ws2019[0].kb, 'KB5122876');
   assert.equal(m.patches.ws2019[0].label, 'Monthly cumulative update');
 });
+
+test('server 2016 patches include its servicing stack update', () => {
+  const doc = { DocumentTracking: { Identification: { ID: { Value: '2026-Oct' } } },
+    ProductTree: { FullProductName: [{ ProductID: '1', Value: 'Windows Server 2016' }] },
+    Vulnerability: [{ CVE: 'CVE-9', Title: { Value: 'x' }, ProductStatuses: [{ ProductID: ['1'] }], Threats: [], CVSSScoreSets: [{ BaseScore: 8 }],
+      Remediations: [{ Type: 2, SubType: 'Security Update', Description: { Value: '5123099' }, ProductID: ['1'] }, { Type: 2, SubType: 'Servicing Stack Update', Description: { Value: '5122874' }, ProductID: ['1'] }] }] };
+  const [m] = msrc.summarize([JSON.stringify(doc)], cfg).months;
+  assert.deepEqual(m.patches.ws2016.map((p) => [p.kb, p.label]), [['KB5123099', 'Monthly cumulative update'], ['KB5122874', 'Servicing stack update']]);
+  assert.equal(m.kbs.ws2016, 'KB5123099');
+});

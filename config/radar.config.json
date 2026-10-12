@@ -2,6 +2,9 @@
   "refreshMinutes": 60,
   "greyAfterFailures": 3,
   "products": {
+    "ws2016": [
+      "Windows Server 2016"
+    ],
     "ws2019": [
       "Windows Server 2019"
     ],
@@ -67,7 +70,6 @@
   },
   "exclude": [
     "Windows Server 2012",
-    "Windows Server 2016",
     "Windows Server 2008",
     "VMware Workstation",
     "VMware Fusion",

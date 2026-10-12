@@ -18,7 +18,7 @@ test('module shape', () => {
 
 test('windows entry maps to all server versions and is exploited', () => {
   const it = byCve('CVE-2021-34527');
-  assert.deepEqual(it.products, ['ws2019', 'ws2022', 'ws2025']);
+  assert.deepEqual(it.products, ['ws2016', 'ws2019', 'ws2022', 'ws2025']);
   assert.equal(it.exploited, true);
   assert.equal(it.kind, 'vuln');
   assert.equal(it.id, 'kev:CVE-2021-34527');
@@ -55,7 +55,7 @@ test('non-json throws ParseError', () => {
 test('microsoft windows component products map to all servers', () => {
   const doc = { vulnerabilities: ['Win32k', 'Netlogon', 'SMBv1', 'Internet Explorer', 'DirectX'].map((product, i) => ({
     cveID: `CVE-2026-90${i}`, vendorProject: 'Microsoft', product, vulnerabilityName: `${product} bug`, dateAdded: '2026-10-01', shortDescription: 'Microsoft component vulnerability.', requiredAction: 'Patch.' })) };
-  for (const it of kev.parse([JSON.stringify(doc)], cfg)) assert.deepEqual(it.products.filter((p) => p.startsWith('ws')), ['ws2019', 'ws2022', 'ws2025'], it.title);
+  for (const it of kev.parse([JSON.stringify(doc)], cfg)) assert.deepEqual(it.products.filter((p) => p.startsWith('ws')), ['ws2016', 'ws2019', 'ws2022', 'ws2025'], it.title);
 });
 
 test('microsoft non-windows products stay out of scope', () => {
@@ -66,7 +66,7 @@ test('microsoft non-windows products stay out of scope', () => {
 
 test('KEV Netlogon entry is a domain controller item on all servers', () => {
   const doc = { vulnerabilities: [{ cveID: 'CVE-2020-1472', vendorProject: 'Microsoft', product: 'Netlogon', vulnerabilityName: 'Microsoft Netlogon Privilege Escalation', dateAdded: '2026-10-01', shortDescription: 'Netlogon elevation of privilege.', requiredAction: 'Patch.' }] };
-  assert.deepEqual(kev.parse([JSON.stringify(doc)], cfg)[0].products, ['dc', 'ws2019', 'ws2022', 'ws2025']);
+  assert.deepEqual(kev.parse([JSON.stringify(doc)], cfg)[0].products, ['dc', 'ws2016', 'ws2019', 'ws2022', 'ws2025']);
 });
 
 test('browser tags only for Google/Mozilla entries', () => {

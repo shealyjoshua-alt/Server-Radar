@@ -29,6 +29,7 @@ test('safe to deploy: recent open issue is caution, old issue is clean', () => {
   const now = new Date('2026-10-10T12:00:00Z');
   const res = safeToDeploy({ items: [ki('ws2022', 'open', 10, now), ki('ws2022', 'resolved', 5, now), ki('ws2019', 'open', 60, now)] }, now);
   assert.deepEqual(res, [
+    { version: 'ws2016', status: 'clean', openIssues: 0, resolved: 0 },
     { version: 'ws2019', status: 'clean', openIssues: 0, resolved: 0 },
     { version: 'ws2022', status: 'caution', openIssues: 1, resolved: 1 },
     { version: 'ws2025', status: 'clean', openIssues: 0, resolved: 0 },
