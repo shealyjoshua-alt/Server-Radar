@@ -138,3 +138,25 @@ test('windows vulns fixed by patches already applied are hidden', () => {
   // no setting: nothing hidden
   assert.equal(tierFor(mk({ exploited: true, products: ['ws2022'], patchMonth: '2026-09', published: recent }), { ...cfg, patchedThrough: undefined }), 'act');
 });
+
+test('azure items for non-US regions only are dropped', () => {
+  const az = (title, extra = {}) => mk({ kind: 'update', source: 'azure-updates', title, products: ['azure'], ...extra });
+  assert.equal(tierFor(az('[Launched] Generally Available: Azure Arc-enabled SQL Server in Germany West Central'), cfg), null);
+  assert.equal(tierFor(az('Generally Available: Azure Database for PostgreSQL flexible server in Italy North'), cfg), null);
+  assert.equal(tierFor(az('Announcing: Multiparty private offers expands to Hong Kong'), cfg), null);
+  assert.equal(tierFor(mk({ kind: 'incident', source: 'azure-status', title: 'Active - Storage - West Europe', products: ['azure'] }), cfg), null);
+});
+
+test('azure items naming a US region, or no region, are kept', () => {
+  const az = (title, extra = {}) => mk({ kind: 'update', source: 'azure-updates', title, products: ['azure'], ...extra });
+  assert.equal(tierFor(az('Generally Available: Azure Database for PostgreSQL flexible server in East US 3'), cfg), 'azure');
+  assert.equal(tierFor(az('Generally Available: Azure Monitor Auxiliary Logs Plan in Azure Government and China regions', { gov: true }), cfg), 'interest');
+  assert.equal(tierFor(az('Retirement: Azure Deployment Environments will be retired on February 22, 2027', { kind: 'retirement' }), cfg), 'watch');
+  assert.equal(tierFor(az('Public Preview: Azure Arc for servers in all regions'), cfg), 'interest');
+  // "us" as a word in a sentence is not a US region and does not save a foreign-only item
+  assert.equal(tierFor(az('Tell us what you think: new feature in Japan East'), cfg), null);
+});
+
+test('region rule only applies to Azure feeds', () => {
+  assert.equal(tierFor(mk({ kind: 'known-issue', source: 'release-health', title: 'Issue affecting devices in Germany', products: ['ws2022'] }), cfg), 'watch');
+});

@@ -27,7 +27,23 @@ function highEnough(item) {
   return item.exploited || item.severity === 'critical' || item.severity === 'important';
 }
 
+const AZURE_FEEDS = ['azure-updates', 'azure-status'];
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const wordIn = (text, word, flags) => new RegExp(`(?<![A-Za-z0-9])${escapeRe(word)}(?![A-Za-z0-9])`, flags).test(text);
+
+// Owner only cares about the USA: an Azure item that names only non-US regions is dropped.
+// "US" is matched case-sensitively so the word "us" in a sentence doesn't count.
+function foreignOnlyAzure(item, config) {
+  if (!AZURE_FEEDS.includes(item.source)) return false;
+  const text = `${item.title} ${item.summary}`;
+  const foreign = (config.foreignRegionMarkers || []).some((w) => wordIn(text, w, 'i'));
+  if (!foreign) return false;
+  const us = item.gov || (config.usRegionMarkers || []).some((w) => wordIn(text, w, w === 'US' || w === 'USA' ? '' : 'i'));
+  return !us;
+}
+
 function tierFor(item, config) {
+  if (foreignOnlyAzure(item, config)) return null;
   if (item.kind === 'vuln' && !highEnough(item)) return null;
   // Owner has applied Windows patches through config.patchedThrough ('YYYY-MM');
   // cumulative updates include every earlier fix.
