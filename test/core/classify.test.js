@@ -160,3 +160,7 @@ test('azure items naming a US region, or no region, are kept', () => {
 test('region rule only applies to Azure feeds', () => {
   assert.equal(tierFor(mk({ kind: 'known-issue', source: 'release-health', title: 'Issue affecting devices in Germany', products: ['ws2022'] }), cfg), 'watch');
 });
+
+test('resolved incidents go to the Azure section, not keep an eye on', () => {
+  assert.equal(tierFor(mk({ kind: 'incident', status: 'resolved', gov: true, source: 'azure-history', products: ['azure'] }), cfg), 'azure');
+});

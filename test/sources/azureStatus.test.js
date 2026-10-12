@@ -35,3 +35,8 @@ test('gov incident, commercial incident and maintenance', () => {
 test('rss without channel throws ParseError', () => {
   assert.throws(() => az.parse(['<rss version="2.0"></rss>'], cfg), ParseError);
 });
+
+test('summary lists the Gov incidents active in this fetch', () => {
+  assert.deepEqual(az.summarize([fx('feed-synthetic.xml')], cfg), { activeGov: ['azstatus:TEST-GOV-1'] });
+  assert.deepEqual(az.summarize([fx('feed-empty.xml')], cfg), { activeGov: [] });
+});

@@ -18,6 +18,7 @@
     $('patchbar').innerHTML = V.renderPatchBar(vm, new Date()) + V.renderBulletin(vm, new Date());
     $('filters').innerHTML = V.renderFilters(vm, filters);
     $('feed').innerHTML = V.renderFeed(vm, filters);
+    $('outages').innerHTML = V.renderGovOutages(vm, new Date());
     $('azure').innerHTML = V.renderAzure(vm);
     $('sources').innerHTML = V.renderSources(vm);
   }

@@ -23,3 +23,9 @@ test('view model carries the bulletin and the patched-through month', () => {
   assert.deepEqual(vm.bulletins, [{ month: '2026-09' }]);
   assert.equal(vm.patchedThrough, '2026-09');
 });
+
+test('view model carries the active Gov outage ids', () => {
+  const vm = buildViewModel({ items: [], sources: [], meta: { 'azure-status': { activeGov: ['azstatus:1'] } } }, cfg, new Date());
+  assert.deepEqual(vm.activeGovOutages, ['azstatus:1']);
+  assert.deepEqual(buildViewModel({ items: [], sources: [] }, cfg, new Date()).activeGovOutages, []);
+});

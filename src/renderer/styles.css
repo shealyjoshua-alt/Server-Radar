@@ -82,6 +82,9 @@ button.tile:hover { border-color: var(--muted); }
 .side-col { position: sticky; top: 64px; max-height: calc(100vh - 80px); overflow: auto; }
 .az-row { padding: 6px 0; border-top: 1px solid var(--line); font-size: 13px; }
 .az-row a.title { font-weight: 400; }
+.ok-line { color: var(--green-ink); margin: 2px 0 8px; }
+.sub-h { margin-top: 10px; }
+.side-col h2.sub-section { margin-top: 16px; }
 
 .sources { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 12px 20px 20px; border-top: 1px solid var(--line); color: var(--faint); font-size: 12px; max-width: 1500px; margin: 0 auto; }
 .src-health.bad { color: var(--red-ink); }

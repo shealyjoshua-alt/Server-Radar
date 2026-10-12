@@ -54,7 +54,7 @@ function tierFor(item, config) {
   if (inScope && item.exploited) return recentlyExploited(item) ? 'act' : null;
   if (item.kind === 'vuln' && azureOnly) return 'azure';
   if (inScope && item.kind === 'vuln' && item.cvss !== null && item.cvss >= 9.0) return 'watch';
-  if (item.kind === 'incident') return item.gov ? 'watch' : 'azure';
+  if (item.kind === 'incident') return item.gov && item.status !== 'resolved' ? 'watch' : 'azure';
   if (item.kind === 'maintenance' || item.kind === 'retirement') return 'watch';
   if (item.kind === 'known-issue' && inScope) return 'watch';
   if (item.kind === 'vuln' && inScope && item.severity === 'critical') return 'watch';

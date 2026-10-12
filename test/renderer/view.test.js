@@ -114,7 +114,8 @@ test('tiles show four groups', () => {
 
 test('azure section lists only azure government items', () => {
   const html = V.renderAzure(vmWith([base({ sources: ['azure-updates'], tier: 'azure', title: 'Plain' }), base({ sources: ['azure-updates'], tier: 'watch', gov: true, title: 'GovRet' }), base({ sources: ['azure-status'], kind: 'incident', gov: true, title: 'GovIncident' }), base({ title: 'NotAzure' })]));
-  assert.ok(html.includes('GovRet') && html.includes('GovIncident'));
+  assert.ok(html.includes('GovRet'));
+  assert.ok(!html.includes('GovIncident')); // outages live in their own section
   assert.ok(!html.includes('Plain'));
   assert.ok(!html.includes('NotAzure'));
 });
@@ -289,4 +290,28 @@ test('bulletin lists Server 2016 first', () => {
   const html = V.renderBulletin({ ...vmWith([]), bulletins: [b] }, new Date(2026, 9, 12));
   assert.ok(html.indexOf('Server 2016') >= 0 && html.indexOf('Server 2016') < html.indexOf('Server 2019'));
   assert.match(html, /KB5123099/);
+});
+
+test('gov outages: active ones in red, recent ones listed, others ignored', () => {
+  const d = (n) => new Date(Date.now() - n * 86400000).toISOString();
+  const vm = { ...vmWith([
+    base({ key: 'azstatus:A', kind: 'incident', gov: true, products: ['azure'], title: 'Active - VMs - US Gov Virginia <x>', published: d(0) }),
+    base({ key: 'azhist:R', kind: 'incident', gov: true, status: 'resolved', products: ['azure'], title: 'PIR - Storage - US Gov Texas', published: d(5) }),
+    base({ key: 'azhist:OLD', kind: 'incident', gov: true, status: 'resolved', products: ['azure'], title: 'Old Gov outage', published: d(45) }),
+    base({ key: 'azstatus:C', kind: 'incident', gov: false, products: ['azure'], title: 'Commercial outage', published: d(0) }),
+  ]), activeGovOutages: ['azstatus:A'] };
+  const html = V.renderGovOutages(vm, new Date());
+  assert.match(html, /ACTIVE/);
+  assert.ok(html.includes('US Gov Virginia &lt;x&gt;'));
+  assert.match(html, /PIR - Storage - US Gov Texas/);
+  assert.ok(!html.includes('Old Gov outage') && !html.includes('Commercial outage'));
+});
+
+test('gov outages: all clear message', () => {
+  assert.match(V.renderGovOutages({ ...vmWith([]), activeGovOutages: [] }, new Date()), /No active Azure Government outages/);
+});
+
+test('gov outages are not repeated in the gov updates list', () => {
+  const html = V.renderAzure(vmWith([base({ kind: 'incident', gov: true, products: ['azure'], title: 'GovOutage' }), base({ kind: 'update', gov: true, products: ['azure'], title: 'GovUpdate' })]));
+  assert.ok(html.includes('GovUpdate') && !html.includes('GovOutage'));
 });

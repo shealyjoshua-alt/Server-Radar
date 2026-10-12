@@ -25,6 +25,7 @@ hour and sorts what matters into **Act now**, **Keep an eye on** and **Might int
 | Chrome Releases blog (stable updates) | one item per Chrome desktop security release; in-the-wild exploits flagged |
 | Mozilla security advisories | Firefox / Firefox ESR releases with Mozilla's impact rating |
 | Azure status (RSS) | incidents; Azure Government recognised by region name |
+| Azure status history | recent post-incident reviews (Gov ones feed the Azure Government outages section) |
 | Azure Updates (RSS) | features, GA/preview, retirements |
 
 **CrowdStrike gap:** CrowdStrike tech alerts are behind the customer portal; coverage here is

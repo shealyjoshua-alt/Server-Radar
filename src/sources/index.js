@@ -9,5 +9,6 @@ module.exports = [
   require('./chrome'),
   require('./firefox'),
   require('./azureStatus'),
+  require('./azureHistory'),
   require('./azureUpdates'),
 ];

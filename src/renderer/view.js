@@ -201,9 +201,22 @@
     return `<div class="bulletin">${html}</div>`;
   }
 
+  // Azure Government outages: active ones (in the status feed right now) and the last 30 days.
+  function renderGovOutages(vm, today) {
+    const active = new Set(vm.activeGovOutages || []);
+    const cutoff = new Date(today.getTime() - 30 * DAY).toISOString();
+    const gov = vm.snapshot.items.filter((i) => i.kind === 'incident' && i.gov);
+    const now = gov.filter((i) => active.has(i.key));
+    const recent = gov.filter((i) => !active.has(i.key) && (i.published || '') >= cutoff).slice(0, 5);
+    const row = (i, t) => `<div class="az-row">${tag(t)}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`;
+    const top = now.length ? now.map((i) => row(i, ['ACTIVE', 'red'])).join('') : '<p class="ok-line">No active Azure Government outages.</p>';
+    const past = recent.length ? `<h4 class="sub-h">Last 30 days</h4>${recent.map((i) => row(i, ['RESOLVED', 'green'])).join('')}` : '';
+    return top + past;
+  }
+
   function renderAzure(vm) {
     // Only what touches the Azure Government tenant.
-    const items = vm.snapshot.items.filter((i) => i.gov).slice(0, 150);
+    const items = vm.snapshot.items.filter((i) => i.gov && i.kind !== 'incident').slice(0, 150); // outages have their own section
     if (!items.length) return '<p class="empty">No Azure Government items right now.</p>';
     return items.map((i) => `<div class="az-row">${i.kind === 'incident' ? tag(['INCIDENT', 'amber']) : ''}${i.kind === 'retirement' ? tag(['RETIRING', 'blue']) : ''}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('');
   }
@@ -216,7 +229,7 @@
     }).join('');
   }
 
-  const api = { GROUP_FILTERS, renderBulletin, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
+  const api = { GROUP_FILTERS, renderBulletin, renderGovOutages, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RadarView = api;
 })(typeof window !== 'undefined' ? window : globalThis);

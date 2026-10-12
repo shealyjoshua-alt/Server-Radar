@@ -13,6 +13,7 @@ function buildViewModel(snapshot, config, now = new Date()) {
     configNote: { crowdstrike: CROWDSTRIKE_NOTE },
     bulletins: (snapshot.meta && snapshot.meta.msrc && snapshot.meta.msrc.months) || [],
     patchedThrough: config.patchedThrough || null,
+    activeGovOutages: (snapshot.meta && snapshot.meta['azure-status'] && snapshot.meta['azure-status'].activeGov) || [],
   };
 }
 
