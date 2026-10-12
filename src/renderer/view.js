@@ -152,13 +152,8 @@
     const when = d <= 0 ? 'Today' : d === 1 ? 'Tomorrow' : `In ${d} days`;
     const pt = ptDay;
     const ptDate = `${pt.getFullYear()}-${String(pt.getMonth() + 1).padStart(2, '0')}-${String(pt.getDate()).padStart(2, '0')}`;
-    const items = vm.snapshot.items;
-    const maint = items.filter((i) => i.kind === 'maintenance').slice(0, 3);
-    const vmware = items.filter((i) => i.products.includes('vmware')).slice(0, 3);
     const safe = vm.safe.map((s) => `<span class="safe s-${s.status}">${escapeHtml(PRODUCT_LABELS[s.version])}: ${s.status === 'caution' ? `Caution — ${s.openIssues} known issue${s.openIssues === 1 ? '' : 's'}` : 'Clean'}${s.resolved ? ` · ${s.resolved} fixed` : ''}</span>`).join('');
-    const list = (title, arr) => `<div class="pc-col"><h4>${title}</h4>${arr.length ? arr.map((i) => `<div class="pc-row">${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`).join('') : '<div class="pc-row empty">None</div>'}</div>`;
-    return `<div class="pc-head"><div class="pt"><span class="pt-label">Patch Tuesday</span><span class="pt-when">${when}</span><span class="date">${escapeHtml(ptDate)}</span></div><div class="safe-list"><h4>Safe to deploy?</h4>${safe}</div></div>
-<div class="pc-cols">${list('Azure maintenance', maint)}${list('Recent VMware', vmware)}</div>`;
+    return `<div class="pc-head"><div class="pt"><span class="pt-label">Patch Tuesday</span><span class="pt-when">${when}</span><span class="date">${escapeHtml(ptDate)}</span></div><div class="safe-list"><h4>Safe to deploy?</h4>${safe}</div></div>`;
   }
 
   function renderAzure(vm) {

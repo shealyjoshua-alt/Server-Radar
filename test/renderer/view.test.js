@@ -100,9 +100,11 @@ test('patch bar says today on patch tuesday', () => {
   assert.match(V.renderPatchBar(vmWith([]), new Date(2026, 9, 13, 9, 0)), /today/i);
 });
 
-test('patch bar lists upcoming maintenance escaped', () => {
-  const html = V.renderPatchBar(vmWith([base({ kind: 'maintenance', products: ['azure'], title: 'Maint <b>x</b>' })]), new Date(2026, 9, 10));
-  assert.ok(html.includes('Maint &lt;b&gt;x&lt;/b&gt;'));
+test('patch bar holds only the countdown and safe-to-deploy', () => {
+  const html = V.renderPatchBar(vmWith([base({ kind: 'maintenance', products: ['azure'], title: 'MaintThing' }), base({ products: ['vmware'], title: 'VmwareThing' })]), new Date(2026, 9, 10));
+  assert.ok(!html.includes('Recent VMware') && !html.includes('VmwareThing'));
+  assert.ok(!html.includes('Azure maintenance') && !html.includes('MaintThing'));
+  assert.match(html, /Safe to deploy/);
 });
 
 test('tiles show four groups', () => {

@@ -36,7 +36,7 @@ button.tile:hover { border-color: var(--muted); }
 .feed-col { scroll-margin-top: 70px; }
 .banner { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--blue-bg); color: var(--blue-ink); border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; font-weight: 600; }
 
-.pc-head { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 10px; }
+.pc-head { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
 .pt { display: flex; flex-direction: column; min-width: 150px; }
 .pt-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .pt-when { font-size: 22px; font-weight: 700; }
