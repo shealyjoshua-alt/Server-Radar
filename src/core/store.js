@@ -24,6 +24,12 @@ const earliest = (a, b) => (!a ? b : !b ? a : a < b ? a : b);
 const union = (a, b) => [...new Set([...(a || []), ...(b || [])])].sort();
 
 function mergeInto(existing, item) {
+  // The original source may reword an entry; keep its latest text.
+  if (item.source === existing.source) {
+    existing.title = item.title;
+    existing.summary = item.summary;
+    if (item.url) existing.url = item.url;
+  }
   existing.products = union(existing.products, item.products);
   existing.cves = union(existing.cves, item.cves);
   existing.sources = union(existing.sources, [item.source]);

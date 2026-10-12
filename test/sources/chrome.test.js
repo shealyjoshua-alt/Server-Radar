@@ -15,14 +15,14 @@ test('module reads the Chrome Releases stable-updates feed', () => {
   assert.match(chrome.urls[0], /^https:\/\/chromereleases\.googleblog\.com\/feeds\/posts\/default\/-\/Stable%20updates/);
 });
 
-test('one item per desktop stable release, other platforms skipped', () => {
+test('one item per Windows/desktop stable release (the build Windows Server runs), other platforms skipped', () => {
   assert.equal(items.length, 3);
   assert.ok(items.every((i) => i.products.includes('chrome') && i.kind === 'vuln'));
 });
 
 test('release item summarises its security fixes', () => {
   const it = items.find((i) => i.id === 'chrome:155.0.8059.39');
-  assert.match(it.title, /^Chrome 155\.0\.8059\.39 for Desktop: \d+ security fixes \(4 critical, \d+ high\)$/);
+  assert.match(it.title, /^Chrome 155\.0\.8059\.39 for Windows: \d+ security fixes \(4 critical, \d+ high\)$/);
   assert.equal(it.severity, 'critical');
   assert.ok(it.cves.includes('CVE-2026-106382'));
   assert.equal(it.exploited, false);

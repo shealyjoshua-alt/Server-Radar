@@ -120,3 +120,14 @@ test('known issue listed on two version pages merges into one item with both ver
   assert.equal(s.merge([mk('ws2019'), mk('ws2025')]).length, 1);
   assert.deepEqual(s.snapshot().items[0].products, ['ws2019', 'ws2025']);
 });
+
+test('a re-fetched item from the same source refreshes its title and summary', () => {
+  const s = createStore(tmpFile(), cfg);
+  const mk = (title) => makeItem({ id: 'chrome:1', source: 'chrome', title, summary: title, kind: 'vuln', severity: 'critical', products: ['chrome'], published: recent });
+  s.merge([mk('Chrome 1 for Desktop')]);
+  s.merge([mk('Chrome 1 for Windows')]);
+  assert.equal(s.snapshot().items[0].title, 'Chrome 1 for Windows');
+  // another source merging the same CVE does not overwrite the title
+  s.merge([makeItem({ id: 'nvd:x', source: 'nvd', title: 'Other wording', kind: 'vuln', severity: 'critical', products: ['chrome'], published: recent })]);
+  assert.equal(s.snapshot().items.find((i) => i.key === 'chrome:1').title, 'Chrome 1 for Windows');
+});

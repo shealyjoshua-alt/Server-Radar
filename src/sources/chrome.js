@@ -24,7 +24,8 @@ function toItem(entry) {
     id: `chrome:${version}`,
     source: 'chrome',
     kind: 'vuln',
-    title: `Chrome ${version} for Desktop: ${fixes.length} security fixes (${critical} critical, ${high} high)`,
+    // Google's "Desktop" channel is the Windows build that Windows Server runs.
+    title: `Chrome ${version} for Windows: ${fixes.length} security fixes (${critical} critical, ${high} high)`,
     summary: wild.length ? `Google reports an exploit in the wild for ${wild.join(', ')}.` : '',
     cves,
     exploited: wild.length > 0,
