@@ -29,6 +29,10 @@ function highEnough(item) {
 
 function tierFor(item, config) {
   if (item.kind === 'vuln' && !highEnough(item)) return null;
+  // Owner has applied Windows patches through config.patchedThrough ('YYYY-MM');
+  // cumulative updates include every earlier fix.
+  if (item.kind === 'vuln' && item.patchMonth && config.patchedThrough && item.patchMonth <= config.patchedThrough
+      && item.products.some(isServer)) return null;
   const inScope = item.products.length > 0;
   const azureOnly = inScope && item.products.every((p) => p === 'azure');
   if (inScope && item.exploited) return recentlyExploited(item) ? 'act' : null;

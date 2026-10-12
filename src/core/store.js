@@ -35,6 +35,7 @@ function mergeInto(existing, item) {
     existing.fixedBy = item.fixedBy || existing.fixedBy;
   }
   existing.severity = existing.severity || item.severity;
+  existing.patchMonth = existing.patchMonth || item.patchMonth;
   existing.gov = existing.gov || item.gov;
   existing.published = earliest(existing.published, item.published);
 }
@@ -81,6 +82,15 @@ function createStore(file, config) {
         }
       }
       return [...changed.values()];
+    },
+
+    // Stored items (live objects) matching a predicate, for enrichment steps.
+    itemsWhere: (fn) => Object.values(state.items).filter(fn),
+    setFields(key, fields) {
+      const it = state.items[key];
+      if (!it) return;
+      Object.assign(it, fields);
+      retier(it);
     },
 
     isSourceSynced: (id) => syncedSources.has(id),

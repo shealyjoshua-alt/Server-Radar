@@ -1,4 +1,15 @@
 const { shouldNotify } = require('./classify');
+const { lookupPatchMonth, needsPatchMonth } = require('../sources/msrcLookup');
+
+const MAX_LOOKUPS = 25;
+
+async function fillPatchMonths(store, httpGet, now) {
+  for (const it of store.itemsWhere(needsPatchMonth).slice(0, MAX_LOOKUPS)) {
+    let patchMonth = null;
+    try { patchMonth = await lookupPatchMonth(it.cves[0], httpGet); } catch { /* retry next refresh */ continue; }
+    store.setFields(it.key, { patchMonth, patchLookupAt: now().toISOString() });
+  }
+}
 
 const defaultSleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -43,7 +54,10 @@ async function runRefresh({ sources, store, config, httpGet, now = () => new Dat
     }
   });
 
-  const newItems = store.merge(all);
+  const merged = store.merge(all);
+  await fillPatchMonths(store, httpGet, now);
+  // Re-check after enrichment: an item fixed by patches already applied is no longer news.
+  const newItems = merged.filter((it) => it.tier !== null);
   // A source's first successful fetch is its backlog: absorb it silently, even if
   // the app's first launch was offline and this happens days later.
   const silent = newItems.filter((it) => !store.isSourceSynced(it.via));

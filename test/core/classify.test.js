@@ -124,3 +124,17 @@ test('only critical or high vulnerabilities are shown', () => {
 test('non-vulnerability items are not affected by the severity rule', () => {
   assert.equal(tierFor(mk({ kind: 'known-issue', products: ['ws2022'] }), cfg), 'watch');
 });
+
+test('windows vulns fixed by patches already applied are hidden', () => {
+  const c = { ...cfg, patchedThrough: '2026-09' };
+  const recent = new Date(Date.now() - 5 * 86400000).toISOString();
+  assert.equal(tierFor(mk({ exploited: true, products: ['ws2022'], patchMonth: '2026-09', published: recent }), c), null);
+  assert.equal(tierFor(mk({ exploited: true, products: ['ws2022'], patchMonth: '2026-07', published: recent }), c), null);
+  assert.equal(tierFor(mk({ exploited: true, products: ['ws2022'], patchMonth: '2026-10', published: recent }), c), 'act');
+  assert.equal(tierFor(mk({ cvss: 9.8, products: ['ws2022', 'dc'], patchMonth: '2026-09' }), c), null);
+  // not Windows, or not a vulnerability: unaffected
+  assert.equal(tierFor(mk({ exploited: true, products: ['vmware'], patchMonth: '2026-09', published: recent }), c), 'act');
+  assert.equal(tierFor(mk({ kind: 'known-issue', products: ['ws2022'], patchMonth: '2026-09' }), c), 'watch');
+  // no setting: nothing hidden
+  assert.equal(tierFor(mk({ exploited: true, products: ['ws2022'], patchMonth: '2026-09', published: recent }), { ...cfg, patchedThrough: undefined }), 'act');
+});

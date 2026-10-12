@@ -75,3 +75,7 @@ test('vulnerability titles are matched too (domain controller topics)', () => {
   const [it] = msrc.parse([JSON.stringify(doc)], cfg);
   assert.deepEqual(it.products, ['dc', 'ws2022']);
 });
+
+test('each CVE records the Patch Tuesday month that fixed it', () => {
+  assert.ok(items.every((i) => i.patchMonth === '2026-09'));
+});

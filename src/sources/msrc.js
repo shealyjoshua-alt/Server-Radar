@@ -1,6 +1,7 @@
 // Microsoft Security Update Guide, via the MSRC CVRF v3 API (one document per month).
 const { makeItem, ParseError } = require('../core/item');
 const { matchProducts } = require('../core/match');
+const { monthFromRelease } = require('./msrcLookup');
 
 const BASE = 'https://api.msrc.microsoft.com/cvrf/v3.0/cvrf/';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -16,6 +17,9 @@ const threatText = (v, type) => (v.Threats || [])
   .map((t) => (t.Description && t.Description.Value) || '');
 
 function parseDoc(doc, config) {
+  const release = doc.DocumentTracking && doc.DocumentTracking.Identification && doc.DocumentTracking.Identification.ID
+    && doc.DocumentTracking.Identification.ID.Value;
+  const patchMonth = monthFromRelease(release);
   const names = new Map(((doc.ProductTree && doc.ProductTree.FullProductName) || []).map((p) => [p.ProductID, p.Value]));
   const released = (doc.DocumentTracking && doc.DocumentTracking.CurrentReleaseDate) || '';
   return doc.Vulnerability.map((v) => {
@@ -34,6 +38,7 @@ function parseDoc(doc, config) {
       products: matchProducts(`${[...new Set(productNames)].join(' | ')} | ${(v.Title && v.Title.Value) || ''}`, config),
       published: released,
       url: `https://msrc.microsoft.com/update-guide/vulnerability/${v.CVE}`,
+      patchMonth,
     });
   });
 }

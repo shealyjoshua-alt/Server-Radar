@@ -83,3 +83,13 @@ test('all sources offline on first launch, then online: no flood', async () => {
   up = true;
   assert.equal((await run(store, sources)).toNotify.length, 0);
 });
+
+test('refresh fills in fix months for exploited Windows items from the update guide', async () => {
+  const store = createStore(tmp(), cfg);
+  const sources = [src('cisa-kev', () => [kevItem('CVE-2026-0005')])];
+  const httpGet = async (u) => (u.includes('sug/v2.0')
+    ? JSON.stringify({ value: [{ cveNumber: 'CVE-2026-0005', releaseNumber: '2026-Aug' }] }) : 'b');
+  await runRefresh({ sources, store, config: { ...cfg, patchedThrough: '2026-09' }, httpGet, now, sleep: async () => {} });
+  const it = store.snapshot().items.find((i) => i.key === 'CVE-2026-0005');
+  assert.equal(it, undefined); // fixed in August, patched through September -> hidden
+});

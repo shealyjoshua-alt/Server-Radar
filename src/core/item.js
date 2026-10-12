@@ -29,6 +29,7 @@ function makeItem(fields) {
     products: fields.products ? [...fields.products] : [],
     gov: Boolean(fields.gov),
     fixedBy: fields.fixedBy || null,
+    patchMonth: fields.patchMonth || null, // 'YYYY-MM' Patch Tuesday that fixed it (Microsoft)
   };
 }
 
