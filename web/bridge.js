@@ -10,6 +10,7 @@
     agents: (i) => i.products.some((p) => AGENTS.includes(p)),
     dc: (i) => i.products.includes('dc'),
     filemaker: (i) => i.products.includes('filemaker'),
+    servicenow: (i) => i.products.includes('servicenow'),
   };
 
   function applyReadState(vm, readKeys, greyAfter) {

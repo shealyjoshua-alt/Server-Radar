@@ -36,3 +36,8 @@ test('phone tiles include domain controllers', () => {
   const v = { snapshot: { items: [{ key: 'd', tier: 'act', products: ['dc', 'ws2022'] }], sources: [] } };
   assert.deepEqual(applyReadState(v, new Set(), 3).tiles.dc, { unread: 1, color: 'red' });
 });
+
+test('phone tiles include ServiceNow', () => {
+  const v = { snapshot: { items: [{ key: 's', tier: 'watch', products: ['servicenow'] }], sources: [] } };
+  assert.deepEqual(applyReadState(v, new Set(), 3).tiles.servicenow, { unread: 1, color: 'amber' });
+});

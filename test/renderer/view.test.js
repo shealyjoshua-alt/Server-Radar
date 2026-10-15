@@ -339,3 +339,11 @@ test('FileMaker tile and filter exist', () => {
   assert.deepEqual(V.GROUP_FILTERS.filemaker, ['filemaker']);
   assert.ok(V.renderFilters(vm, { products: [] }).includes('data-filter="filemaker">FileMaker'));
 });
+
+test('ServiceNow tile and filter exist', () => {
+  const vm = vmWith([]);
+  assert.match(V.renderTiles(vm, { products: [] }), /data-group="servicenow"><h4>ServiceNow/);
+  assert.deepEqual(V.GROUP_FILTERS.servicenow, ['servicenow']);
+  assert.ok(V.renderFilters(vm, { products: [] }).includes('data-filter="servicenow">ServiceNow'));
+  assert.match(V.renderFilters(vm, { products: ['servicenow'] }), /Showing only ServiceNow/);
+});

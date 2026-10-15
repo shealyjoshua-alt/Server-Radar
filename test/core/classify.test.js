@@ -164,3 +164,7 @@ test('region rule only applies to Azure feeds', () => {
 test('resolved incidents go to the Azure section, not keep an eye on', () => {
   assert.equal(tierFor(mk({ kind: 'incident', status: 'resolved', gov: true, source: 'azure-history', products: ['azure'] }), cfg), 'azure');
 });
+
+test('a high ServiceNow CVE lands in keep an eye on', () => {
+  assert.equal(tierFor(mk({ severity: 'important', cvss: 8.2, products: ['servicenow'] }), cfg), 'watch');
+});

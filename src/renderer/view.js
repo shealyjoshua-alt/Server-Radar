@@ -16,9 +16,9 @@
 
   const PRODUCT_LABELS = {
     ws2016: 'Server 2016', ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
-    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox', filemaker: 'FileMaker',
+    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox', filemaker: 'FileMaker', servicenow: 'ServiceNow',
   };
-  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox', 'filemaker'];
+  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox', 'filemaker', 'servicenow'];
   const SOURCE_LABELS = {
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
     splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'vmware-tools': 'VMware Tools', 'azure-history': 'Azure status history', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
@@ -31,8 +31,9 @@
     agents: ['crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox'],
     dc: ['dc'],
     filemaker: ['filemaker'],
+    servicenow: ['servicenow'],
   };
-  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers'], ['filemaker', 'FileMaker']];
+  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers'], ['filemaker', 'FileMaker'], ['servicenow', 'ServiceNow']];
   const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
   const DAY = 86400000;
   const RECENT_DAYS = 30;

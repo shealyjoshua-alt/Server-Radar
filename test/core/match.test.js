@@ -54,3 +54,8 @@ test('chromium and firefox tag the browsers', () => {
 test('FileMaker products tag filemaker', () => {
   assert.ok(matchProducts('Claris FileMaker Server 2025 vulnerability', cfg).includes('filemaker'));
 });
+
+test('ServiceNow platform and MID Server tag servicenow', () => {
+  assert.ok(matchProducts('ServiceNow has remediated a SQL injection vulnerability in the Now Platform', cfg).includes('servicenow'));
+  assert.ok(matchProducts('MID Server credential exposure', cfg).includes('servicenow'));
+});

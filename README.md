@@ -22,7 +22,7 @@ hour and sorts what matters into **Act now**, **Keep an eye on** and **Might int
 | VMware Tools release index | latest Tools version vs. `vmwareToolsVersions` in the config |
 | Splunk advisories (RSS) | Universal Forwarder |
 | Nagios disclosures (NCPA) | agent advisories |
-| NVD | CrowdStrike, Carbon Black, NSClient++, NCPA, Splunk UF and FileMaker CVEs |
+| NVD | CrowdStrike, Carbon Black, NSClient++, NCPA, Splunk UF, FileMaker and ServiceNow CVEs |
 | Chrome Releases blog (stable updates) | one item per Chrome desktop security release; in-the-wild exploits flagged |
 | Mozilla security advisories | Firefox / Firefox ESR releases with Mozilla's impact rating |
 | Azure status (RSS) | incidents; Azure Government recognised by region name |

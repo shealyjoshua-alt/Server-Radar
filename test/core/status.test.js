@@ -70,3 +70,7 @@ test('chrome and firefox count as agents', () => {
 test('filemaker tile counts filemaker items', () => {
   assert.deepEqual(tileCounts(snap([item('watch', ['filemaker'])])).filemaker, { unread: 1, color: 'amber' });
 });
+
+test('servicenow tile counts servicenow items', () => {
+  assert.deepEqual(tileCounts(snap([item('watch', ['servicenow'])])).servicenow, { unread: 1, color: 'amber' });
+});
