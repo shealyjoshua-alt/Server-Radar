@@ -347,3 +347,30 @@ test('ServiceNow tile and filter exist', () => {
   assert.ok(V.renderFilters(vm, { products: [] }).includes('data-filter="servicenow">ServiceNow'));
   assert.match(V.renderFilters(vm, { products: ['servicenow'] }), /Showing only ServiceNow/);
 });
+
+const phpAdvisory = { date: '2026-10-21', title: 'Security advisory: Critical RCE <now>', cves: ['CVE-2026-109618', 'CVE-2026-109619'], fixed: ['8.5.12', '8.4.27'],
+  risk: 'Who is at risk: all PHP installations serving web requests.', mitigations: ['Set session.upload_progress.enabled=0 and restart every worker.'], url: 'https://www.php.net/archive/2026.php#2026-10-21-5' };
+
+test('PHP spotlight shows while the advisory is recent', () => {
+  const vm = { ...vmWith([]), php: { advisory: phpAdvisory } };
+  const html = V.renderPhp(vm, { products: [] }, new Date(2026, 9, 22));
+  assert.match(html, /PHP/);
+  assert.ok(html.includes('Critical RCE &lt;now&gt;'));
+  assert.match(html, /CVE-2026-109618/);
+  assert.match(html, /Fixed in[\s\S]*8\.5\.12[\s\S]*8\.4\.27/);
+  assert.match(html, /session\.upload_progress\.enabled=0/);
+  assert.match(html, /data-url="https:\/\/www\.php\.net\/archive\/2026\.php#2026-10-21-5"/);
+});
+
+test('PHP spotlight hides after 60 days unless the PHP view is open', () => {
+  const vm = { ...vmWith([]), php: { advisory: phpAdvisory } };
+  assert.equal(V.renderPhp(vm, { products: [] }, new Date(2027, 0, 5)), '');
+  assert.match(V.renderPhp(vm, { products: ['php'] }, new Date(2027, 0, 5)), /CVE-2026-109618/);
+  assert.equal(V.renderPhp({ ...vmWith([]), php: null }, { products: ['php'] }, new Date()), '');
+});
+
+test('PHP tile and filter exist', () => {
+  const vm = vmWith([]);
+  assert.match(V.renderTiles(vm, { products: [] }), /data-group="php"><h4>PHP/);
+  assert.deepEqual(V.GROUP_FILTERS.php, ['php']);
+});

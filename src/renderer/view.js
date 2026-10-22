@@ -16,12 +16,12 @@
 
   const PRODUCT_LABELS = {
     ws2016: 'Server 2016', ws2019: 'Server 2019', ws2022: 'Server 2022', ws2025: 'Server 2025', vmware: 'VMware', azure: 'Azure',
-    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox', filemaker: 'FileMaker', servicenow: 'ServiceNow',
+    gov: 'Azure Gov', dc: 'Domain Controllers', crowdstrike: 'CrowdStrike', carbonblack: 'Carbon Black', nagios: 'Nagios', splunkuf: 'Splunk UF', chrome: 'Chrome', firefox: 'Firefox', filemaker: 'FileMaker', servicenow: 'ServiceNow', php: 'PHP',
   };
-  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox', 'filemaker', 'servicenow'];
+  const FILTERS = ['ws2016', 'ws2019', 'ws2022', 'ws2025', 'dc', 'vmware', 'azure', 'gov', 'crowdstrike', 'carbonblack', 'nagios', 'splunkuf', 'chrome', 'firefox', 'filemaker', 'servicenow', 'php'];
   const SOURCE_LABELS = {
     'cisa-kev': 'CISA KEV', msrc: 'Microsoft', 'release-health': 'Release health', 'broadcom-vmsa': 'Broadcom',
-    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'vmware-tools': 'VMware Tools', 'azure-history': 'Azure status history', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
+    splunk: 'Splunk', nagios: 'Nagios', nvd: 'NVD', chrome: 'Chrome Releases', firefox: 'Mozilla', 'vmware-tools': 'VMware Tools', php: 'php.net', 'azure-history': 'Azure status history', 'azure-status': 'Azure status', 'azure-updates': 'Azure Updates',
   };
   // Tile -> filter chips it selects (a tile click shows just that area).
   const GROUP_FILTERS = {
@@ -32,8 +32,9 @@
     dc: ['dc'],
     filemaker: ['filemaker'],
     servicenow: ['servicenow'],
+    php: ['php'],
   };
-  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers'], ['filemaker', 'FileMaker'], ['servicenow', 'ServiceNow']];
+  const TILES = [['windows', 'Windows Server'], ['vmware', 'VMware'], ['azure', 'Azure Gov'], ['agents', 'Agents'], ['dc', 'Domain Controllers'], ['filemaker', 'FileMaker'], ['servicenow', 'ServiceNow'], ['php', 'PHP']];
   const TIERS = [['act', 'Act now'], ['watch', 'Keep an eye on'], ['interest', 'Might interest you']];
   const DAY = 86400000;
   const RECENT_DAYS = 30;
@@ -203,6 +204,23 @@
     return `<div class="bulletin">${html}</div>`;
   }
 
+  const SPOTLIGHT_DAYS = 60;
+
+  // PHP spotlight: the latest php.net security advisory, shown at the top while it is recent
+  // (or whenever the PHP view is open).
+  function renderPhp(vm, filters, today) {
+    const a = vm.php && vm.php.advisory;
+    if (!a) return '';
+    const recent = (today - new Date(`${a.date}T12:00:00`)) / DAY <= SPOTLIGHT_DAYS;
+    if (!recent && activeGroup(filters) !== 'php') return '';
+    const fixed = a.fixed.length ? `<p><strong>Fixed in:</strong> ${a.fixed.map((v) => `<span class="chip">PHP ${escapeHtml(v)}</span>`).join(' ')}</p>` : '';
+    const mitig = a.mitigations.length
+      ? `<h4 class="sub-h">If you can't update yet (reduces exposure, not a fix)</h4><ul class="mitig">${a.mitigations.map((m) => `<li>${escapeHtml(m)}</li>`).join('')}</ul>` : '';
+    return `<section class="tier php-panel"><h2>PHP<span class="count">${escapeHtml(a.date)}</span></h2>
+<div class="item-head">${tag(['CRITICAL', 'red'])}<a class="title" href="#" data-url="${escapeHtml(safeUrl(a.url))}">${escapeHtml(a.title)}</a></div>
+<p class="summary">${a.cves.map(escapeHtml).join(' · ')}</p>${a.risk ? `<p class="summary">${escapeHtml(a.risk)}</p>` : ''}${fixed}${mitig}</section>`;
+  }
+
   // VMware Tools versions vs. the latest release, plus recent Tools advisories (VMware view only).
   function renderVmwareTools(vm, filters) {
     const t = vm.vmwareTools;
@@ -247,7 +265,7 @@
     }).join('');
   }
 
-  const api = { GROUP_FILTERS, renderBulletin, renderGovOutages, renderVmwareTools, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
+  const api = { GROUP_FILTERS, renderBulletin, renderGovOutages, renderVmwareTools, renderPhp, escapeHtml, safeUrl, renderFeed, renderFilters, renderTiles, renderPatchBar, renderAzure, renderSources, FILTERS };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.RadarView = api;
 })(typeof window !== 'undefined' ? window : globalThis);

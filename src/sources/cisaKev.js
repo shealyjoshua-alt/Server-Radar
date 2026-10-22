@@ -10,6 +10,7 @@ function productsFor(v, config) {
   // Descriptions often mention browsers in passing; only Google/Mozilla entries are browser bugs.
   if (!/^Google$/i.test(v.vendorProject)) products.delete('chrome');
   if (!/^Mozilla$/i.test(v.vendorProject)) products.delete('firefox');
+  if (/^PHP$/i.test(v.vendorProject)) products.add('php'); // the language itself, not PHP apps
   // KEV names Windows components ("Windows", "Win32k", "Netlogon", "SMBv1", "Internet Explorer")
   // without Server versions; err toward alerting for any Microsoft product that is not a
   // clearly separate application.

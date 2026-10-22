@@ -74,3 +74,7 @@ test('filemaker tile counts filemaker items', () => {
 test('servicenow tile counts servicenow items', () => {
   assert.deepEqual(tileCounts(snap([item('watch', ['servicenow'])])).servicenow, { unread: 1, color: 'amber' });
 });
+
+test('php tile counts php items', () => {
+  assert.deepEqual(tileCounts(snap([item('watch', ['php'])])).php, { unread: 1, color: 'amber' });
+});

@@ -25,6 +25,7 @@ hour and sorts what matters into **Act now**, **Keep an eye on** and **Might int
 | NVD | CrowdStrike, Carbon Black, NSClient++, NCPA, Splunk UF, FileMaker and ServiceNow CVEs |
 | Chrome Releases blog (stable updates) | one item per Chrome desktop security release; in-the-wild exploits flagged |
 | Mozilla security advisories | Firefox / Firefox ESR releases with Mozilla's impact rating |
+| php.net news (Atom) | PHP security advisories (spotlight for 60 days) and security releases |
 | Azure status (RSS) | incidents; Azure Government recognised by region name |
 | Azure status history | recent post-incident reviews (Gov ones feed the Azure Government outages section) |
 | Azure Updates (RSS) | features, GA/preview, retirements |

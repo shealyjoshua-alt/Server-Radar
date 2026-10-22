@@ -78,3 +78,9 @@ test('browser tags only for Google/Mozilla entries', () => {
   ] })], cfg);
   assert.deepEqual(out.map((i) => i.products), [[], ['chrome'], ['firefox']]);
 });
+
+test('KEV entries for the PHP language itself are tagged php; PHP apps are not', () => {
+  const v = (vendorProject, product) => ({ cveID: `CVE-2026-7${vendorProject.length}${product.length}`, vendorProject, product, vulnerabilityName: `${vendorProject} ${product}`, dateAdded: '2026-10-01', shortDescription: 'x', requiredAction: 'Patch.' });
+  const out = kev.parse([JSON.stringify({ vulnerabilities: [v('PHP', 'PHP'), v('phpMyAdmin', 'phpMyAdmin')] })], cfg);
+  assert.deepEqual(out.map((i) => i.products), [['php'], []]);
+});

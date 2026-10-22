@@ -75,6 +75,11 @@
       "ServiceNow",
       "Now Platform",
       "MID Server"
+    ],
+    "php": [
+      "PHP-FPM",
+      "php-cgi",
+      "mod_php"
     ]
   },
   "exclude": [

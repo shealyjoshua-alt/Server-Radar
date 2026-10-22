@@ -35,3 +35,7 @@ test('view model carries VMware Tools status', () => {
   assert.deepEqual(vm.vmwareTools, { latest: '13.1.5', installed: [] });
   assert.equal(buildViewModel({ items: [], sources: [] }, cfg, new Date()).vmwareTools, null);
 });
+
+test('view model carries the PHP summary', () => {
+  assert.deepEqual(buildViewModel({ items: [], sources: [], meta: { php: { advisory: null } } }, cfg, new Date()).php, { advisory: null });
+});

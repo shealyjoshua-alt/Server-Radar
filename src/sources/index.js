@@ -9,6 +9,7 @@ module.exports = [
   require('./nvd'),
   require('./chrome'),
   require('./firefox'),
+  require('./php'),
   require('./azureStatus'),
   require('./azureHistory'),
   require('./azureUpdates'),

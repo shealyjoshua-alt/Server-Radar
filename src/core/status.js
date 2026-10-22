@@ -24,6 +24,7 @@ const GROUPS = {
   dc: (i) => i.products.includes('dc'),
   filemaker: (i) => i.products.includes('filemaker'),
   servicenow: (i) => i.products.includes('servicenow'),
+  php: (i) => i.products.includes('php'),
 };
 
 function tileCounts(snapshot) {
