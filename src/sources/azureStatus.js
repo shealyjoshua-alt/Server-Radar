@@ -10,7 +10,8 @@ module.exports = {
   urls: ['https://rssfeed.azure.status.microsoft/en-us/status/feed/'],
   // Which Gov incidents are in the feed right now (the feed only carries active ones).
   summarize(bodies, config) {
-    return { activeGov: module.exports.parse(bodies, config).filter((i) => i.gov && i.kind === 'incident').map((i) => i.id) };
+    // Active outages the dashboard tracks: Azure Government, and Entra ID / Azure AD in any cloud.
+    return { activeGov: module.exports.parse(bodies, config).filter((i) => i.kind === 'incident' && (i.gov || i.products.includes('entra'))).map((i) => i.id) };
   },
   parse([body], config) {
     // No active incidents is the normal state, so an empty feed is valid here.

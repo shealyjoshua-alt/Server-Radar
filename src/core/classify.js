@@ -54,7 +54,7 @@ function tierFor(item, config) {
   if (inScope && item.exploited) return recentlyExploited(item) ? 'act' : null;
   if (item.kind === 'vuln' && azureOnly) return 'azure';
   if (inScope && item.kind === 'vuln' && item.cvss !== null && item.cvss >= 9.0) return 'watch';
-  if (item.kind === 'incident') return (item.gov || item.products.includes('m365')) && item.status !== 'resolved' ? 'watch' : 'azure';
+  if (item.kind === 'incident') return (item.gov || item.products.includes('m365') || item.products.includes('entra')) && item.status !== 'resolved' ? 'watch' : 'azure';
   if (item.kind === 'maintenance' || item.kind === 'retirement') return 'watch';
   if (item.kind === 'known-issue' && inScope) return 'watch';
   if (item.kind === 'vuln' && inScope && item.severity === 'critical') return 'watch';
@@ -71,10 +71,10 @@ function notifyKey(item) {
   return item.cves && item.cves.length ? item.cves[0] : item.id;
 }
 
-// Owner rule (2026-10-22): also notify for new Entra-in-Azure-Government and Microsoft 365
-// outages. Other Azure outages still never notify.
+// Owner rules (2026-10-22): also notify for new Entra ID / Azure AD outages (Gov or global)
+// and Microsoft 365 outages. Other Azure outages still never notify.
 const isNotifiableOutage = (item) => item.kind === 'incident' && item.status !== 'resolved'
-  && ((item.gov && item.products.includes('entra')) || item.products.includes('m365'));
+  && (item.products.includes('entra') || item.products.includes('m365'));
 
 function shouldNotify(item, ctx, config) {
   if (ctx.firstSync || ctx.notifiedKeys.has(notifyKey(item))) return false;

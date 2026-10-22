@@ -83,7 +83,7 @@ function toggleWindow() {
 function notify(item) {
   if (!Notification.isSupported()) return;
   const n = new Notification({
-    title: item.kind === 'incident' ? 'Outage: Azure Gov / Entra / M365' : `Exploited: ${item.key}`,
+    title: item.kind === 'incident' ? 'Outage: Azure Gov / Entra ID / M365' : `Exploited: ${item.key}`,
     body: item.title,
   });
   n.on('click', () => showWindow(item.key));

@@ -397,3 +397,9 @@ test('outages section: active, last 48 hours, earlier; Entra and M365 tagged', (
 test('outages section says when the last 48 hours were quiet', () => {
   assert.match(V.renderGovOutages({ ...vmWith([]), activeGovOutages: [] }, new Date()), /Nothing in the last 48 hours/);
 });
+
+test('global Entra outages appear in the outages section tagged GLOBAL', () => {
+  const vm = { ...vmWith([base({ key: 'azstatus:G', kind: 'incident', gov: false, products: ['azure', 'entra'], title: 'Azure AD sign-in failures', published: new Date().toISOString() })]), activeGovOutages: ['azstatus:G'] };
+  const html = V.renderGovOutages(vm, new Date());
+  assert.match(html, /ACTIVE[\s\S]*ENTRA[\s\S]*GLOBAL[\s\S]*Azure AD sign-in failures/);
+});

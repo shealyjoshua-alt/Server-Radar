@@ -169,12 +169,12 @@ test('a high ServiceNow CVE lands in keep an eye on', () => {
   assert.equal(tierFor(mk({ severity: 'important', cvss: 8.2, products: ['servicenow'] }), cfg), 'watch');
 });
 
-test('outage notifications: Entra Gov and Microsoft 365 only, once, never on first sync', () => {
+test('outage notifications: Entra (Gov or global) and Microsoft 365 only, once, never on first sync', () => {
   const ctx = (over = {}) => ({ firstSync: false, notifiedKeys: new Set(), ...over });
   const inc = (over) => mk({ kind: 'incident', source: 'azure-status', products: ['azure'], ...over });
   assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: true }), ctx(), cfg), true);
   assert.equal(shouldNotify(inc({ source: 'm365-status', products: ['m365'] }), ctx(), cfg), true);
-  assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: false }), ctx(), cfg), false); // commercial Entra
+  assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: false }), ctx(), cfg), true); // global Entra (owner rule 2026-10-22)
   assert.equal(shouldNotify(inc({ gov: true }), ctx(), cfg), false); // Gov but not Entra
   assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: true, status: 'resolved' }), ctx(), cfg), false);
   assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: true }), ctx({ firstSync: true }), cfg), false);
@@ -185,4 +185,14 @@ test('outage notifications: Entra Gov and Microsoft 365 only, once, never on fir
 test('Microsoft 365 outages go to keep an eye on while active', () => {
   assert.equal(tierFor(mk({ kind: 'incident', source: 'm365-status', products: ['m365'] }), cfg), 'watch');
   assert.equal(tierFor(mk({ kind: 'incident', source: 'm365-status', products: ['m365'], status: 'resolved' }), cfg), 'azure');
+});
+
+test('global (commercial) Entra / Azure AD outages show and notify', () => {
+  const ctx = { firstSync: false, notifiedKeys: new Set() };
+  const entra = mk({ kind: 'incident', source: 'azure-status', products: ['azure', 'entra'], gov: false, title: 'Active - Azure Active Directory - Multiple regions - Sign-in failures' });
+  assert.equal(tierFor(entra, cfg), 'watch');
+  assert.equal(shouldNotify(entra, ctx, cfg), true);
+  assert.equal(shouldNotify({ ...entra, status: 'resolved' }, ctx, cfg), false);
+  // US-only rule still drops Entra incidents confined to a foreign region
+  assert.equal(tierFor({ ...entra, title: 'Active - Microsoft Entra ID - West Europe - Sign-in failures' }, cfg), null);
 });

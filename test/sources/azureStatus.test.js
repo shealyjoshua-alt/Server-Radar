@@ -47,3 +47,8 @@ test('Entra outages are tagged entra', () => {
   assert.deepEqual(it.products, ['azure', 'entra']);
   assert.equal(it.gov, true);
 });
+
+test('summary lists active Entra outages in any cloud', () => {
+  const rss = '<rss version="2.0"><channel><title>Azure Status</title><item><guid>G1</guid><link>https://azure.status.microsoft/</link><title>Active - Azure Active Directory - Multiple regions - Sign-in failures</title><description>Authentication failures.</description><pubDate>Thu, 22 Oct 2026 14:00:00 Z</pubDate></item></channel></rss>';
+  assert.deepEqual(az.summarize([rss], cfg), { activeGov: ['azstatus:G1'] });
+});
