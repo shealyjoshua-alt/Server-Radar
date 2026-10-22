@@ -39,3 +39,8 @@ test('view model carries VMware Tools status', () => {
 test('view model carries the PHP summary', () => {
   assert.deepEqual(buildViewModel({ items: [], sources: [], meta: { php: { advisory: null } } }, cfg, new Date()).php, { advisory: null });
 });
+
+test('active outages combine Azure Gov and Microsoft 365', () => {
+  const vm = buildViewModel({ items: [], sources: [], meta: { 'azure-status': { activeGov: ['azstatus:1'] }, 'm365-status': { active: ['m365:2'] } } }, cfg, new Date());
+  assert.deepEqual(vm.activeGovOutages, ['azstatus:1', 'm365:2']);
+});

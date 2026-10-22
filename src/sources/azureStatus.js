@@ -2,7 +2,7 @@
 // Government incidents are recognised by region names (config.govMarkers).
 const { makeItem } = require('../core/item');
 const { parseRss, stripHtml } = require('./rss');
-const { isGov } = require('./azure');
+const { isGov, isEntra } = require('./azure');
 
 module.exports = {
   id: 'azure-status',
@@ -24,7 +24,7 @@ module.exports = {
         title: r.title,
         summary,
         gov: isGov(text, config),
-        products: ['azure'],
+        products: isEntra(text) ? ['azure', 'entra'] : ['azure'],
         published: r.pubDate,
         url: r.link || 'https://azure.status.microsoft/en-us/status/',
       });

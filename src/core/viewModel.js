@@ -15,7 +15,10 @@ function buildViewModel(snapshot, config, now = new Date()) {
     patchedThrough: config.patchedThrough || null,
     php: (snapshot.meta && snapshot.meta.php) || null,
     vmwareTools: (snapshot.meta && snapshot.meta['vmware-tools']) || null,
-    activeGovOutages: (snapshot.meta && snapshot.meta['azure-status'] && snapshot.meta['azure-status'].activeGov) || [],
+    activeGovOutages: [
+      ...((snapshot.meta && snapshot.meta['azure-status'] && snapshot.meta['azure-status'].activeGov) || []),
+      ...((snapshot.meta && snapshot.meta['m365-status'] && snapshot.meta['m365-status'].active) || []),
+    ],
   };
 }
 

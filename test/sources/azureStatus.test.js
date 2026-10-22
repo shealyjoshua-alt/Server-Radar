@@ -40,3 +40,10 @@ test('summary lists the Gov incidents active in this fetch', () => {
   assert.deepEqual(az.summarize([fx('feed-synthetic.xml')], cfg), { activeGov: ['azstatus:TEST-GOV-1'] });
   assert.deepEqual(az.summarize([fx('feed-empty.xml')], cfg), { activeGov: [] });
 });
+
+test('Entra outages are tagged entra', () => {
+  const rss = '<rss version="2.0"><channel><title>Azure Status</title><item><guid>E1</guid><link>https://azure.status.microsoft/</link><title>Active - Microsoft Entra ID - US Gov Virginia - Sign-in failures</title><description>Customers may fail to authenticate.</description><pubDate>Thu, 22 Oct 2026 14:00:00 Z</pubDate></item></channel></rss>';
+  const [it] = az.parse([rss], cfg);
+  assert.deepEqual(it.products, ['azure', 'entra']);
+  assert.equal(it.gov, true);
+});

@@ -4,7 +4,7 @@
 // .incident-history-title, .incident-history-tracking-id) + #incident-history-collapse-<id> body.
 const cheerio = require('cheerio/slim');
 const { makeItem, ParseError } = require('../core/item');
-const { isGov } = require('./azure');
+const { isGov, isEntra } = require('./azure');
 
 const URL = 'https://azure.status.microsoft/en-us/status/history/';
 
@@ -32,7 +32,7 @@ module.exports = {
         title,
         summary: body.slice(0, 400),
         gov: isGov(`${title} ${body}`, config),
-        products: ['azure'],
+        products: isEntra(`${title} ${body}`) ? ['azure', 'entra'] : ['azure'],
         published: isoDay($(el).find('.hide-text').first().text()),
         url: `${URL}?trackingId=${encodeURIComponent(tracking)}`,
       });

@@ -168,3 +168,21 @@ test('resolved incidents go to the Azure section, not keep an eye on', () => {
 test('a high ServiceNow CVE lands in keep an eye on', () => {
   assert.equal(tierFor(mk({ severity: 'important', cvss: 8.2, products: ['servicenow'] }), cfg), 'watch');
 });
+
+test('outage notifications: Entra Gov and Microsoft 365 only, once, never on first sync', () => {
+  const ctx = (over = {}) => ({ firstSync: false, notifiedKeys: new Set(), ...over });
+  const inc = (over) => mk({ kind: 'incident', source: 'azure-status', products: ['azure'], ...over });
+  assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: true }), ctx(), cfg), true);
+  assert.equal(shouldNotify(inc({ source: 'm365-status', products: ['m365'] }), ctx(), cfg), true);
+  assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: false }), ctx(), cfg), false); // commercial Entra
+  assert.equal(shouldNotify(inc({ gov: true }), ctx(), cfg), false); // Gov but not Entra
+  assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: true, status: 'resolved' }), ctx(), cfg), false);
+  assert.equal(shouldNotify(inc({ products: ['azure', 'entra'], gov: true }), ctx({ firstSync: true }), cfg), false);
+  const e = inc({ id: 'azstatus:E1', products: ['azure', 'entra'], gov: true });
+  assert.equal(shouldNotify(e, ctx({ notifiedKeys: new Set(['azstatus:E1']) }), cfg), false);
+});
+
+test('Microsoft 365 outages go to keep an eye on while active', () => {
+  assert.equal(tierFor(mk({ kind: 'incident', source: 'm365-status', products: ['m365'] }), cfg), 'watch');
+  assert.equal(tierFor(mk({ kind: 'incident', source: 'm365-status', products: ['m365'], status: 'resolved' }), cfg), 'azure');
+});

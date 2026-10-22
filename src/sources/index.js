@@ -12,5 +12,6 @@ module.exports = [
   require('./php'),
   require('./azureStatus'),
   require('./azureHistory'),
+  require('./m365Status'),
   require('./azureUpdates'),
 ];

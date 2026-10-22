@@ -237,17 +237,22 @@
     return `<section class="tier tools-panel"><h2>VMware Tools<span class="count">Latest: ${escapeHtml(t.latest)}</span></h2>${rows}<h4 class="sub-h">Tools security advisories</h4>${adv}</section>`;
   }
 
-  // Azure Government outages: active ones (in the status feed right now) and the last 30 days.
+  // Outages: Azure Government (incl. Entra ID) and Microsoft 365 major incidents.
+  // Active now, then the last 48 hours, then earlier in the last 30 days.
   function renderGovOutages(vm, today) {
     const active = new Set(vm.activeGovOutages || []);
-    const cutoff = new Date(today.getTime() - 30 * DAY).toISOString();
-    const gov = vm.snapshot.items.filter((i) => i.kind === 'incident' && i.gov);
-    const now = gov.filter((i) => active.has(i.key));
-    const recent = gov.filter((i) => !active.has(i.key) && (i.published || '') >= cutoff).slice(0, 5);
-    const row = (i, t) => `<div class="az-row">${tag(t)}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`;
+    const ago = (h) => new Date(today.getTime() - h * 3600000).toISOString();
+    const all = vm.snapshot.items.filter((i) => i.kind === 'incident' && (i.gov || i.products.includes('m365')));
+    const now = all.filter((i) => active.has(i.key));
+    const past = all.filter((i) => !active.has(i.key));
+    const last48 = past.filter((i) => (i.published || '') >= ago(48));
+    const earlier = past.filter((i) => (i.published || '') < ago(48) && (i.published || '') >= ago(24 * 30)).slice(0, 5);
+    const kindTags = (i) => (i.products.includes('entra') ? tag(['ENTRA', 'blue']) : '') + (i.products.includes('m365') ? tag(['M365', 'blue']) : '');
+    const row = (i, t) => `<div class="az-row">${tag(t)}${kindTags(i)}${link(i)} <span class="date">${escapeHtml(fmtDate(i.published))}</span></div>`;
     const top = now.length ? now.map((i) => row(i, ['ACTIVE', 'red'])).join('') : '<p class="ok-line">No active Azure Government outages.</p>';
-    const past = recent.length ? `<h4 class="sub-h">Last 30 days</h4>${recent.map((i) => row(i, ['RESOLVED', 'green'])).join('')}` : '';
-    return top + past;
+    const h48 = `<h4 class="sub-h">Last 48 hours</h4>${last48.length ? last48.map((i) => row(i, ['RESOLVED', 'green'])).join('') : '<p class="empty">Nothing in the last 48 hours.</p>'}`;
+    const older = earlier.length ? `<h4 class="sub-h">Earlier (30 days)</h4>${earlier.map((i) => row(i, ['RESOLVED', 'green'])).join('')}` : '';
+    return top + h48 + older;
   }
 
   function renderAzure(vm) {

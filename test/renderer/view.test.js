@@ -374,3 +374,26 @@ test('PHP tile and filter exist', () => {
   assert.match(V.renderTiles(vm, { products: [] }), /data-group="php"><h4>PHP/);
   assert.deepEqual(V.GROUP_FILTERS.php, ['php']);
 });
+
+test('outages section: active, last 48 hours, earlier; Entra and M365 tagged', () => {
+  const h = (n) => new Date(Date.now() - n * 3600000).toISOString();
+  const vm = { ...vmWith([
+    base({ key: 'azstatus:A', kind: 'incident', gov: true, products: ['azure', 'entra'], title: 'Entra sign-in failures US Gov', published: h(1) }),
+    base({ key: 'm365:B', kind: 'incident', gov: false, products: ['m365'], title: 'M365 outage', published: h(2) }),
+    base({ key: 'azhist:C', kind: 'incident', gov: true, status: 'resolved', products: ['azure'], title: 'Yesterday Gov outage', published: h(30) }),
+    base({ key: 'azhist:D', kind: 'incident', gov: true, status: 'resolved', products: ['azure'], title: 'Last week Gov outage', published: h(24 * 7) }),
+  ]), activeGovOutages: ['azstatus:A', 'm365:B'] };
+  const html = V.renderGovOutages(vm, new Date());
+  const iActive = html.indexOf('Entra sign-in failures');
+  const i48 = html.indexOf('Last 48 hours');
+  const iEarlier = html.indexOf('Earlier');
+  assert.ok(iActive >= 0 && html.indexOf('M365 outage') >= 0 && iActive < i48);
+  assert.ok(i48 < html.indexOf('Yesterday Gov outage') && html.indexOf('Yesterday Gov outage') < iEarlier);
+  assert.ok(iEarlier < html.indexOf('Last week Gov outage'));
+  assert.match(html, /ENTRA/);
+  assert.match(html, /M365/);
+});
+
+test('outages section says when the last 48 hours were quiet', () => {
+  assert.match(V.renderGovOutages({ ...vmWith([]), activeGovOutages: [] }, new Date()), /Nothing in the last 48 hours/);
+});
